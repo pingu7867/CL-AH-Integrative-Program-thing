@@ -14,7 +14,10 @@ import javafx.stage.Stage;
  * @author Cédric
  */
 public class Module {
+    
     public Core dataSource;
+    public RenderSet renderSet;
+    
     public Pane pane;
     public Scene scene;
     public Stage viewport;

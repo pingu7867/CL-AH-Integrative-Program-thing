@@ -14,7 +14,9 @@ import javafx.scene.image.Image;
  *
  * @author Cédric
  */
+
 public class MainMenuModuleButton extends ImageButton {
+    
     public int moduleNumber;
     public Core core;
     
@@ -23,21 +25,11 @@ public class MainMenuModuleButton extends ImageButton {
         initializeButton();
         doubleClickDuration = 500;
         
-        this.setOnAction(e -> {
-            try {
-                Thread.sleep(doubleClickDuration);
-            }
-            catch(InterruptedException ie) {
-                System.out.println("failed?");
-            }
-        });
     }
     
     public void initializeButton() {
         pressGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "press.png").toURI().toString());
         idleGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "idle.png").toURI().toString());
-        this.setWidth(idleGraphic.getWidth());
-        this.setHeight(idleGraphic.getHeight());
     }
     
     public void injectCoreRef(Core c) {

@@ -9,6 +9,7 @@ package intpro;
  *
  * @author Cédric
  */
+
 public class GeneralFunctionalitiesStackedInheritanceTower extends ResScalable {
     
 }

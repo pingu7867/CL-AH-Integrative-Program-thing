@@ -12,6 +12,8 @@ package intpro;
 public abstract class VelocityClass extends PositionClass {
     double velX = 0;
     double velY = 0;
+    //radians
+    double angle = 0;
     
     public void setVelY(double velY) {
         this.velY = velY;
@@ -71,4 +73,11 @@ public abstract class VelocityClass extends PositionClass {
         return this.getAngleRad() * 2 * Math.PI;
     }
     
+    public double getAngle() {
+        return angle;
+    }
+    
+    public void setAngle(double newAngle) {
+        angle = newAngle;
+    }
 }

@@ -12,6 +12,7 @@ package intpro;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 
@@ -22,14 +23,39 @@ public class UIWindow {
     
     public String windowName = "";
     public Pane pane = new Pane();
+    
+    public ScrollPane scroll;
+    public Pane content;
+    
+    public Scene scene;
     public Stage viewport = new Stage();
     
+    public UIWindow(char c) {
+        switch(c) {
+            case 's': scroll = new ScrollPane(); this.content = new Pane(); scroll.setContent(content); scene = new Scene(pane, sizeX, sizeY);
+            case 'p': this.pane = new Pane(); scene = new Scene(pane, sizeX, sizeY);
+        }
+    }
+    
     public UIWindow() {
-        viewport.setTitle(windowName);
+        this.pane = new Pane();
+        scene = new Scene(pane, sizeX, sizeY);
+    }
+    
+    public Pane getPane(char c) {
+        switch(c) {
+            case 'c': return this.content;
+            case 'p': return this.pane;
+        }
+        return this.pane;
     }
     
     public Pane getPane() {
         return this.pane;
+    }
+    
+    public Pane getContent() {
+        return this.content;
     }
     
     public String getWindowName() {
@@ -37,7 +63,7 @@ public class UIWindow {
     }
     
     public void display() {
-        viewport.setScene(new Scene(pane, sizeX, sizeY));
+        viewport.setScene(scene);
         viewport.show();
     }
 }

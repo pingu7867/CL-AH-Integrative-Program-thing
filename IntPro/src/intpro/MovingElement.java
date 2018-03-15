@@ -2,9 +2,11 @@
  *
  * @author 1630954
 */
+
 package intpro;
 
-public abstract class MovingElement extends GeneralFunctionalitiesStackedInheritanceTower {
+public abstract class MovingElement extends Element {
+    
     double velX = 0;
     double velY = 0;
     

@@ -9,18 +9,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 
 /**
  *
  * @author Cédric
  */
+
 public class IntroUI extends UIWindow {
     public Core core;
     
-    public IntroUI() {
+    public IntroUI(Core core) {
         windowName = "Welcome! introduction screen";
-        ScrollPane pane = new ScrollPane();
-        Scene scene = new Scene(pane, 1200, 800);
+        pane = new Pane();
+        sizeX = 1200;
+        sizeY = 800;
+        scene = new Scene(pane, sizeX, sizeY);
         viewport.setTitle(windowName);
         viewport.setScene(scene);
     }
@@ -32,7 +36,7 @@ public class IntroUI extends UIWindow {
     }
     
     public void inject(MainMenuModuleButton button) {
-        pane.getChildren().add(button);
+        pane.getChildren().add(button.display);
     }
     
 }

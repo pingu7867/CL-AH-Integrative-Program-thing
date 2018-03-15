@@ -12,6 +12,7 @@ import java.util.Iterator;
  *
  * @author Cédric
  */
+
 public class RenderSet {
     HashSet<javafx.scene.Node> elements;
     Module module;

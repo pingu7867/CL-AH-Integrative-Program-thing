@@ -43,16 +43,17 @@ public class Core extends Application {
     
     @Override
     public void start(Stage primaryStage) throws InterruptedException {
-        intro = new IntroUI();
+        intro = new IntroUI(this);
         MainMenuModuleButton[] moduleButtons;
+        
         //Thread variableUpdateLooper = new Thread(new VariableUpdating());
         //variableUpdateLooper.start();
-        MainMenuModuleButton testBut = new MainMenuModuleButton(1);
-        testBut.setLayoutX(100);
-        testBut.setLayoutY(300);
-        testBut.injectCoreRef(this);
         
-        intro.inject(testBut);
+        ImageButton testBut = new ImageButton();
+        testBut.display.setLayoutX(100);
+        testBut.display.setLayoutY(300);
+        intro.pane.getChildren().add(testBut.display);
+        
         intro.display();
         
         /*

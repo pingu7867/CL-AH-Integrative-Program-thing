@@ -9,8 +9,12 @@ import intpro.*;
  *
  * @author Cédric
  */
+
 public class MountVehicle {
     Cannon cannon;
     
+    public MountVehicle() {
+        cannon = new Cannon();
+    }
     
 }

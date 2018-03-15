@@ -12,7 +12,9 @@ import javafx.scene.image.ImageView;
  *
  * @author Cédric
  */
-public class SpritedElement extends Element {
+
+public class SpritedElement extends MovingElement {
+    
     public ImageView sprite;
     
     public SpritedElement() {
@@ -21,7 +23,8 @@ public class SpritedElement extends Element {
     
     public SpritedElement(ImageView image) {
         sprite = image;
-        
     }
+    
+    
     
 }

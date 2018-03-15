@@ -12,8 +12,10 @@ import javafx.scene.image.ImageView;
  *
  * @author Cédric
  */
+
 public class Cannon extends SpritedElement {
-    MountVehicle vehicle;
+    
+    public MountVehicle vehicle;
     public ImageView barrel;
     
     public Cannon() {
@@ -30,4 +32,5 @@ public class Cannon extends SpritedElement {
         sprite = base;
         barrel = cannon;
     }
+    
 }
