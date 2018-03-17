@@ -10,11 +10,8 @@ import ModuleProjectileMotion.*;
  * @author Cédric
  */
 
-import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.animation.PathTransition;
 import javafx.scene.control.Button;
 import javafx.scene.shape.Circle;
 
@@ -45,9 +42,6 @@ public class Core extends Application {
     public void start(Stage primaryStage) throws InterruptedException {
         intro = new IntroUI(this);
         MainMenuModuleButton[] moduleButtons;
-        
-        //Thread variableUpdateLooper = new Thread(new VariableUpdating());
-        //variableUpdateLooper.start();
         
         ImageButton testBut = new ImageButton();
         testBut.display.setLayoutX(100);
@@ -99,13 +93,6 @@ public class Core extends Application {
     }
     public int getRes1Y() {
         return this.res1y;
-    }
-    
-    class VariableUpdating implements Runnable {
-        @Override
-        public void run() {
-            
-        }
     }
     
 }

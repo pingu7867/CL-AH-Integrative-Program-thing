@@ -22,7 +22,7 @@ public class Module {
     public Scene scene;
     public Stage viewport;
     
-    
+    public int framerate = 60;
     
     public Module(Core creator) {
         this.dataSource = creator;
@@ -34,5 +34,12 @@ public class Module {
     
     public int getResolutionY() {
         return dataSource.getRes2Y();
+    }
+    
+    class Clock implements Runnable {
+        @Override
+        public void run() {
+            
+        }
     }
 }

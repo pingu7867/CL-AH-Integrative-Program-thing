@@ -12,32 +12,39 @@ import javafx.scene.image.ImageView;
 
 public class ImageButton {
     
-    public Image pressGraphic = new Image(new File("src/Assets/defaultButtonpress.png").toURI().toString());
-    public Image idleGraphic = new Image(new File("src/Assets/defaultButtonidle.png").toURI().toString());
+    public Image pressGraphic;
+    public Image idleGraphic;
     public Image displayedImage;
     public ImageView display = new ImageView(idleGraphic);
     public long lastClicked = 0;
     public int doubleClickDuration = 400;
     
     public ImageButton() {
+        pressGraphic = new Image(new File("src/Assets/defaultButtonpress.png").toURI().toString());
+        idleGraphic = new Image(new File("src/Assets/defaultButtonidle.png").toURI().toString());
+        
         display.setOnMouseClicked(e -> {
-            if (lastClicked <= (System.currentTimeMillis() - doubleClickDuration)) {
-                action();
+            if (doubleClickDuration != 0) {
+                if (lastClicked <= (System.currentTimeMillis() - doubleClickDuration)) {
+                    action();
+                    lastClicked = System.currentTimeMillis();
+                }
+                else {action();}
             }
-            lastClicked = System.currentTimeMillis();
+            
         });
         
         display.setOnMouseClicked(e -> {
-            
-            displayedImage = pressGraphic;
-            display.setImage(displayedImage);
-            
-            try {Thread.sleep(doubleClickDuration);}
-            catch(InterruptedException ie) {}
-            
-            displayedImage = idleGraphic;
-            display.setImage(displayedImage);
-            
+            if (doubleClickDuration != 0) {
+                displayedImage = pressGraphic;
+                display.setImage(displayedImage);
+
+                try {Thread.sleep(doubleClickDuration);}
+                catch(InterruptedException ie) {}
+
+                displayedImage = idleGraphic;
+                display.setImage(displayedImage);
+            }
         });
         
     }

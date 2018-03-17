@@ -12,7 +12,7 @@ package intpro;
 
 public abstract class ResScalable extends VelocityClass {
     Core core;
-    Module module;
+    public Module module;
     
     public double posX() {
         return (getPosX()) * (core.getRes2X() / core.getRes1X());

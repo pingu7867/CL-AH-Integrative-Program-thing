@@ -36,7 +36,7 @@ public class MainMenuModuleButton extends ImageButton {
         core = c;
     }
     
-    @Override
+        @Override
     public void action() {
         core.pushModule(moduleNumber);
     }
