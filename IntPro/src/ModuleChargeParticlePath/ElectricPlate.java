@@ -14,8 +14,26 @@ import javafx.scene.image.ImageView;
 public class ElectricPlate extends SpritedElement{
     Image NegPlate = new Image("");
     Image PosPlate = new Image("");
+    String sign = "-";
     
     public ElectricPlate() {
-        sprite.setImage(NegPlate);
+        super(new ImageView());
+        if (sign.equals("-")) {
+            sprite.setImage(NegPlate);
+        }
+        else {
+            sprite.setImage(PosPlate);
+        }
+        
+    }
+    public void changeSign() {
+        if (sign.equals("+")) {
+            sign = "-";
+            sprite.setImage(NegPlate);
+        }
+        else {
+            sign = "+";
+            sprite.setImage(PosPlate);
+        }
     }
 }
