@@ -10,7 +10,7 @@ import intpro.Element;
  * @author Amine
  */
 public class ChargeParticle extends Element{
-    double charge;
+    double charge = 0;
     double electricForce = 0;
     
     public ChargeParticle(double charge) {
