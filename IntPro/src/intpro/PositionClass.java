@@ -10,8 +10,8 @@ package intpro;
  * @author Cédric
  */
 public abstract class PositionClass {
-    double posX = 0;
-    double posY = 0;
+    protected double posX = 0;
+    protected double posY = 0;
     
     public void setPosY(double posY) {
         this.posY = posY;

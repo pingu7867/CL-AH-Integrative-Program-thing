@@ -10,10 +10,10 @@ package intpro;
  * @author Cédric
  */
 public abstract class VelocityClass extends PositionClass {
-    double velX = 0;
-    double velY = 0;
+    protected double velX = 0;
+    protected double velY = 0;
     //radians
-    double angle = 0;
+    protected double angle = 0;
     
     public void setVelY(double velY) {
         this.velY = velY;
