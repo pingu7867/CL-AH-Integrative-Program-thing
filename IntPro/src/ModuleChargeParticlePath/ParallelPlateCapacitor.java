@@ -11,8 +11,8 @@ import javafx.scene.image.ImageView;
  * @author Amine
  */
 public class ParallelPlateCapacitor {
-    private ElectricPlate botPlate; 
-    private ElectricPlate topPlate;
-    private double distance; 
-    private double charge;
+    private ElectricPlate botPlate = new ElectricPlate("-"); 
+    private ElectricPlate topPlate = new ElectricPlate("+");
+    private double distance = 1; 
+    private double sheetChargeDensity = 1;
 }
