@@ -7,6 +7,8 @@ package ModuleLensOptics;
 
 import intpro.Module;
 import intpro.*;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 
 /**
  *
@@ -14,8 +16,9 @@ import intpro.*;
  */
 public class LensOpticsModule extends Module {
     
-    public LensOpticsModule(Core creator) {
+    public LensOpticsModule(Core creator) {        
         super(creator);
+        
     }
     
 }
