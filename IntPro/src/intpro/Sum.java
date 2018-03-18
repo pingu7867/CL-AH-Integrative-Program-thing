@@ -22,6 +22,7 @@ public class Sum {
             computations += x - 1;
         }
         System.out.println(computations);*/
+        
         double accumulation = 0;
         
         long numberoftests = 1000000;
@@ -45,5 +46,35 @@ public class Sum {
         System.out.println("took " + avgM + " milliseconds per operation on average");
         System.out.println(avgM * 4000 + " millis for 4000 operations");
         
+        int i = 0;
+        starttimeN = System.nanoTime();
+        
+        while (i < 1000000) {
+            if((System.nanoTime() - System.nanoTime()) / 1000 == 1) {
+                
+            }
+            i++;
+        }
+        endtimeN = System.nanoTime();
+        endtimeN = System.nanoTime();
+        System.out.println("taken average " + ((endtimeN - starttimeN) / 1000000) + "nanos with boolean check");
+        
+        i = 0;
+        starttimeN = System.nanoTime();
+        endtimeN = System.nanoTime();
+        
+        while (i < 1000000) {
+            i++;
+        }
+        endtimeN = System.nanoTime();
+        
+        System.out.println("taken average " + ((endtimeN - starttimeN) / 1000000) + "nanos without boolean check");
+        
+        starttimeN = System.nanoTime();
+        long j = 0;
+        while ((System.nanoTime() - starttimeN) <= 5000000000l) {
+        }
+        endtimeN = System.nanoTime();
+        System.out.println("for 5 seconds, " + j + "iterations averaging " + ((endtimeN - starttimeN) / 5000000000l) + "nanos per");
     }
 }

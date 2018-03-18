@@ -5,6 +5,10 @@
  */
 package intpro;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import javafx.scene.Node;
+
 /**
  *
  * @author Cédric
@@ -15,6 +19,23 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     public String name;
     
     public Element child = null;
+    public Element parent = null;
+    
+    public Element() {
+        
+    }
+    
+    public Element(double velX, double velY) {
+        this.velY = velY;
+        this.velX = velX;
+    }
+    
+    public Element(double velX, double velY, double posX, double posY) {
+        this.posY = posY;
+        this.posX = posX;
+        this.velY = velY;
+        this.velX = velX;
+    }
     
     public void setName(String newName) {
         name = newName;
@@ -54,6 +75,19 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
             child.setVelX(child.getVelX() - this.velX + velX);
         }
         this.velX = velX;
+    }
+    
+    public void declareChild(Element child) {
+        this.child = child;
+        this.child.parent = this;
+    }
+    
+    public void draw() {
+        
+    }
+    
+    public ArrayList<Node> getRenderElements() {
+        return new ArrayList<>();
     }
     
 }

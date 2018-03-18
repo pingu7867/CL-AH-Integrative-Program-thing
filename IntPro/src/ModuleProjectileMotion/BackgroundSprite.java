@@ -4,18 +4,15 @@
  * and open the template in the editor.
  */
 package ModuleProjectileMotion;
-import intpro.*;
+
+import intpro.SpritedElement;
 
 /**
  *
  * @author Cédric
  */
-
-public class MountVehicle extends Element {
-    public Cannon cannon;
+public class BackgroundSprite extends SpritedElement {
     
-    public MountVehicle() {
-        cannon = new Cannon();
-    }
+    
     
 }

@@ -5,6 +5,7 @@
  */
 package intpro;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -25,8 +26,20 @@ public class RenderSet {
         elements.add(newItem);
     }
     
+    public void addList(ArrayList<javafx.scene.Node> list) {
+        for (int i = 0; i < list.size(); i++) {
+            elements.add(list.get(i));
+        }
+    }
+    
     public void remove(javafx.scene.Node binnedItem) {
         elements.remove(binnedItem);
+    }
+    
+    public void removeList(ArrayList<javafx.scene.Node> list) {
+        for (int i = 0; i < list.size(); i++) {
+            elements.remove(list.get(i));
+        }
     }
     
     public javafx.scene.Node find(javafx.scene.Node item) {

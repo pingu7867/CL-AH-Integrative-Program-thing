@@ -50,6 +50,10 @@ public class Core extends Application {
         
         intro.display();
         
+        ProjectileMotionModule proj = new ProjectileMotionModule(this);
+        proj.popOut();
+        
+        
         /*
         moduleButtons = new MainMenuModuleButton[modules];
         for (int n = 0; n < modules; n++) {
@@ -61,6 +65,7 @@ public class Core extends Application {
         intro.inject(moduleButtons);
         */
         
+        System.out.println("start"); waitSomeTime(4000); System.out.println("end");
     }
     
     public void pushModule(int moduleNumber) {
@@ -74,12 +79,9 @@ public class Core extends Application {
     }
     
     public static void waitSomeTime(long delay) {
-        try {
-            Thread.sleep(delay);
+        long startTimeNano = System.nanoTime();
+        while ((System.nanoTime() - startTimeNano) <= delay * 1000000) {
         }
-        catch(InterruptedException ie) {
-        }
-        
     }
     
     public int getRes2X() {

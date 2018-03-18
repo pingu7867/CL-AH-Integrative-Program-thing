@@ -29,9 +29,8 @@ public class ImageButton {
                     action();
                     lastClicked = System.currentTimeMillis();
                 }
-                else {action();}
             }
-            
+            else {action();}
         });
         
         display.setOnMouseClicked(e -> {
@@ -39,9 +38,10 @@ public class ImageButton {
                 displayedImage = pressGraphic;
                 display.setImage(displayedImage);
 
-                try {Thread.sleep(doubleClickDuration);}
-                catch(InterruptedException ie) {}
-
+                long startTimeM = System.currentTimeMillis();
+                while ((startTimeM - System.currentTimeMillis()) <= doubleClickDuration) {
+                }
+                
                 displayedImage = idleGraphic;
                 display.setImage(displayedImage);
             }

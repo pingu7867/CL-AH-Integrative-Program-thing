@@ -21,7 +21,6 @@ public class test extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        
         Pane pane = new Pane();
         Pane child = new Pane();
         Scene scene = new Scene(pane, 200, 200);

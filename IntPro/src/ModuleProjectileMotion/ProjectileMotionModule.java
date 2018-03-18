@@ -14,15 +14,17 @@ import javafx.stage.Stage;
  */
 
 public class ProjectileMotionModule extends Module {
-    ImageView image = new ImageView(new Image("https://www.dropbox.com/s/ync9w4sx70b0q4e/TestImage1152x648.png?dl=0"));
+    public ImageView image = new ImageView(new Image("https://www.dropbox.com/s/ync9w4sx70b0q4e/TestImage1152x648.png?dl=1"));
     
     public ProjectileMotionModule(Core core) {
         super(core);
+        pane = new Pane();
+        
     }
     
     public void popOut() {
         scene = new Scene(pane);
-        pane.setPrefSize(dataSource.res2x, dataSource.res2y);
+        //pane.setPrefSize(dataSource.res2x, dataSource.res2y);
         image.setLayoutX(500);
         image.setLayoutY(500);
         image.setOnMouseClicked(e -> {
@@ -31,6 +33,7 @@ public class ProjectileMotionModule extends Module {
         
         pane.getChildren().add(image);
         
+        viewport = new Stage();
         viewport.setScene(scene);
         viewport.show();
     }

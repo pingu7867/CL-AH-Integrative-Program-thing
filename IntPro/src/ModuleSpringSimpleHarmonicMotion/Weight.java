@@ -3,19 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ModuleProjectileMotion;
-import intpro.*;
+package ModuleSpringSimpleHarmonicMotion;
+
+import intpro.SpritedElement;
 
 /**
  *
  * @author Cédric
  */
-
-public class MountVehicle extends Element {
-    public Cannon cannon;
+public class Weight extends SpritedElement {
     
-    public MountVehicle() {
-        cannon = new Cannon();
+    public Weight() {
+        
     }
     
 }

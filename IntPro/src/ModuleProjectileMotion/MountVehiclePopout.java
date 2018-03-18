@@ -4,18 +4,13 @@
  * and open the template in the editor.
  */
 package ModuleProjectileMotion;
-import intpro.*;
+
+import intpro.ItemPopout;
 
 /**
  *
  * @author Cédric
  */
-
-public class MountVehicle extends Element {
-    public Cannon cannon;
-    
-    public MountVehicle() {
-        cannon = new Cannon();
-    }
+public class MountVehiclePopout extends ItemPopout {
     
 }
