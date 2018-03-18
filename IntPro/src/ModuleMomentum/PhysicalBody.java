@@ -33,11 +33,22 @@ public class PhysicalBody extends Element{
     
     public void setMass(double mass) {
         this.mass = mass;
+        setMomentumX(mass * velX); setMomentumY(mas * velY);
     }
     public void setMomentumX(double momentumX) {
         this.momentumX = momentumX;
     }
     public void setMomentumY(double momentumY) {
         this.momentumY = momentumY;
+    }
+    @Override
+    public void setVelX(double velX) {
+        this.velX = velX;
+        setMomentumX(mass * velX);
+    }
+    @Override
+    public void setVelY(double velY) {
+        this.velY = velY;
+        setMomentumY(mass * velY);
     }
 }
