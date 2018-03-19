@@ -15,4 +15,24 @@ public class ParallelPlateCapacitor {
     private ElectricPlate topPlate = new ElectricPlate("+");
     private double distance = 1; 
     private double sheetChargeDensity = 1;
+    final private double VACUUM_PERMITTIVITY = 8.85418782*Math.pow(10, -12);
+    private double ElectricField;
+    
+    public ParallelPlateCapacitor() {
+        ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+    }
+    public ParallelPlateCapacitor(double distance, double sheetChargeDensity) {
+        this.distance = distance;
+        this.sheetChargeDensity = sheetChargeDensity;
+    }
+    public double getDistance() {
+        return distance;
+    }
+    public double getSheetChargeDensity() {
+        return sheetChargeDensity;
+    }
+    public double getElectricField() {
+        return ElectricField;
+    }
+    
 }
