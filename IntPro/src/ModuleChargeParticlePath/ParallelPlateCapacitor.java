@@ -34,5 +34,11 @@ public class ParallelPlateCapacitor {
     public double getElectricField() {
         return ElectricField;
     }
+    public void switchDirection() {
+        botPlate.changeSign();
+        topPlate.changeSign();
+    }
+        
+
     
 }
