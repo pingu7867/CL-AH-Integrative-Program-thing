@@ -13,6 +13,7 @@ import javafx.scene.shape.Line;
  * @author Cédric
  */
 public class Spring {
+    double SpringConstant;
     ArrayList<Line> lines;
 
     public Spring() {
