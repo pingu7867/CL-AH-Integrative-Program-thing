@@ -27,9 +27,15 @@ public class ParallelPlateCapacitor extends Element {
         this.ElectricFieldY = ElectricField * Math.cos(orientation);
     }
     public ParallelPlateCapacitor(double distance, double sheetChargeDensity) {
-        this();
         this.distance = distance;
         this.sheetChargeDensity = sheetChargeDensity;
+        this();
+    }
+    public ParallelPlateCapacitor(double distance, double sheetChargeDensity, double orientation) {
+        this.distance = distance;
+        this.sheetChargeDensity = sheetChargeDensity;
+        this.orientation = orientation;
+        this();
     }
     public double getDistance() {
         return distance;
