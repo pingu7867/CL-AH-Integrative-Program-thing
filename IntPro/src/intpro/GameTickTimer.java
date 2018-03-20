@@ -25,6 +25,10 @@ public class GameTickTimer {
         this.startTimer();
     }
     
+    public void declareHost(GameTickActor host) {
+        this.host = host;
+    }
+    
     public void setFPS(int newfps) {
         this.fps = newfps;
         milliDelay = 1000.0 / (double)newfps;

@@ -9,6 +9,7 @@ package intpro;
  *
  * @author Cédric
  */
+
 public abstract class VelocityClass extends PositionClass {
     protected double velX = 0;
     protected double velY = 0;
@@ -32,7 +33,6 @@ public abstract class VelocityClass extends PositionClass {
     }
     
     public double getAngleRad() {
-        
         int signX = (int)Math.signum(velX);
         int signY = (int)Math.signum(velY);
         

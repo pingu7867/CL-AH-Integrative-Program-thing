@@ -5,6 +5,8 @@
  */
 package intpro;
 
+import java.io.File;
+import java.util.HashSet;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -13,19 +15,27 @@ import javafx.stage.Stage;
  *
  * @author Cédric
  */
-public class Module {
+public class Module implements GameTickActor {
     
     public Core dataSource;
     public RenderSet renderSet;
+    public HashSet<Element> elements;
     
     public Pane pane;
     public Scene scene;
     public Stage viewport;
     
     public int framerate = 60;
+    public GameTickTimer ticker;
+    
+    public File save;
     
     public Module(Core creator) {
         this.dataSource = creator;
+        renderSet = new RenderSet();
+        elements = new HashSet<Element>();
+        this.ticker = new GameTickTimer(60);
+        this.ticker.declareHost(this);
     }
     
     public int getResolutionX() {
@@ -36,10 +46,17 @@ public class Module {
         return dataSource.getRes2Y();
     }
     
-    class Clock implements Runnable {
-        @Override
-        public void run() {
-            
-        }
+    
+    public void saveState() {
+        //o o f
+    }
+    
+    public Element[] getElementsArray() {
+        return null; //o o f
+    }
+    
+    @Override
+    public void tickProcess() {
+        //o o f
     }
 }

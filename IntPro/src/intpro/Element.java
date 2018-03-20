@@ -22,7 +22,7 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     public Element parent = null;
     
     public Element() {
-        
+        this(0, 0, 0, 0);
     }
     
     public Element(double velX, double velY) {
@@ -87,7 +87,7 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     }
     
     public ArrayList<Node> getRenderElements() {
-        return new ArrayList<>();
+        return new ArrayList<>(); //o o f
     }
     
 }
