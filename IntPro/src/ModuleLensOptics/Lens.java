@@ -13,13 +13,13 @@ import intpro.Element;
  * @author Cédric
  */
 public class Lens extends Element {
-    double RadiusLeftSideCurvature;
-    double RadiusRightSideCurvature;
-    double Height;
-    double FocalLength;
-    double Vergence;
-    String typeOfLen;
-    double RefractionIndex = 1.52;
+    private double RadiusLeftSideCurvature;
+    private double RadiusRightSideCurvature;
+    private double Height;
+    private double FocalLength;
+    private double Vergence;
+    private String typeOfLen;
+    private double RefractionIndex = 1.52;
     
     public Lens() {
         
