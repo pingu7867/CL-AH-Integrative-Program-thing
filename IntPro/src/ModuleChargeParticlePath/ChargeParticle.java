@@ -48,10 +48,8 @@ public class ChargeParticle extends Element{
         this.charge = charge;
     }
     
-    public void setElectricForceX(double electricForceX) {
+    public void setElectricForce(double electricForceX, double electricForceY) {
         this.electricForceX = electricForceX;
-    }
-    public void setElectricForceY(double electricForceY) {
         this.electricForceY = electricForceY;
     }
 }
