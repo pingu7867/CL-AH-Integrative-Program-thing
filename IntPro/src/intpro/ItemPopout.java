@@ -13,9 +13,10 @@ package intpro;
 public class ItemPopout extends Popout {
     
     PopoutCloseButton closeButton;
+    Element associatedElement;
     
-    public ItemPopout() {
-        
+    public ItemPopout(Element element) {
+        this.associatedElement = element;
     }
     
     @Override
