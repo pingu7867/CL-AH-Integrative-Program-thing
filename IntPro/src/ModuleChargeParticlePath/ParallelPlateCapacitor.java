@@ -29,13 +29,31 @@ public class ParallelPlateCapacitor extends Element {
     public ParallelPlateCapacitor(double distance, double sheetChargeDensity) {
         this.distance = distance;
         this.sheetChargeDensity = sheetChargeDensity;
-        this();
+        
+        double ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+        this.ElectricFieldX = ElectricField * Math.sin(orientation);
+        this.ElectricFieldY = ElectricField * Math.cos(orientation);
     }
     public ParallelPlateCapacitor(double distance, double sheetChargeDensity, double orientation) {
         this.distance = distance;
         this.sheetChargeDensity = sheetChargeDensity;
         this.orientation = orientation;
-        this();
+        
+        double ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+        this.ElectricFieldX = ElectricField * Math.sin(orientation);
+        this.ElectricFieldY = ElectricField * Math.cos(orientation);
+    }
+    public ParallelPlateCapacitor(double distance, double sheetChargeDensity, double orientation, double posX, double posY) {
+        this.distance = distance;
+        this.sheetChargeDensity = sheetChargeDensity;
+        this.orientation = orientation;
+        
+        this.posX = posX;
+        this.posY = posY;
+        
+        double ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+        this.ElectricFieldX = ElectricField * Math.sin(orientation);
+        this.ElectricFieldY = ElectricField * Math.cos(orientation);
     }
     public double getDistance() {
         return distance;
