@@ -18,7 +18,7 @@ public class GameTickTimer {
     double milliDelay;
     boolean running;
     
-    public GameTickTimer(int fps) {
+    public GameTickTimer(double fps) {
         this.fps = fps;
         milliDelay = 1000 / fps;
         running = true;
@@ -29,9 +29,9 @@ public class GameTickTimer {
         this.host = host;
     }
     
-    public void setFPS(int newfps) {
+    public void setFPS(double newfps) {
         this.fps = newfps;
-        milliDelay = 1000.0 / (double)newfps;
+        milliDelay = 1000.0 / newfps;
     }
     
     public void setMilliDelay(double newMilliDelay) {
