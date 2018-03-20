@@ -16,6 +16,10 @@ public class ItemPopout extends Popout {
     Element associatedElement;
     
     public ItemPopout(Element element) {
+        associate(element);
+    }
+    
+    public void associate(Element element) {
         this.associatedElement = element;
     }
     
