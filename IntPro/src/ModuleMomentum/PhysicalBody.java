@@ -10,10 +10,15 @@ import intpro.Element;
  * @author Amine
  */
 public class PhysicalBody extends Element{
-    double mass;
-    double momentumX;
-    double momentumY;
+    private double mass = 0;
+    private double momentumX = 0;
+    private double momentumY = 0;
     
+    public PhysicalBody() {
+        this.momentumX = mass * velX;
+        this.momentumY = mass * velY;
+        
+    }
     public PhysicalBody(double mass, double velX, double velY) {
         super(velX,velY);
         this.mass = mass;
