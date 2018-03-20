@@ -46,7 +46,6 @@ public class ImageButton {
                 display.setImage(displayedImage);
             }
         });
-        
     }
     
     public void setGraphics(Image on, Image off) {

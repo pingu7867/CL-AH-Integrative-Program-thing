@@ -10,6 +10,22 @@ package intpro;
  * @author Cédric
  */
 
-public class ItemPopout {
+public class ItemPopout extends Popout {
+    
+    PopoutCloseButton closeButton;
+    
+    public ItemPopout() {
+        
+    }
+    
+    @Override
+    public void deploy() {
+        
+    }
+    
+    @Override
+    public void retract() {
+        
+    }
     
 }

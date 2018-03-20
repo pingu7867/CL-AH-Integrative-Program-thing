@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 package ModuleChargeParticlePath;
+import intpro.Element;
 import intpro.SpritedElement;
 import javafx.scene.image.ImageView;
 /**
  *
  * @author Amine
  */
-public class ParallelPlateCapacitor {
+public class ParallelPlateCapacitor extends Element {
     private ElectricPlate botPlate = new ElectricPlate("-"); 
     private ElectricPlate topPlate = new ElectricPlate("+");
     private double distance = 1; 
@@ -26,9 +27,9 @@ public class ParallelPlateCapacitor {
         this.ElectricFieldY = ElectricField * Math.cos(orientation);
     }
     public ParallelPlateCapacitor(double distance, double sheetChargeDensity) {
+        this();
         this.distance = distance;
         this.sheetChargeDensity = sheetChargeDensity;
-        this();
     }
     public double getDistance() {
         return distance;

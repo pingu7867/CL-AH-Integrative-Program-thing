@@ -53,7 +53,6 @@ public class Core extends Application {
         ProjectileMotionModule proj = new ProjectileMotionModule(this);
         proj.popOut();
         
-        
         /*
         moduleButtons = new MainMenuModuleButton[modules];
         for (int n = 0; n < modules; n++) {

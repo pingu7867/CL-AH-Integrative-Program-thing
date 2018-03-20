@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
  *
  * @author Amine
  */
-public class ElectricPlate extends SpritedElement{
+public class ElectricPlate extends SpritedElement {
     final Image NegPlate = new Image("");
     final Image PosPlate = new Image("");
     String sign = "-";
@@ -19,8 +19,6 @@ public class ElectricPlate extends SpritedElement{
     public ElectricPlate() {
         super(new ImageView());
         sprite.setImage(NegPlate);
-     
-        
     }
     public ElectricPlate(String sign) {
         super(new ImageView());
