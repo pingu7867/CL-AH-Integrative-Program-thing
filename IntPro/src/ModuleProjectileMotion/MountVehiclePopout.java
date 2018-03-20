@@ -5,6 +5,7 @@
  */
 package ModuleProjectileMotion;
 
+import intpro.Element;
 import intpro.ItemPopout;
 
 /**
@@ -12,5 +13,7 @@ import intpro.ItemPopout;
  * @author Cédric
  */
 public class MountVehiclePopout extends ItemPopout {
-    
+    public MountVehiclePopout(Element element) {
+        super(element);
+    }
 }

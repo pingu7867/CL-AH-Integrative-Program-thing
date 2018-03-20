@@ -11,7 +11,8 @@ package ModuleWaveSuperposition;
  */
 public class Function {
     
-    
-    
+    public double evaluateAt() {
+        return 0;
+    }
     
 }

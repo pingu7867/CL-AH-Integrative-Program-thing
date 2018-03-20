@@ -5,6 +5,7 @@
  */
 package ModuleWaveSuperposition;
 
+import intpro.Element;
 import java.util.ArrayList;
 import java.util.HashSet;
 import javafx.scene.shape.Line;
@@ -13,7 +14,13 @@ import javafx.scene.shape.Line;
  *
  * @author Cédric
  */
-public class Curve {
+public class Curve extends Element {
     HashSet<Line> curve = new HashSet<Line>();
     ArrayList<Point> points = new ArrayList<Point>();
+    
+    Function function;
+    
+    public Curve(Function f) {
+        function = f;
+    }
 }

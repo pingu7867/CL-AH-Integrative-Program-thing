@@ -47,7 +47,7 @@ public class Oscillator {
             while(running) {
                 startTimeM = System.currentTimeMillis();
                 startTimeN = System.nanoTime();
-                while ((System.nanoTime() - startTimeN) / 1000 <= frequency) {
+                while ((System.nanoTime() - startTimeN) / 1000 <= (1/frequency)) {
                 }
                 time = System.currentTimeMillis();
                 value = amplitude * Math.sin(frequency * (time - startTimeM));

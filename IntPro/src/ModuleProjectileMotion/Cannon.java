@@ -33,4 +33,7 @@ public class Cannon extends SpritedElement {
         barrel = cannon;
     }
     
+    public void fire() {
+        
+    }
 }

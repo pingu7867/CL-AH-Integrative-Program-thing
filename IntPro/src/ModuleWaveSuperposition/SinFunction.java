@@ -9,6 +9,10 @@ package ModuleWaveSuperposition;
  *
  * @author Cédric
  */
-public class SinFunction extends Function {
+public class SinFunction extends PeriodicFunction {
+    
+    public SinFunction() {
+        super(100, 1);
+    }
     
 }

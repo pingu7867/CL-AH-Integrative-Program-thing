@@ -27,6 +27,7 @@ public class ProjectileMotionModule extends Module {
         //pane.setPrefSize(dataSource.res2x, dataSource.res2y);
         image.setLayoutX(500);
         image.setLayoutY(500);
+        image.setScaleX(0.3); image.setScaleY(0.3);
         image.setOnMouseClicked(e -> {
             image.setVisible(!image.isVisible());
         });

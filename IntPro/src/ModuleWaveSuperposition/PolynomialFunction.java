@@ -9,6 +9,17 @@ package ModuleWaveSuperposition;
  *
  * @author Cédric
  */
+
 public class PolynomialFunction extends Function {
+    
+    int degree = 0;
+    
+    public PolynomialFunction() {
+        
+    }
+    
+    public PolynomialFunction(int deg) {
+        this.degree = deg;
+    }
     
 }

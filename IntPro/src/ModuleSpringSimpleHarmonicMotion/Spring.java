@@ -5,6 +5,7 @@
  */
 package ModuleSpringSimpleHarmonicMotion;
 
+import intpro.Element;
 import java.util.ArrayList;
 import javafx.scene.shape.Line;
 
@@ -12,10 +13,9 @@ import javafx.scene.shape.Line;
  *
  * @author Cédric
  */
-public class Spring {
-    double SpringConstant;
+public class Spring extends Element {
     ArrayList<Line> lines;
-
+    
     public Spring() {
         this.lines = new ArrayList<Line>();
         

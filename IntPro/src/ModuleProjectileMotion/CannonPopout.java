@@ -4,13 +4,14 @@
  * and open the template in the editor.
  */
 package ModuleProjectileMotion;
+import intpro.Element;
 import intpro.ItemPopout;
 /**
  *
  * @author Cédric
  */
 public class CannonPopout extends ItemPopout {
-    public CannonPopout() {
-        
+    public CannonPopout(Element element) {
+        super(element);
     }
 }

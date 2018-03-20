@@ -11,8 +11,7 @@ import intpro.SpritedElement;
  *
  * @author Cédric
  */
+
 public class BackgroundSprite extends SpritedElement {
-    
-    
     
 }
