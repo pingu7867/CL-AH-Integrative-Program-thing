@@ -16,14 +16,19 @@ public class ParallelPlateCapacitor {
     private double distance = 1; 
     private double sheetChargeDensity = 1;
     final private double VACUUM_PERMITTIVITY = 8.85418782*Math.pow(10, -12);
-    private double ElectricField;
+    private double ElectricFieldX;
+    private double ElectricFieldY;
+    private double orientation = 0;
     
     public ParallelPlateCapacitor() {
-        ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+        double ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
+        this.ElectricFieldX = ElectricField * Math.sin(orientation);
+        this.ElectricFieldY = ElectricField * Math.cos(orientation);
     }
     public ParallelPlateCapacitor(double distance, double sheetChargeDensity) {
         this.distance = distance;
         this.sheetChargeDensity = sheetChargeDensity;
+        this();
     }
     public double getDistance() {
         return distance;
@@ -31,8 +36,23 @@ public class ParallelPlateCapacitor {
     public double getSheetChargeDensity() {
         return sheetChargeDensity;
     }
-    public double getElectricField() {
-        return ElectricField;
+    public double getOrientation() {
+        return orientation;
+    }
+    public double getElectricFieldX() {
+        return ElectricFieldX;
+    }
+    public double getElectricFieldY() {
+        return ElectricFieldY;
+    }
+    public void setSheetChargeDensity(double sheetChargeDensity) {
+        this.sheetChargeDensity = sheetChargeDensity;
+    }
+    public void setOrientation(double orientation) {
+        this.orientation = orientation;
+    }
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
     public void switchDirection() {
         botPlate.changeSign();
