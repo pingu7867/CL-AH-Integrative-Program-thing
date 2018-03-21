@@ -26,8 +26,8 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     }
     
     public Element(double velX, double velY) {
-        this.velY = velY;
-        this.velX = velX;
+        this.init_velY = velY;
+        this.init_velX = velX;
     }
     
     public Element(double velX, double velY, double posX, double posY) {

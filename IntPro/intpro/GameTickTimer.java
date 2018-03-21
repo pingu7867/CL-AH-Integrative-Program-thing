@@ -22,7 +22,6 @@ public class GameTickTimer {
         this.fps = fps;
         milliDelay = 1000 / fps;
         running = true;
-        this.startTimer();
     }
     
     public void declareHost(GameTickActor host) {

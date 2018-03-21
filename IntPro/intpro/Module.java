@@ -46,6 +46,9 @@ public class Module implements GameTickActor {
         return dataSource.getRes2Y();
     }
     
+    public double getScaling() {
+        return dataSource.res2x / dataSource.res1x;
+    }
     
     public void saveState() {
         //o o f

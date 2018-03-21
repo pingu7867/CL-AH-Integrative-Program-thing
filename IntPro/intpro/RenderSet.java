@@ -19,7 +19,12 @@ public class RenderSet {
     public Module module;
     
     public RenderSet() {
+       elements = new HashSet();
+    }
+    
+    public RenderSet(Module module) {
         elements = new HashSet();
+        injectModuleRef(module);
     }
     
     public void add(javafx.scene.Node newItem) {
@@ -65,7 +70,12 @@ public class RenderSet {
         Iterator it = elements.iterator();
         while (it.hasNext()) {
             javafx.scene.Node element = (javafx.scene.Node)it.next();
-            
+            element.setScaleX(module.getScaling());
+            element.setScaleY(module.getScaling());
         }
+    }
+    
+    public void injectModuleRef(Module module) {
+        this.module = module;
     }
 }

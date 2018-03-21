@@ -25,6 +25,4 @@ public class SpritedElement extends Element {
         sprite = image;
     }
     
-    
-    
 }
