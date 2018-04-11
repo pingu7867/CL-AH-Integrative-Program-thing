@@ -16,10 +16,18 @@ import javafx.stage.Stage;
 public class ProjectileMotionModule extends Module {
     public ImageView image = new ImageView(new Image("https://www.dropbox.com/s/ync9w4sx70b0q4e/TestImage1152x648.png?dl=1"));
     
+    public ImageButton testButtipiton;
+    
     public ProjectileMotionModule(Core core) {
         super(core);
         pane = new Pane();
+        testButtipiton = new ImageButton(core);
+        testButtipiton.display.setLayoutX(500); testButtipiton.display.setLayoutY(300);
+        pane.getChildren().add(testButtipiton.display);
         
+        GameTickTimer timer = new GameTickTimer(44); timer.declareHost(this);
+        timer.setFPS(60);
+        timer.startThread();
     }
     
     public void popOut() {
@@ -37,5 +45,9 @@ public class ProjectileMotionModule extends Module {
         viewport = new Stage();
         viewport.setScene(scene);
         viewport.show();
+    }
+    
+    @Override
+    public void tickProcess() {
     }
 }

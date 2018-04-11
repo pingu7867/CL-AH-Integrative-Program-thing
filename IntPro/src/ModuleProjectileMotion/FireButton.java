@@ -5,6 +5,7 @@
  */
 package ModuleProjectileMotion;
 
+import intpro.Core;
 import intpro.ImageButton;
 
 /**
@@ -12,7 +13,12 @@ import intpro.ImageButton;
  * @author Cédric
  */
 public class FireButton extends ImageButton {
-        @Override
+    
+    public FireButton(Core core) {
+        super(core);
+    }
+    
+    @Override
     public void action() {
         
     }
