@@ -43,7 +43,7 @@ public class Core extends Application {
         intro = new IntroUI(this);
         MainMenuModuleButton[] moduleButtons;
         
-        ImageButton testBut = new ImageButton();
+        ImageButton testBut = new ImageButton(this);
         testBut.display.setLayoutX(100);
         testBut.display.setLayoutY(300);
         intro.pane.getChildren().add(testBut.display);
@@ -53,18 +53,22 @@ public class Core extends Application {
         ProjectileMotionModule proj = new ProjectileMotionModule(this);
         proj.popOut();
         
-        /*
+        
         moduleButtons = new MainMenuModuleButton[modules];
         for (int n = 0; n < modules; n++) {
-            moduleButtons[n] = new MainMenuModuleButton(n);
-            moduleButtons[n].setLayoutX(70);
-            moduleButtons[n].setLayoutY(100 + 100*n);
+            moduleButtons[n] = new MainMenuModuleButton(n, this);
+            moduleButtons[n].setPosX(70);
+            moduleButtons[n].setPosY(100 + 100*n);
+            intro.getPane().getChildren().add(moduleButtons[n].display);
         }
         
-        intro.inject(moduleButtons);
-        */
+        intro.viewport.setOnCloseRequest(e -> {
+            for (int n = 0; n < modules; n++) {
+                if ((module[n] != null) && (module[n].viewport != null)) {module[n].viewport.close();}
+            }
+            System.exit(0);
+        });
         
-        System.out.println("start"); waitSomeTime(4000); System.out.println("end");
     }
     
     public void pushModule(int moduleNumber) {

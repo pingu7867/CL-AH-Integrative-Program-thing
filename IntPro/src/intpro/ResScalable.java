@@ -10,7 +10,7 @@ package intpro;
  * @author Cédric
  */
 
-public abstract class ResScalable extends VelocityClass {
+public abstract class ResScalable extends PositionClass {
     Core core;
     public Module module;
     
@@ -31,7 +31,7 @@ public abstract class ResScalable extends VelocityClass {
     }
     
     public double xTransform(double x) {
-        return core.getRes2X() - (getScaling() * x);
+        return getScaling() * x;
     }
     
 }

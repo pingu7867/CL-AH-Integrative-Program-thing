@@ -10,6 +10,6 @@ package intpro;
  * @author Cédric
  */
 
-public class GeneralFunctionalitiesStackedInheritanceTower extends ResScalable {
+public class GeneralFunctionalitiesStackedInheritanceTower extends VelocityClass {
     
 }

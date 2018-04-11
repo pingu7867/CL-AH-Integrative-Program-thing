@@ -31,7 +31,7 @@ public class IntroUI extends UIWindow {
     
     public void inject(MainMenuModuleButton[] buttons) {
         for (int module = 1; module <= buttons.length + 1; module++) {
-            
+            inject(buttons[module]);
         }
     }
     

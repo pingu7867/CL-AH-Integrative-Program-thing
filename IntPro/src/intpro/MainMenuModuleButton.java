@@ -20,7 +20,8 @@ public class MainMenuModuleButton extends ImageButton {
     public int moduleNumber;
     public Core core;
     
-    public MainMenuModuleButton(int num) {
+    public MainMenuModuleButton(int num, Core core) {
+        super(core);
         moduleNumber = num;
         initializeButton();
         doubleClickDuration = 500;
@@ -28,8 +29,15 @@ public class MainMenuModuleButton extends ImageButton {
     }
     
     public void initializeButton() {
-        pressGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "press.png").toURI().toString());
-        idleGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "idle.png").toURI().toString());
+        if (new File("src/Assets/MainMenuModule" + moduleNumber + "press.png").exists()) {pressGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "press.png").toURI().toString());}
+        else {
+            pressGraphic = new Image(new File("src/Assets/defaultButtonpress.png").toURI().toString());
+        }
+        
+        if (new File("src/Assets/MainMenuModule" + moduleNumber + "idle.png").exists()) {idleGraphic = new Image(new File("src/Assets/MainMenuModule" + moduleNumber + "idle.png").toURI().toString());}
+        else {
+            idleGraphic = new Image(new File("src/Assets/defaultButtonidle.png").toURI().toString());
+        }
     }
     
     public void injectCoreRef(Core c) {
