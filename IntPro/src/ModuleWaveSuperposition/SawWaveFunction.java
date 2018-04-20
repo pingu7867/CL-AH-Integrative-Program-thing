@@ -10,5 +10,12 @@ package ModuleWaveSuperposition;
  * @author Cédric
  */
 public class SawWaveFunction extends PeriodicFunction {
-    
+    public SawWaveFunction() {
+        super(100,1);
+    }
+    @Override
+    public double evaluateAt(double x) {
+        
+        return amplitude*(((wavelength + (x + phaseShift) ) % wavelength)/wavelength);
+    }
 }

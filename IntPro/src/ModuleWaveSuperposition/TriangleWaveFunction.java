@@ -10,5 +10,11 @@ package ModuleWaveSuperposition;
  * @author Cédric
  */
 public class TriangleWaveFunction extends PeriodicFunction {
-    
+    public TriangleWaveFunction() {
+        super(100,1);
+    }
+    @Override
+    public double evaluateAt(double x) {
+        return (2 * amplitude/wavelength) * (Math.abs(((wavelength + (x + phaseShift) ) % wavelength)- wavelength/2) - wavelength/4);
+    }
 }
