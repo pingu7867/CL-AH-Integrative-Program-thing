@@ -20,18 +20,21 @@ public class IntroUI extends UIWindow {
     public Core core;
     
     public IntroUI(Core core) {
+        super('s');
         windowName = "Welcome! introduction screen";
         pane = new Pane();
         sizeX = 1200;
         sizeY = 800;
-        scene = new Scene(pane, sizeX, sizeY);
+        scene = new Scene(getPane(), sizeX, sizeY);
+        content.setScaleX(sizeX + 400);
+        content.setScaleY(sizeY + 1000);
         viewport.setTitle(windowName);
         viewport.setScene(scene);
     }
     
     public void inject(MainMenuModuleButton[] buttons) {
         for (int module = 1; module <= buttons.length + 1; module++) {
-            
+            inject(buttons[module]);
         }
     }
     

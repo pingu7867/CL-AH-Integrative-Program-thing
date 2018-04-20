@@ -10,7 +10,12 @@ package intpro;
  * @author Cédric
  */
 public class GlobalSettingsButton extends ImageButton {
-        @Override
+    
+    public GlobalSettingsButton(Core core) {
+        super(core);
+    }
+    
+    @Override
     public void action() {
         
     }

@@ -11,7 +11,8 @@ package intpro;
  */
 public class InventoryToggleButton extends ImageButton {
     Inventory attached;
-    public InventoryToggleButton(Inventory inv) {
+    public InventoryToggleButton(Inventory inv, Core core) {
+        super(core);
         this.attached = inv;
     }
     @Override

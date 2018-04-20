@@ -10,7 +10,12 @@ package intpro;
  * @author Cédric
  */
 public class GlobalSoundButton extends ImageButton {
-        @Override
+    
+    public GlobalSoundButton(Core core) {
+        super(core);
+    }
+    
+    @Override
     public void action() {
         
     }

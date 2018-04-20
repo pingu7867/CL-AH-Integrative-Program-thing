@@ -24,7 +24,8 @@ import javafx.scene.image.ImageView;
 public class InventoryIcon extends ImageButton {
     public String type = "";
     
-    public InventoryIcon(String type) {
+    public InventoryIcon(String type, Core core) {
+        super(core);
         this.doubleClickDuration = 0;
         this.type = type;
     }
@@ -41,7 +42,7 @@ public class InventoryIcon extends ImageButton {
             case "lens": return new Lens();
             case "spring": return new Spring();
             case "weight": return new Weight();
-            case "physical body": return new PhysicalBody();
+            //case "physical body": return new PhysicalBody();
             case "charged particle": return new ChargeParticle();
             case "capacitor": return new ParallelPlateCapacitor();
             case "branch": return new Branch();

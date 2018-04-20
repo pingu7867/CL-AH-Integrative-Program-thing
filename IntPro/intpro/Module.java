@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 public class Module implements GameTickActor {
     
     public Core dataSource;
+    public int moduleNumber = 0;
     public RenderSet renderSet;
     public HashSet<Element> elements;
     
@@ -51,7 +52,29 @@ public class Module implements GameTickActor {
     }
     
     public void saveState() {
-        //o o f
+        save = new File("src/saves/save_" + getModuleName() + "_" + new java.util.Date().toString().substring(5, new java.util.Date().toString().length()));
+        
+    }
+    
+    public String getModuleName() {
+        String name = "null";
+        switch (moduleNumber) {
+            case 0: name = "null";
+            case 1: name = "projectile";
+            case 2: name = "lens";
+            case 3: name = "charge";
+            case 4: name = "shm";
+            case 5: name = "wave";
+            case 6: name = "circle";
+            case 7: name = "momentum";
+            case 8: name = "gas";
+            
+        }        
+        
+        
+        return name;
+        
+        
     }
     
     public Element[] getElementsArray() {
