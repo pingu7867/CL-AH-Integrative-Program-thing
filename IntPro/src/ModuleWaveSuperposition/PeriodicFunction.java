@@ -12,7 +12,7 @@ package ModuleWaveSuperposition;
 public class PeriodicFunction extends Function {
     public double frequency = 1;
     public double amplitude = 100;
-    public double velocity = 50;
+    
     public double wavelength = velocity/frequency;
     public double phaseShift = 0;
     
@@ -20,22 +20,30 @@ public class PeriodicFunction extends Function {
         
     }
     
-    public PeriodicFunction(double a, double f) {
+    public PeriodicFunction(double a, double f, double w) {
+        this();
         this.frequency = f;
         this.amplitude = a;
+        this.wavelength = w;
     }
     
     public void setFrequency(double f) {
         this.frequency = f;
+        this.wavelength = velocity/f;
     }
     public void setAmplitude(double a) {
         this.amplitude = a;
     }
     public void setWavelength(double w) {
         this.wavelength = w;
+        this.frequency = velocity/w;
     }
     public void setVelocity(double v) {
+        double ratio = v/velocity;
         this.velocity = v;
+        
+        this.frequency *= ratio;
+        this.wavelength *= ratio;
     }
        
     public double getFrequency() {
@@ -51,3 +59,4 @@ public class PeriodicFunction extends Function {
         return this.velocity;
     } 
 }
+    

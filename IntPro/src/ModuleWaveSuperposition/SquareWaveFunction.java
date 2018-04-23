@@ -11,7 +11,10 @@ package ModuleWaveSuperposition;
  */
 public class SquareWaveFunction extends PeriodicFunction {
     public SquareWaveFunction() {
-        super(100,1);
+        super(100, 1,50);
+    }
+    public SquareWaveFunction(double amp, double fre, double wavl) {
+        super(amp,fre,wavl);
     }
     @Override
     public double evaluateAt(double x) {

@@ -12,7 +12,10 @@ package ModuleWaveSuperposition;
 public class SineWaveFunction extends PeriodicFunction {
     
     public SineWaveFunction() {
-        super(100, 1);
+        super(100, 1,50);
+    }
+    public SineWaveFunction(double amp, double fre, double wavl) {
+        super(amp,fre,wavl);
     }
     @Override
     public double evaluateAt(double x) {

@@ -10,9 +10,10 @@ package ModuleWaveSuperposition;
  * @author Cédric
  */
 public class Function {
-    
-    public double evaluateAt() {
-        return 0;
+    double motionOffsetX = 0;
+    double velocity = 0;
+    public double evaluateAt(double x) {
+        return 0 + motionOffsetX;
     }
     
 }
