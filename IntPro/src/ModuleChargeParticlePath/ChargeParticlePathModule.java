@@ -82,17 +82,32 @@ public class ChargeParticlePathModule extends Module {
         TextField FieldforSheetChargeDensity = new TextField("1");
         FieldforSheetChargeDensity.setPrefColumnCount(3);
         FieldforSheetChargeDensity.textProperty().addListener(ov-> {
-            if (!checkDecimal(FieldforSheetChargeDensity.getText())) {
-                
+            String text = FieldforSheetChargeDensity.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               FieldforSheetChargeDensity.setText(text);
             }
         });
         
         TextField FieldforSeparationDistance = new TextField("50");
         FieldforSeparationDistance.setPrefColumnCount(3);
+        FieldforSeparationDistance.textProperty().addListener(ov-> {
+            String text = FieldforSeparationDistance.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               FieldforSeparationDistance.setText(text);
+            }
+        });
         
         TextField FieldforOrientation = new TextField("0");
         FieldforOrientation.setPrefColumnCount(3);
-        
+        FieldforOrientation.textProperty().addListener(ov-> {
+            String text = FieldforOrientation.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               FieldforOrientation.setText(text);
+            }
+        });
 
         Label labelforSheetChargeDensity = new Label("Sheet Charge Density (C/m^2)", FieldforSheetChargeDensity);
         labelforSheetChargeDensity.setContentDisplay(ContentDisplay.RIGHT);
@@ -143,19 +158,42 @@ public class ChargeParticlePathModule extends Module {
         TextField fieldForVelocityX = new TextField("1");
         fieldForVelocityX.setPrefColumnCount(3);
         fieldForVelocityX.textProperty().addListener(ov-> {
-            if (!checkDecimal(fieldForVelocityX.getText())) {
-                
+            String text = fieldForVelocityX.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForVelocityX.setText(text);
             }
         });
         
         TextField fieldForVelocityY = new TextField("1");
         fieldForVelocityY.setPrefColumnCount(3);
-                
+        fieldForVelocityY.textProperty().addListener(ov-> {
+            String text = fieldForVelocityY.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForVelocityY.setText(text);
+            }
+        });
+        
         TextField fieldForCharge = new TextField("1");
         fieldForCharge.setPrefColumnCount(3);
+        fieldForCharge.textProperty().addListener(ov-> {
+            String text = fieldForCharge.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForCharge.setText(text);
+            }
+        });
         
         TextField fieldForMass = new TextField("1");
         fieldForMass.setPrefColumnCount(3);
+        fieldForMass.textProperty().addListener(ov-> {
+            String text = fieldForMass.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForMass.setText(text);
+            }
+        });
         
         
         Label labelForVelocityX = new Label("Velocity in X (m/s)", fieldForVelocityX);

@@ -121,7 +121,7 @@ public class ParallelPlateCapacitor extends Element {
             posY = eh.getSceneY();
             
             botPlate.sprite.setX(topPlate.sprite.getX() + distance * Math.sin(Math.toRadians(orientation)));
-            botPlate.sprite.setY(topPlate.sprite.getY() + distance * Math.sin(Math.toRadians(orientation)));
+            botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight()) * Math.cos(Math.toRadians(orientation)));
             }
             else {
                 
