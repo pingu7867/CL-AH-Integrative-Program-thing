@@ -37,6 +37,7 @@ public class Module implements GameTickActor {
         elements = new HashSet<Element>();
         this.ticker = new GameTickTimer(framerate);
         this.ticker.declareHost(this);
+        
     }
     
     public int getResolutionX() {
@@ -84,5 +85,12 @@ public class Module implements GameTickActor {
     @Override
     public void tickProcess() {
         //o o f
+    }
+    
+    public void popOut() {
+        //o o f
+        this.viewport.setOnCloseRequest(e -> {
+            dataSource.flushModule(moduleNumber);
+        });
     }
 }

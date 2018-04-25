@@ -8,6 +8,7 @@ package intpro;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 
 /**
@@ -24,8 +25,8 @@ public class MainMenuModuleButton extends ImageButton {
         super(core);
         moduleNumber = num;
         initializeButton();
-        doubleClickDuration = 500;
-        
+        doubleClickDuration = 0;
+        this.graphicOff();
     }
     
     public void initializeButton() {
@@ -46,7 +47,10 @@ public class MainMenuModuleButton extends ImageButton {
     
         @Override
     public void action() {
+        System.out.println("fuk");
+        core.testMethod();
         core.pushModule(moduleNumber);
+        
     }
     
 }

@@ -30,10 +30,22 @@ public class UIWindow {
     public Scene scene;
     public Stage viewport = new Stage();
     
+    char type;
+    
     public UIWindow(char c) {
+        
         switch(c) {
-            case 's': scroll = new ScrollPane(); this.content = new Pane(); scroll.setContent(content); scene = new Scene(pane, sizeX, sizeY);
-            case 'p': this.pane = new Pane(); scene = new Scene(pane, sizeX, sizeY);
+            case 's': 
+                scroll = new ScrollPane();
+                this.content = new Pane();
+                scroll.setContent(content);
+                pane.getChildren().add(scroll);
+                scene = new Scene(pane, sizeX, sizeY);
+                type = c;
+            case 'p': 
+                this.pane = new Pane();
+                scene = new Scene(pane, sizeX, sizeY);
+                type = c;
         }
     }
     
@@ -65,5 +77,14 @@ public class UIWindow {
     public void display() {
         viewport.setScene(scene);
         viewport.show();
+    }
+    
+    public void addToPane(javafx.scene.Node n) {
+        switch(type) {
+            case 's': 
+                ((Pane)(scroll.getContent())).getChildren().add(n);
+            case 'p': 
+                pane.getChildren().add(n);
+        }
     }
 }

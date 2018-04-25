@@ -35,7 +35,7 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
         pressGraphic = new Image(new File("src/Assets/defaultButtonpress.png").toURI().toString());
         idleGraphic = new Image(new File("src/Assets/defaultButtonidle.png").toURI().toString());
         display = new ImageView(idleGraphic);
-        doubleClickDuration = 2000;
+        doubleClickDuration = 1000;
         
         clicker = new ClickTimeHandler();
         displayer = new DisplayTimeHandler();
@@ -55,9 +55,10 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
                 if (!displayThread.isAlive()) {
                     blocker = true;
                     displayThread.start();
+                    lastClicked = System.currentTimeMillis();
                 }
                 else {
-                    clicker.additionalNanosRemaining = clicker.additionalNanosRemaining + (1000000 * doubleClickDuration);                    
+                    clicker.additionalNanosRemaining = clicker.additionalNanosRemaining + (1000000 * doubleClickDuration);
                     if ((System.currentTimeMillis() - lastClicked) > doubleClickDuration) {
                         action();
                     }
@@ -94,7 +95,7 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
     public void graphicOff() {displayedImage = idleGraphic; display.setImage(idleGraphic);}
     
     public void action() {}
-
+    
     public class DisplayTimeHandler implements Runnable {
 
         public DisplayTimeHandler() {

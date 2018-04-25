@@ -26,10 +26,13 @@ public class IntroUI extends UIWindow {
         sizeX = 1200;
         sizeY = 800;
         scene = new Scene(getPane(), sizeX, sizeY);
-        content.setScaleX(sizeX + 400);
-        content.setScaleY(sizeY + 1000);
+        scroll.setScaleY(sizeY + 2000);
+        content.setScaleY(4000);
         viewport.setTitle(windowName);
         viewport.setScene(scene);
+        scroll.setPrefHeight(4000);
+        
+        
     }
     
     public void inject(MainMenuModuleButton[] buttons) {
