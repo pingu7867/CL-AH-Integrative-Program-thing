@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
 
 /**
  *
@@ -31,6 +32,11 @@ public class IntroUI extends UIWindow {
         viewport.setTitle(windowName);
         viewport.setScene(scene);
         scroll.setPrefHeight(4000);
+        
+        SoundButton soundBut = new SoundButton(core);
+        addToPane(soundBut.display);
+        soundBut.display.setLayoutX(100);
+        soundBut.display.setLayoutY(100);
         
         
     }

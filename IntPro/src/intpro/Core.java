@@ -5,6 +5,7 @@
  */
 package intpro;
 import ModuleProjectileMotion.*;
+import java.io.File;
 
 /**
  *
@@ -15,6 +16,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.media.Media;
 import javafx.scene.shape.Circle;
 
 public class Core extends Application {
@@ -28,6 +30,7 @@ public class Core extends Application {
     public int res2y;
     
     public int framerate = 60;
+    public int volume = 100;
     
     public boolean showHints = true;
     public boolean showContextHints = true;
@@ -35,6 +38,9 @@ public class Core extends Application {
     
     public boolean[] isHintShownOfModule = new boolean[modules];
     public Module[] module = new Module[modules];
+    
+    javafx.scene.media.MediaPlayer music = new javafx.scene.media.MediaPlayer(new Media(new File("src/Assets/RelaxDaily.mp3").toURI().toString()));
+    
     
     public static void main(String[] args) {
         Application.launch(args);
@@ -73,6 +79,7 @@ public class Core extends Application {
         });
         //pushModule(1);
         intro.viewport.requestFocus();
+        Platform.runLater(() -> {music.play();});
         
     }
     
@@ -114,6 +121,11 @@ public class Core extends Application {
     }
     public int getRes1Y() {
         return this.res1y;
+    }
+    
+    public void setVolume(int vol) {
+        volume = vol;
+        music.setVolume((double)vol / 200);
     }
     
 }
