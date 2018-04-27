@@ -85,8 +85,10 @@ public class GasParticle extends SpritedElement{
            }
         posX += velX/60; posY -= velY/60;
         sprite.setX(sprite.getX() + velX/60); sprite.setY(sprite.getY() - velY/60);
+        
         for (int i = 0; i < arcs.size(); i++) {
-            
+            arcs.get(i).setCenterX(arcs.get(i).getCenterX() + velX);
+            arcs.get(i).setCenterY(arcs.get(i).getCenterY() - velY);
         }
     }
     
