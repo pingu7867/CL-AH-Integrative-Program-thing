@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 public class SoundButton extends ImageButton {
     
     Image activatedGraphic;
+    TextField volField = new TextField();
     
     public SoundButton(Core core) {
         super(core);
@@ -45,10 +46,10 @@ public class SoundButton extends ImageButton {
         flipFlop();
         
         if (display.getImage() == idleGraphic) {
-            core.setVolume(100);
-            TextField volField = new TextField();
-            volField.setLayoutX(this.posX);
-            volField.setLayoutY(this.posY);
+            
+            volField.setLayoutX(this.getPosX());
+            volField.setLayoutY(this.getPosY());
+            core.intro.addToPane(volField);
             volField.setOnAction(e -> {
                 String number = volField.getText().toLowerCase();
                 String buildNum = "";
@@ -58,17 +59,13 @@ public class SoundButton extends ImageButton {
                     }
                 }
                 core.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
-                
+                core.intro.pane.getChildren().remove(volField);
+                volField.clear();
             });
-            System.out.println("eeeeeeeeeeeee");
+            volField.setOnMouseDragged(e -> {core.intro.pane.getChildren().remove(volField); volField.clear();});
         }
         if (display.getImage() == activatedGraphic) {
             core.setVolume(0);
-            
         }
-        
-        
     }
-    
-    
 }

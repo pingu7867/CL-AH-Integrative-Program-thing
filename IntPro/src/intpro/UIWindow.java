@@ -18,11 +18,11 @@ import javafx.stage.Stage;
 
 public class UIWindow {
     
-    int sizeX;
-    int sizeY;
+    int sizeX = 1200;
+    int sizeY = 800;
     
     public String windowName = "";
-    public Pane pane = new Pane();
+    public Pane pane;
     
     public ScrollPane scroll;
     public Pane content;
@@ -32,21 +32,21 @@ public class UIWindow {
     
     char type;
     
-    public UIWindow(char c) {
+    public UIWindow(char chartype) {
+        pane = new Pane();
+        scene = new Scene(pane, sizeX, sizeY);
         
-        switch(c) {
-            case 's': 
+        switch(chartype) {
+            case 's':
                 scroll = new ScrollPane();
-                this.content = new Pane();
-                scroll.setContent(content);
+                content = new Pane();
                 pane.getChildren().add(scroll);
-                scene = new Scene(pane, sizeX, sizeY);
-                type = c;
-            case 'p': 
-                this.pane = new Pane();
-                scene = new Scene(pane, sizeX, sizeY);
-                type = c;
+                scroll.setContent(content);
+                
+            case 'p':
+                
         }
+        type = chartype;
     }
     
     public UIWindow() {

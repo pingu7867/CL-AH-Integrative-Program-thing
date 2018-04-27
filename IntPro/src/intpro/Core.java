@@ -30,7 +30,7 @@ public class Core extends Application {
     public int res2y;
     
     public int framerate = 60;
-    public int volume = 100;
+    public int volume = 100 / 400;
     
     public boolean showHints = true;
     public boolean showContextHints = true;
@@ -51,25 +51,16 @@ public class Core extends Application {
         intro = new IntroUI(this);
         MainMenuModuleButton[] moduleButtons;
         
-        ImageButton test = new ImageButton(this);
-        test.setPosX(500);
-        test.setPosY(200);
-        //Platform.runLater(() -> {});
-        //System.out.println("eesseekeeeet");
-        intro.display();
-        
         moduleButtons = new MainMenuModuleButton[modules];
         
         for (int n = 1; n < modules; n++) {
             moduleButtons[n] = new MainMenuModuleButton(n, this);
-            moduleButtons[n].setPosX(70);
+            moduleButtons[n].setPosX(30);
             moduleButtons[n].setPosY(240*n);
             moduleButtons[n].injectCoreRef(this);
             intro.addToPane(moduleButtons[n].display);
             
         }
-        
-        intro.addToPane(test.display);
         
         intro.viewport.setOnCloseRequest(e -> {
             for (int n = 0; n < modules; n++) {
@@ -77,10 +68,11 @@ public class Core extends Application {
             }
             System.exit(0);
         });
-        //pushModule(1);
+        intro.display();
         intro.viewport.requestFocus();
-        Platform.runLater(() -> {music.play();});
         
+        music.play();
+        music.setVolume(0);
     }
     
     public void testMethod() {
@@ -125,7 +117,7 @@ public class Core extends Application {
     
     public void setVolume(int vol) {
         volume = vol;
-        music.setVolume((double)vol / 200);
+        music.setVolume((double)vol / 400);
     }
     
 }

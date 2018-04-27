@@ -5,12 +5,13 @@
  */
 package intpro;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.File;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
 
 /**
  *
@@ -23,21 +24,23 @@ public class IntroUI extends UIWindow {
     public IntroUI(Core core) {
         super('s');
         windowName = "Welcome! introduction screen";
-        pane = new Pane();
+        
         sizeX = 1200;
         sizeY = 800;
-        scene = new Scene(getPane(), sizeX, sizeY);
-        scroll.setScaleY(sizeY + 2000);
-        content.setScaleY(4000);
+        
+        ImageView background = new ImageView(new File("src/Assets/TitleBackground.png").toURI().toString());
+        pane.getChildren().add(background);
         viewport.setTitle(windowName);
-        viewport.setScene(scene);
-        scroll.setPrefHeight(4000);
         
         SoundButton soundBut = new SoundButton(core);
         addToPane(soundBut.display);
-        soundBut.display.setLayoutX(100);
-        soundBut.display.setLayoutY(100);
+        soundBut.display.setScaleX(0.45); soundBut.display.setScaleY(0.45);
+        soundBut.display.setLayoutX(1030); soundBut.display.setLayoutY(-40);
         
+        SettingsButton settingsBut = new SettingsButton(core);
+        addToPane(settingsBut.display);
+        settingsBut.display.setScaleX(0.45); settingsBut.display.setScaleY(0.45);
+        settingsBut.display.setLayoutX(925); settingsBut.display.setLayoutY(-40);
         
     }
     
