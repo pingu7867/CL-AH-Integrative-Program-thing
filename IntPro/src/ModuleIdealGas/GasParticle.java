@@ -47,7 +47,7 @@ public class GasParticle extends SpritedElement{
     }
     public void animateGasParticleMotion(ArrayList<GasParticle> gasParticles,int index,Rectangle bounds) {
         boolean quit1 = false;
-        boolean quit2 = false;
+        
         for (int i = index + 1; i < gasParticles.size(); i++) {
             if (this.sprite.intersects(gasParticles.get(i).sprite.getX(), gasParticles.get(i).sprite.getY(),
                gasParticles.get(i).sprite.getFitWidth(), gasParticles.get(i).sprite.getFitHeight())) {
@@ -62,7 +62,7 @@ public class GasParticle extends SpritedElement{
                            angle = (angle + gasParticles.get(i).arcs.get(k).getStartAngle()) % (2*Math.PI);
                            velX = velocity * Math.cos(angle);
                            velY = velocity * Math.sin(angle);
-                           quit1 = true; quit2 = true;
+                           quit1 = true;
                            break;
                            
                        }
@@ -70,9 +70,6 @@ public class GasParticle extends SpritedElement{
                    if (quit1) {
                        break;
                    }
-               }
-               if (quit2) {
-                   break;
                }
            }
            
