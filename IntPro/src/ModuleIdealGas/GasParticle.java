@@ -41,8 +41,8 @@ public class GasParticle extends SpritedElement{
         double startingAngle = 0;
         while (startingAngle < 360) {
             arcs.add(new Arc(sprite.getX() + sprite.getFitWidth(), sprite.getY() + sprite.getFitHeight(), sprite.getFitWidth()/2, sprite.getFitHeight()/2
-            ,startingAngle,1));
-            startingAngle+=5;
+            ,startingAngle,10));
+            startingAngle+=10;
         }
     }
     public void animateGasParticleMotion(ArrayList<GasParticle> gasParticles,int index,Rectangle bounds) {
