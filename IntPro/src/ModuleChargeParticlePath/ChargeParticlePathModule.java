@@ -46,6 +46,9 @@ public class ChargeParticlePathModule extends Module {
         viewport = new Stage();
         viewport.setScene(scene); viewport.setTitle("Cedamine Physics Toolkit: Charged Particle Path");
         
+        ChargeParticleInventoryIcon cppIcon = new ChargeParticleInventoryIcon(creator,this);
+        ParallelPlateCapacitorInventoryIcon ppcIcon = new ParallelPlateCapacitorInventoryIcon(creator,this);
+        
         Button addParallelPlateCapacitor = new Button("Create a Parallel Plate Capacitor");
         Button addChargeParticle = new Button("Create a Charge Particle");
         Button RunSimulation = new Button("Run Simulation");
@@ -69,7 +72,7 @@ public class ChargeParticlePathModule extends Module {
             }
         });
         
-        buttons.getChildren().addAll(addParallelPlateCapacitor, addChargeParticle,RunSimulation);
+        buttons.getChildren().addAll(ppcIcon.display,cppIcon.display,RunSimulation);
                 
     }
     public Stage generateParallelPlateCapacitorWindow() {
