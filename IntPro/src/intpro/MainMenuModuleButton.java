@@ -45,12 +45,9 @@ public class MainMenuModuleButton extends ImageButton {
         core = c;
     }
     
-        @Override
+    @Override
     public void action() {
-        System.out.println("fuk");
-        core.testMethod();
         core.pushModule(moduleNumber);
-        
     }
     
 }

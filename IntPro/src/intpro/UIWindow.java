@@ -10,9 +10,14 @@ package intpro;
  * @author Cédric
  */
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -34,11 +39,16 @@ public class UIWindow {
     
     public UIWindow(char chartype) {
         type = chartype;
+        BackgroundFill transparent = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
+        
         switch(chartype) {
             case 'i':
                 pane = new Pane();
                 scroll = new ScrollPane();
                 content = new Pane();
+                pane.setBackground(new Background(transparent));
+                scroll.setBackground(new Background(transparent));
+                content.setBackground(new Background(transparent));
                 
             case 's':
                 pane = new Pane();
@@ -46,9 +56,13 @@ public class UIWindow {
                 content = new Pane();
                 scroll.setContent(content);
                 pane.getChildren().add(scroll);
+                scroll.setBackground(new Background(transparent));
+                content.setBackground(new Background(transparent));
+                pane.setBackground(new Background(transparent));
                 
             case 'p':
                 pane = new Pane();
+                pane.setBackground(new Background(transparent));
                 
         }
         

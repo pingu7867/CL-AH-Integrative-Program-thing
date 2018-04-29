@@ -68,6 +68,17 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
         });
     }
     
+    public void simpleGraphicSetUp(String mode, String path) {
+        if (!(new File("src/Assets/" + path + ".png").exists())) {System.out.println("failure to find path for sprite asset " + path); return;}
+        
+        switch(mode) {
+            case "idle": idleGraphic = new Image(new File("src/Assets/" + path + ".png").toURI().toString()); display.setImage(idleGraphic); return;
+            case "press": pressGraphic = new Image(new File("src/Assets/" + path + ".png").toURI().toString()); return;
+            case "display": idleGraphic = new Image(new File("src/Assets/" + path + ".png").toURI().toString()); display.setImage(idleGraphic); return;
+        }
+        
+    }
+    
     public void refreshThreads() {
         clickThread = null;
         displayThread = null;

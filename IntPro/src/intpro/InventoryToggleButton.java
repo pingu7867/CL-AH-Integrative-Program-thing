@@ -14,6 +14,10 @@ public class InventoryToggleButton extends ImageButton {
     public InventoryToggleButton(Inventory inv, Core core) {
         super(core);
         this.attached = inv;
+        simpleGraphicSetUp("idle", "InventoryIcon");
+        setPosX(40);
+        setPosY(200);
+        
     }
     @Override
     public void action() {

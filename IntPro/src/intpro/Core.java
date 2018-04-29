@@ -37,8 +37,8 @@ public class Core extends Application {
     public int modules = 8;
     public int res1x = 1200;
     public int res1y = 800;
-    public int res2x;
-    public int res2y;
+    public int res2x = 1200;
+    public int res2y = 800;
     
     public int framerate = 60;
     public int volume = 100 / 400;
@@ -80,6 +80,7 @@ public class Core extends Application {
             moduleButtons[n - 1].setPosY(240*n);
             moduleButtons[n - 1].injectCoreRef(this);
             intro.addToPane(moduleButtons[n - 1].display);
+            
         }
         
         music.play();
@@ -88,29 +89,30 @@ public class Core extends Application {
     }
     
     public void testMethod() {
-        System.out.println("FUCK THAT SHIT");
+        
     }
     
     public void flushModule(int moduleNumber) {
-        module[moduleNumber].viewport.close();
-        module[moduleNumber] = null;
+        System.out.println("closing module " + moduleNumber);
+        module[moduleNumber - 1].viewport.close();
+        module[moduleNumber - 1] = null;
     }
     
     public void pushModule(int moduleNumber) {
-        if (module[moduleNumber] == null) {
+        if (module[moduleNumber - 1] == null) {
             switch(moduleNumber) {
-                case 1: module[moduleNumber - 1] = new ProjectileMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof1: projectile motion");
-                case 2: module[moduleNumber - 1] = new LensOpticsModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof2: lens optics");
-                case 3: module[moduleNumber - 1] = new ChargeParticlePathModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof3: charge particle path");
-                case 4: module[moduleNumber - 1] = new SpringSimpleHarmonicMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof4: spring SHM");
-                case 5: module[moduleNumber - 1] = new WaveSuperpositionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof5: wave superposition");
-                case 6: module[moduleNumber - 1] = new CircularMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof6: circular motion");
-                case 7: module[moduleNumber - 1] = new MomentumModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof7: momentum");
-                case 8: module[moduleNumber - 1] = new IdealGasModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas");
+                case 1: module[moduleNumber - 1] = new ProjectileMotionModule(this); module[moduleNumber - 1].moduleNumber = 1; module[moduleNumber - 1].popOut(); System.out.println("poof1: projectile motion"); break;
+                case 2: module[moduleNumber - 1] = new LensOpticsModule(this); module[moduleNumber - 1].moduleNumber = 2; module[moduleNumber - 1].popOut(); System.out.println("poof2: lens optics"); break;
+                case 3: module[moduleNumber - 1] = new ChargeParticlePathModule(this); module[moduleNumber - 1].moduleNumber = 3; module[moduleNumber - 1].popOut(); System.out.println("poof3: charge particle path"); break;
+                case 4: module[moduleNumber - 1] = new SpringSimpleHarmonicMotionModule(this); module[moduleNumber - 1].moduleNumber = 4; module[moduleNumber - 1].popOut(); System.out.println("poof4: spring SHM"); break;
+                case 5: module[moduleNumber - 1] = new WaveSuperpositionModule(this); module[moduleNumber - 1].moduleNumber = 5; module[moduleNumber - 1].popOut(); System.out.println("poof5: wave superposition"); break;
+                case 6: module[moduleNumber - 1] = new CircularMotionModule(this); module[moduleNumber - 1].moduleNumber = 6; module[moduleNumber - 1].popOut(); System.out.println("poof6: circular motion"); break;
+                case 7: module[moduleNumber - 1] = new MomentumModule(this); module[moduleNumber - 1].moduleNumber = 7; module[moduleNumber - 1].popOut(); System.out.println("poof7: momentum"); break;
+                case 8: module[moduleNumber - 1] = new IdealGasModule(this); module[moduleNumber - 1].moduleNumber = 8; module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas"); break;
                 default:
             }
         }
-        if (!module[moduleNumber].viewport.isShowing()) {module[moduleNumber].viewport.show();}
+        if (!module[moduleNumber - 1].viewport.isShowing()) {module[moduleNumber - 1].viewport.show();}
     }
     
     public static void waitSomeTime(long delay) {

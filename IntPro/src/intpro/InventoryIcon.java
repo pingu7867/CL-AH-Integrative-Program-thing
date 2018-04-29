@@ -28,6 +28,29 @@ public class InventoryIcon extends ImageButton {
         super(core);
         this.doubleClickDuration = 0;
         this.type = type;
+        
+        switch(this.type.toLowerCase()) {
+            case "cannon": simpleGraphicSetUp("idle", "CannonInventoryIcon"); break;
+            case "vehicle": simpleGraphicSetUp("idle", "VehicleInventoryIcon"); break;
+            case "lens": simpleGraphicSetUp("idle", ""); break;
+            case "spring": simpleGraphicSetUp("idle", "SpringInventoryIcon"); break;
+            case "weight": simpleGraphicSetUp("idle", "WeightInventoryIcon"); break;
+            case "physical body": simpleGraphicSetUp("idle", ""); break;
+            case "charged particle": simpleGraphicSetUp("idle", "ChargeParticleInventoryIcon"); break;
+            case "capacitor": simpleGraphicSetUp("idle", "CapacitorInventoryIcon"); break;
+            case "branch": simpleGraphicSetUp("idle", "CircularMotionBranchInventoryIcon"); break;
+            case "sine wave": simpleGraphicSetUp("idle", "SineWaveInventoryIcon"); break;
+            case "square wave": simpleGraphicSetUp("idle", "SquareWaveInventoryIcon"); break;
+            case "triangle wave": simpleGraphicSetUp("idle", "TriangleWaveInventoryIcon"); break;
+            case "saw wave": simpleGraphicSetUp("idle", "SawWaveInventoryIcon"); break;
+            case "linear function": simpleGraphicSetUp("idle", "LinearFuncInventoryIcon"); break;
+            case "quadratic function": simpleGraphicSetUp("idle", "QuadraticFuncInventoryIcon"); break;
+            case "cubic": simpleGraphicSetUp("idle", "CubicFuncInventoryIcon"); break;
+            case "polynomial function":simpleGraphicSetUp("idle", "PolynomialFuncInventoryIcon"); break;
+            case "composite function": simpleGraphicSetUp("idle", "CompositeFuncInventoryIcon"); break;
+            default: 
+        }
+        
     }
     
     @Override
@@ -42,7 +65,7 @@ public class InventoryIcon extends ImageButton {
             case "lens": return new Lens();
             case "spring": return new Spring();
             case "weight": return new Weight();
-            //case "physical body": return new PhysicalBody();
+            case "physical body": return new PhysicalBody();
             case "charged particle": return new ChargeParticle();
             case "capacitor": return new ParallelPlateCapacitor();
             case "branch": return new Branch();

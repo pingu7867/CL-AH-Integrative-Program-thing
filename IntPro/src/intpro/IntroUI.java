@@ -36,8 +36,6 @@ public class IntroUI extends UIWindow {
         
         ImageView background = new ImageView(new File("src/Assets/TitleBackground.png").toURI().toString());
         
-        BackgroundFill transparent = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
-        
         pane.setPrefSize(sizeX, sizeY);
         scroll.setPrefSize(sizeX, sizeY);
         content.setPrefSize(sizeX, 2200);
@@ -46,10 +44,6 @@ public class IntroUI extends UIWindow {
         pane.getChildren().add(scroll);
         scroll.setContent(content);
         scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        
-        scroll.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
-        content.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
-        pane.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
         
         GlobalSoundButton soundBut = new GlobalSoundButton(core);
         addToPane(soundBut.display);

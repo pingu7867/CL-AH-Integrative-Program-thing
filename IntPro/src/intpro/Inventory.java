@@ -22,6 +22,7 @@ public class Inventory extends Popout {
         this.core = core;
         deployIcon = new InventoryToggleButton(this, core);
         
+        
         if (moduleName.equals("projectile motion")) {
             icons.add(new InventoryIcon("cannon", core));
             icons.add(new InventoryIcon("vehicle", core));
@@ -69,13 +70,15 @@ public class Inventory extends Popout {
     public void deploy() {
         for (int i = 0; i < icons.size(); i++) {
             //show
+            
         }
     }
     
     @Override
     public void retract() {
         for (int i = 0; i < icons.size(); i++) {
-            //show
+            //hide
+            
         }
     }
 }

@@ -62,53 +62,35 @@ public class SoundButton extends ImageButton {
             volField.setLayoutY(this.getPosY());
             instruction.setLayoutX(this.getPosX() + 150);
             instruction.setLayoutY(this.getPosY() + 10);
-            
-            if (targetModule == null) {
-                core.intro.addToPane(instruction);
-                core.intro.addToPane(volField);
-            }
-            else {
+            if (targetModule != null) {
                 targetModule.pane.getChildren().add(instruction);
                 targetModule.pane.getChildren().add(volField);
-            }
-            
-            volField.setOnAction(e -> {
-                String number = volField.getText().toLowerCase();
-                String buildNum = "";
-                for (int i = 0; i < number.length(); i++) {
-                    if ((number.charAt(i) >= '0') && (number.charAt(i) <= '9')) {
-                        buildNum = buildNum + number.charAt(i);
+                volField.setOnAction(e -> {
+                    String number = volField.getText().toLowerCase();
+                    String buildNum = "0";
+                    for (int i = 0; i < number.length(); i++) {
+                        if ((number.charAt(i) >= '0') && (number.charAt(i) <= '9')) {
+                            buildNum = buildNum + number.charAt(i);
+                        }
                     }
-                }
-                if (targetModule == null) {
-                    core.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
-                    core.intro.pane.getChildren().remove(volField);
-                }
-                else {
+                    
                     targetModule.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
                     targetModule.pane.getChildren().remove(volField);
-                }
-                
-                volField.clear();
-            });
-            
-            volField.setOnMouseDragged(e -> {
-                if (targetModule == null) {
-                    core.intro.pane.getChildren().remove(volField); core.intro.pane.getChildren().remove(instruction); volField.clear();
-                }
-                else {
+                    targetModule.pane.getChildren().remove(instruction);
+
+                    volField.clear();
+                });
+
+                volField.setOnMouseDragged(e -> {
                     targetModule.pane.getChildren().remove(volField); targetModule.pane.getChildren().remove(instruction); volField.clear();
-                }
-            });
+                });
+            
+            }
             
         }
         if (display.getImage() == activatedGraphic) {
-            if (targetModule == null) {
-                core.setVolume(0);
-            }
-            else {
-                targetModule.setVolume(0);
-            }
+            targetModule.setVolume(0);
         }
+            
     }
 }

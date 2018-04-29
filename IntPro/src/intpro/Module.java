@@ -90,9 +90,9 @@ public class Module implements GameTickActor {
     
     public void popOut() {
         //o o f
-        this.viewport.setOnCloseRequest(e -> {
-            dataSource.flushModule(moduleNumber);
-        });
+        //this.viewport.setOnCloseRequest(e -> {
+        //    dataSource.flushModule(moduleNumber);
+        //});
     }
     
     public void setVolume(int vol) {
