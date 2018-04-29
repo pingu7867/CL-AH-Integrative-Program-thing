@@ -12,6 +12,13 @@ package ModuleWaveSuperposition;
 public class LinearFunction extends Function {
     double slope;
     double yintercept;
+    public LinearFunction() {
+        
+    }
+    public LinearFunction(double slo, double yinter) {
+        slope = slo;
+        yintercept = yinter;
+    }
     @Override
     public double evaluateAt(double x) {
         return slope * (x + motionOffsetX);

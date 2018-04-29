@@ -153,4 +153,8 @@ public class WaveSuperpositionModule extends Module {
     public Stage generateSuperposedFunctionCurveWindow() {
         return new Stage();
     }
+    @Override
+    public String getModuleName(){
+        return "charge particle path";
+    }
 }
