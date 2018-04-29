@@ -10,6 +10,19 @@ import intpro.SpritedElement;
 import javafx.animation.*;
 import javafx.util.Duration;
 import java.util.ArrayList;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.geometry.Pos;
+
+
 /**
  *
  * @author Amine
@@ -27,6 +40,9 @@ public class ChargeParticle extends SpritedElement{
         super();
         animation = new Timeline(new KeyFrame(Duration.millis(1000/30),eh-> particleMotion()));
         animation.setCycleCount(Timeline.INDEFINITE);
+        this.sprite.setFitWidth(10); this.sprite.setFitHeight(10);
+        posX = this.sprite.getFitWidth()/2; posY = this.sprite.getFitHeight()/2;
+        
     }
     
     public ChargeParticle(double charge, double mass) {
@@ -93,8 +109,10 @@ public class ChargeParticle extends SpritedElement{
         else {
            this.sprite.setImage(new Image(new File("src/Assets/NeutralCharge.png").toURI().toString()));
         }
-        posX = this.sprite.getImage().getWidth()/2; posY = this.sprite.getImage().getHeight()/2;
-        this.sprite.setX(0); this.sprite.setY(0);
+        
+        
+        this.sprite.setX(posX - this.sprite.getFitWidth()/2); this.sprite.setY(posY - this.sprite.getFitHeight()/2);
+        
         
         this.sprite.setOnMouseDragged(md -> {
             if (canMove){
@@ -104,6 +122,12 @@ public class ChargeParticle extends SpritedElement{
             this.sprite.setY(md.getY() - this.sprite.getImage().getHeight()/2);
             }
             });
+        this.sprite.setOnMouseClicked(eh -> {
+            if(eh.isShiftDown()) {
+                Stage window = generateWindowCustomizeCapacitor();
+                window.show();
+            }
+        });
         
     }
     public void play(ArrayList<ParallelPlateCapacitor> listOfCapacitors){
@@ -135,6 +159,99 @@ public class ChargeParticle extends SpritedElement{
         this.sprite.setX(sprite.getX() + velX/30); this.sprite.setY(sprite.getY() - velY/30);
         
         
+    }
+    public Stage generateWindowCustomizeCapacitor() {
+        Stage stage = new Stage();
+        VBox WindowLayout = new VBox(20);
+        
+        Text warningMessage = new Text("WARNING: this field can only contain digits");
+        warningMessage.setStroke(Color.RED);
+        
+        TextField fieldForVelocityX = new TextField("" + velX);
+        fieldForVelocityX.setPrefColumnCount(3);
+        fieldForVelocityX.textProperty().addListener(ov-> {
+            String text = fieldForVelocityX.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForVelocityX.setText(text);
+            }
+        });
+        
+        TextField fieldForVelocityY = new TextField("" + velY);
+        fieldForVelocityY.setPrefColumnCount(3);
+        fieldForVelocityY.textProperty().addListener(ov-> {
+            String text = fieldForVelocityY.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForVelocityY.setText(text);
+            }
+        });
+        
+        TextField fieldForCharge = new TextField("" + charge);
+        fieldForCharge.setPrefColumnCount(3);
+        fieldForCharge.textProperty().addListener(ov-> {
+            String text = fieldForCharge.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForCharge.setText(text);
+            }
+        });
+        
+        TextField fieldForMass = new TextField("" + mass);
+        fieldForMass.setPrefColumnCount(3);
+        fieldForMass.textProperty().addListener(ov-> {
+            String text = fieldForMass.getText();
+            if (!checkDecimal(text) && text.contains("-") && text.charAt(0) == '0') {
+               text = text.substring(0, text.length() - 1);
+               fieldForMass.setText(text);
+            }
+        });
+        
+        
+        Label labelForVelocityX = new Label("Velocity in X (m/s)", fieldForVelocityX);
+        labelForVelocityX.setContentDisplay(ContentDisplay.RIGHT);
+        
+        Label labelForVelocityY = new Label("Velocity in Y (m/s)", fieldForVelocityY);
+        labelForVelocityY.setContentDisplay(ContentDisplay.RIGHT);
+        
+        Label labelForCharge = new Label("Charge (C)", fieldForCharge);
+        labelForCharge.setContentDisplay(ContentDisplay.RIGHT);
+        
+        Label labelForMass = new Label("Mass (kg)", fieldForMass);
+        labelForMass.setContentDisplay(ContentDisplay.RIGHT);
+        
+        
+        HBox buttons = new HBox(8);
+        buttons.setAlignment(Pos.BOTTOM_RIGHT);
+        Button Change = new Button("Change");        
+        Button Cancel = new Button("Cancel");
+        buttons.getChildren().addAll(Cancel, Change);
+        
+        
+        Cancel.setOnAction(eh-> {
+            stage.close();
+        });
+        Change.setOnAction(eh -> {
+           
+           double velXValue = Double.parseDouble(fieldForVelocityX.getText());
+           double velYValue = Double.parseDouble(fieldForVelocityY.getText());
+           double chargeValue = Double.parseDouble(fieldForCharge.getText());
+           double massValue = Double.parseDouble(fieldForMass.getText());
+           
+           this.setVelX(velXValue); this.setVelY(velYValue);
+           this.setCharge(chargeValue); this.setMass(massValue);
+           setParticle();
+           
+           stage.close();
+        });
+        if (!this.sprite.getParent().getScene().getWindow().isShowing()) {
+            stage.close();
+        }
+        WindowLayout.getChildren().addAll(labelForVelocityX,labelForVelocityY, labelForCharge, labelForMass, buttons);
+        
+        stage.setScene(new Scene(WindowLayout));
+        stage.requestFocus();
+        return stage;
     }
     
 }

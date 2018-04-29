@@ -28,6 +28,7 @@ public class ElectricPlate extends SpritedElement {
         negPlateUp = new Image(new File("src/Assets/NegativeElectricPlateUp.png").toURI().toString());
         posPlateUp = new Image(new File("src/Assets/PositiveElectricPlateUp.png").toURI().toString());
         sprite.setImage(negPlateUp);
+        sprite.setFitHeight(40);
          
     }
     public ElectricPlate(String sign, String dir) {

@@ -5,15 +5,26 @@
  */
 package ModuleChargeParticlePath;
 import intpro.Element;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 /**
  *
  * @author Amine
  */
 public class ParallelPlateCapacitor extends Element {
-    private String arrowDirection = "down";
-    private ElectricPlate botPlate = new ElectricPlate("-",arrowDirection); 
-    private ElectricPlate topPlate = new ElectricPlate("+",arrowDirection);
+    private String arrowDirection = "down";; 
+    private ElectricPlate botPlate = new ElectricPlate("+",arrowDirection); 
+    private ElectricPlate topPlate = new ElectricPlate("-",arrowDirection);
     
     private Group capacitor = new Group();
     private double distance = 1; 
@@ -46,6 +57,7 @@ public class ParallelPlateCapacitor extends Element {
         double ElectricField = sheetChargeDensity/VACUUM_PERMITTIVITY;
         this.ElectricFieldX = ElectricField * Math.sin(orientation);
         this.ElectricFieldY = ElectricField * Math.cos(orientation);
+        posX = 0; posY = 0;
     }
     public double getDistance() {
         return distance;
@@ -102,13 +114,24 @@ public class ParallelPlateCapacitor extends Element {
         ElectricFieldY *= -1;
     }
     public void setCapacitor() {
-        capacitor.getChildren().addAll(topPlate.sprite,botPlate.sprite);
+        if (sheetChargeDensity >= 0) {
+            arrowDirection = "down";
+            topPlate = new ElectricPlate("+",arrowDirection);
+            botPlate = new ElectricPlate("-",arrowDirection);
+        }
+        else if (sheetChargeDensity < 0) {
+            arrowDirection = "up";
+            topPlate = new ElectricPlate("-",arrowDirection);
+            botPlate = new ElectricPlate("+",arrowDirection);
+        }
         
-        capacitor.setRotate(-1*orientation);
-        topPlate.sprite.setX(0);
-        topPlate.sprite.setY(0);
+        topPlate.sprite.setRotate(-1*orientation);
+        botPlate.sprite.setRotate(-1*orientation);
         
-        botPlate.sprite.setX(topPlate.sprite.getX() + distance*Math.sin(Math.toRadians(orientation)));
+        topPlate.sprite.setX(posX);
+        topPlate.sprite.setY(posY);
+        
+        botPlate.sprite.setX(topPlate.sprite.getX() + (distance + topPlate.sprite.getImage().getHeight())*Math.sin(Math.toRadians(orientation)));
         botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight())
                 *Math.cos(Math.toRadians(orientation)));
         
@@ -120,7 +143,7 @@ public class ParallelPlateCapacitor extends Element {
             posX = eh.getSceneX();
             posY = eh.getSceneY();
             
-            botPlate.sprite.setX(topPlate.sprite.getX() + distance * Math.sin(Math.toRadians(orientation)));
+            botPlate.sprite.setX(topPlate.sprite.getX() + (distance + topPlate.sprite.getImage().getHeight())* Math.sin(Math.toRadians(orientation)));
             botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight()) * Math.cos(Math.toRadians(orientation)));
             }
             else {
@@ -130,17 +153,113 @@ public class ParallelPlateCapacitor extends Element {
         botPlate.sprite.setOnMouseDragged(eh-> {
             if (canMove) {
             botPlate.sprite.setX(eh.getSceneX());
-            botPlate.sprite.setY(eh.getSceneY());
+            botPlate.sprite.setY(eh.getSceneY());     
             
-            topPlate.sprite.setX(botPlate.sprite.getX() - distance*Math.sin(Math.toRadians(orientation)));
+            topPlate.sprite.setX(botPlate.sprite.getX() - (distance + topPlate.sprite.getImage().getHeight())*Math.sin(Math.toRadians(orientation)));
             topPlate.sprite.setY(botPlate.sprite.getY() -(distance + topPlate.sprite.getImage().getHeight())*Math.cos(Math.toRadians(orientation)));
+            posX = topPlate.sprite.getX();
+            posY = topPlate.sprite.getY();
             }
             else {
                 
             }
             });
         
-    }    
+        topPlate.sprite.setOnMouseClicked(eh-> {
+            if(eh.isShiftDown()) {
+                Stage window = generateWindowCustomizeCapacitor();
+                window.show();
+            }
+        });
+        botPlate.sprite.setOnMouseClicked(eh-> {
+            if(eh.isShiftDown()) {
+                Stage window = generateWindowCustomizeCapacitor();
+                window.show();
+            }
+        });
+    }
+    
+    public Stage generateWindowCustomizeCapacitor() {
+        Stage stage = new Stage();
+        VBox WindowLayout = new VBox(20);
+        
+        Text warningMessage = new Text("WARNING: this field can only contain digits");
+        warningMessage.setStroke(Color.RED);
+        
+        TextField FieldforSheetChargeDensity = new TextField("" + sheetChargeDensity);
+        FieldforSheetChargeDensity.setPrefColumnCount(3);
+        FieldforSheetChargeDensity.textProperty().addListener(ov-> {
+            String text = FieldforSheetChargeDensity.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               FieldforSheetChargeDensity.setText(text);
+            }
+        });
+        
+        TextField FieldforSeparationDistance = new TextField("" + distance);
+        FieldforSeparationDistance.setPrefColumnCount(3);
+        FieldforSeparationDistance.textProperty().addListener(ov-> {
+            String text = FieldforSeparationDistance.getText();
+            if (!checkDecimal(text) && text.contains("-")) {
+               text = text.substring(0, text.length() - 1);
+               FieldforSeparationDistance.setText(text);
+            }
+        });
+        
+        TextField FieldforOrientation = new TextField("" + orientation);
+        FieldforOrientation.setPrefColumnCount(3);
+        FieldforOrientation.textProperty().addListener(ov-> {
+            String text = FieldforOrientation.getText();
+            if (!checkDecimal(text) && text.contains("-")) {
+               text = text.substring(0, text.length() - 1);
+               FieldforOrientation.setText(text);
+            }
+        });
+
+        Label labelforSheetChargeDensity = new Label("Sheet Charge Density (C/m^2)", FieldforSheetChargeDensity);
+        labelforSheetChargeDensity.setContentDisplay(ContentDisplay.RIGHT);
+        
+        Label labelforSeparationDistance = new Label("Separation Distance of the 2 plates (m)", FieldforSeparationDistance);
+        labelforSeparationDistance.setContentDisplay(ContentDisplay.RIGHT);
+        
+        Label labelforOrientation = new Label("Orientation (degrees)", FieldforOrientation);
+        labelforOrientation.setContentDisplay(ContentDisplay.RIGHT);
+        
+        
+        HBox buttons = new HBox(8);
+        buttons.setAlignment(Pos.BOTTOM_RIGHT);
+        Button Change = new Button("Change");        
+        Button Cancel = new Button("Cancel");
+        buttons.getChildren().addAll(Cancel, Change);
+        
+        
+        Cancel.setOnAction(eh-> {
+            stage.close();
+        });
+        Change.setOnAction(eh -> {
+           
+           double densityValue = Double.parseDouble(FieldforSheetChargeDensity.getText());
+           double distanceValue = Double.parseDouble(FieldforSeparationDistance.getText());
+           double orientationValue = Double.parseDouble(FieldforOrientation.getText());
+           
+           this.setSheetChargeDensity(densityValue);
+           this.setDistance(distanceValue);
+           this.setOrientation(orientationValue);
+           this.setCapacitor();
+           
+           stage.close();
+        });
+        
+        WindowLayout.getChildren().addAll(labelforSheetChargeDensity, labelforSeparationDistance, labelforOrientation, buttons);
+        /*
+        if (!this.topPlate.sprite.getParent().getScene().getWindow().isShowing()) {
+            stage.close();
+        } 
+    */
+        stage.setScene(new Scene(WindowLayout));
+        stage.requestFocus();
+        return stage;
+    }
 
     
 }

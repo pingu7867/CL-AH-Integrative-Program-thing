@@ -48,32 +48,14 @@ public class ChargeParticlePathModule extends Module {
         
         ChargeParticleInventoryIcon cppIcon = new ChargeParticleInventoryIcon(creator,this);
         ParallelPlateCapacitorInventoryIcon ppcIcon = new ParallelPlateCapacitorInventoryIcon(creator,this);
+        RunSimulationChargeParticlePath RunSimulation = new RunSimulationChargeParticlePath(creator, this);
+
+        buttons.getChildren().addAll(ppcIcon.display,cppIcon.display,RunSimulation.display);
         
-        Button addParallelPlateCapacitor = new Button("Create a Parallel Plate Capacitor");
-        Button addChargeParticle = new Button("Create a Charge Particle");
-        Button RunSimulation = new Button("Run Simulation");
-        
-        addParallelPlateCapacitor.setOnAction(eh-> {
-            Stage window = generateParallelPlateCapacitorWindow();
-            window.show();
-            
-        });
-        addChargeParticle.setOnAction(eh-> {
-            Stage window = generateChargedParticleWindow();
-            window.show();
-        });
-        RunSimulation.setOnAction(eh-> {
-            for (ParallelPlateCapacitor capa: listOfCapacitors){
-                capa.lockPosition();
-            }
-            for (ChargeParticle e:listOfParticles) {
-                e.lockPosition();
-                e.play(listOfCapacitors);
-            }
-        });
-        
-        buttons.getChildren().addAll(ppcIcon.display,cppIcon.display,RunSimulation);
-                
+    }
+    
+    public void popOut() {
+        viewport.show();
     }
     public Stage generateParallelPlateCapacitorWindow() {
         Stage stage = new Stage();
@@ -82,7 +64,7 @@ public class ChargeParticlePathModule extends Module {
         Text warningMessage = new Text("WARNING: this field can only contain digits");
         warningMessage.setStroke(Color.RED);
         
-        TextField FieldforSheetChargeDensity = new TextField("1");
+        TextField FieldforSheetChargeDensity = new TextField("0");
         FieldforSheetChargeDensity.setPrefColumnCount(3);
         FieldforSheetChargeDensity.textProperty().addListener(ov-> {
             String text = FieldforSheetChargeDensity.getText();
@@ -96,8 +78,9 @@ public class ChargeParticlePathModule extends Module {
         FieldforSeparationDistance.setPrefColumnCount(3);
         FieldforSeparationDistance.textProperty().addListener(ov-> {
             String text = FieldforSeparationDistance.getText();
-            if (!checkDecimal(text)) {
+            if (!checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
+               text.replace("-", "");
                FieldforSeparationDistance.setText(text);
             }
         });
@@ -106,7 +89,8 @@ public class ChargeParticlePathModule extends Module {
         FieldforOrientation.setPrefColumnCount(3);
         FieldforOrientation.textProperty().addListener(ov-> {
             String text = FieldforOrientation.getText();
-            if (!checkDecimal(text)) {
+            if (!checkDecimal(text) && text.contains("-")) {
+               text.replace("-", "");
                text = text.substring(0, text.length() - 1);
                FieldforOrientation.setText(text);
             }
@@ -134,9 +118,9 @@ public class ChargeParticlePathModule extends Module {
         });
         Create.setOnAction(eh -> {
            
-           double densityValue = Double.parseDouble(FieldforSheetChargeDensity.getText().trim());
-           double distanceValue = Double.parseDouble(FieldforSeparationDistance.getText().trim());
-           double orientationValue = Double.parseDouble(FieldforOrientation.getText().trim());
+           double densityValue = Double.parseDouble(FieldforSheetChargeDensity.getText());
+           double distanceValue = Double.parseDouble(FieldforSeparationDistance.getText());
+           double orientationValue = Double.parseDouble(FieldforOrientation.getText());
            ParallelPlateCapacitor capacitor = new ParallelPlateCapacitor(distanceValue,densityValue,orientationValue);
            capacitor.setCapacitor();
            pane.getChildren().addAll(capacitor.getTopPlate().sprite, capacitor.getBotPlate().sprite);
@@ -146,8 +130,11 @@ public class ChargeParticlePathModule extends Module {
         });
         
         WindowLayout.getChildren().addAll(labelforSheetChargeDensity, labelforSeparationDistance, labelforOrientation, buttons);
-        
+        if (!viewport.isShowing()) {
+            stage.close();
+        }
         stage.setScene(new Scene(WindowLayout));
+        stage.requestFocus();
         return stage;
     }
     
@@ -158,7 +145,7 @@ public class ChargeParticlePathModule extends Module {
         Text warningMessage = new Text("WARNING: this field can only contain digits");
         warningMessage.setStroke(Color.RED);
         
-        TextField fieldForVelocityX = new TextField("1");
+        TextField fieldForVelocityX = new TextField("0");
         fieldForVelocityX.setPrefColumnCount(3);
         fieldForVelocityX.textProperty().addListener(ov-> {
             String text = fieldForVelocityX.getText();
@@ -168,7 +155,7 @@ public class ChargeParticlePathModule extends Module {
             }
         });
         
-        TextField fieldForVelocityY = new TextField("1");
+        TextField fieldForVelocityY = new TextField("0");
         fieldForVelocityY.setPrefColumnCount(3);
         fieldForVelocityY.textProperty().addListener(ov-> {
             String text = fieldForVelocityY.getText();
@@ -178,7 +165,7 @@ public class ChargeParticlePathModule extends Module {
             }
         });
         
-        TextField fieldForCharge = new TextField("1");
+        TextField fieldForCharge = new TextField("0");
         fieldForCharge.setPrefColumnCount(3);
         fieldForCharge.textProperty().addListener(ov-> {
             String text = fieldForCharge.getText();
@@ -192,7 +179,8 @@ public class ChargeParticlePathModule extends Module {
         fieldForMass.setPrefColumnCount(3);
         fieldForMass.textProperty().addListener(ov-> {
             String text = fieldForMass.getText();
-            if (!checkDecimal(text)) {
+            if (!checkDecimal(text) && text.contains("-") && text.equals("0")) {
+               text.replace("-", "");
                text = text.substring(0, text.length() - 1);
                fieldForMass.setText(text);
             }
@@ -224,10 +212,10 @@ public class ChargeParticlePathModule extends Module {
         });
         Create.setOnAction(eh -> {
            
-           double velXValue = Double.parseDouble(fieldForVelocityX.getText().trim());
-           double velYValue = Double.parseDouble(fieldForVelocityY.getText().trim());
-           double chargeValue = Double.parseDouble(fieldForCharge.getText().trim());
-           double massValue = Double.parseDouble(fieldForMass.getText().trim());
+           double velXValue = Double.parseDouble(fieldForVelocityX.getText());
+           double velYValue = Double.parseDouble(fieldForVelocityY.getText());
+           double chargeValue = Double.parseDouble(fieldForCharge.getText());
+           double massValue = Double.parseDouble(fieldForMass.getText());
            ChargeParticle particle = new ChargeParticle(chargeValue, massValue, velXValue, velYValue);
            particle.setParticle();
            pane.getChildren().add(particle.sprite);
@@ -235,11 +223,17 @@ public class ChargeParticlePathModule extends Module {
            this.listOfParticles.add(particle);
            stage.close();
         });
-        
+        if (!viewport.isShowing()) {
+            stage.close();
+        }
         WindowLayout.getChildren().addAll(labelForVelocityX,labelForVelocityY, labelForCharge, labelForMass, buttons);
         
         stage.setScene(new Scene(WindowLayout));
+        stage.requestFocus();
         return stage;
     }
-    
+    @Override
+    public String getModuleName(){
+        return "charge particle path";
+    }
 }
