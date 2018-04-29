@@ -17,17 +17,20 @@ import javafx.scene.Node;
 public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     
     public String name;
+    public int volume;
     
     public Element child = null;
     public Element parent = null;
+    
+    protected boolean canMove = true;
     
     public Element() {
         this(0, 0, 0, 0);
     }
     
     public Element(double velX, double velY) {
-        this.velY = velY;
-        this.velX = velX;
+        this.init_velY = velY;
+        this.init_velX = velX;
     }
     
     public Element(double velX, double velY, double posX, double posY) {
@@ -86,8 +89,21 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
         
     }
     
+    public void setVolume(int vol) {
+        this.volume = vol;
+    }
+    
     public ArrayList<Node> getRenderElements() {
         return new ArrayList<>(); //o o f
     }
+    
+    public void lockPosition() {
+        canMove = false;
+    }
+    
+    public void unlockPosition() {
+        canMove = true;
+    }
+    
     
 }

@@ -241,5 +241,5 @@ public class ChargeParticlePathModule extends Module {
         stage.setScene(new Scene(WindowLayout));
         return stage;
     }
-
+    
 }

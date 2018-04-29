@@ -5,18 +5,16 @@
  */
 package intpro;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author Cédric
  */
-public class GlobalSoundButton extends ImageButton {
+public class GlobalSoundButton extends SoundButton {
     
     public GlobalSoundButton(Core core) {
         super(core);
     }
     
-    @Override
-    public void action() {
-        
-    }
 }

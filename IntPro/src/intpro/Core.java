@@ -5,6 +5,15 @@
  */
 package intpro;
 import ModuleProjectileMotion.*;
+import ModuleWaveSuperposition.*;
+import ModuleMomentum.*;
+import ModuleSpringSimpleHarmonicMotion.*;
+import ModuleLensOptics.*;
+import ModuleCircularMotion.*;
+import ModuleIdealGas.*;
+import ModuleChargeParticlePath.*;
+
+
 import java.io.File;
 
 /**
@@ -17,6 +26,8 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.scene.media.Media;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 public class Core extends Application {
@@ -53,26 +64,27 @@ public class Core extends Application {
         
         moduleButtons = new MainMenuModuleButton[modules];
         
-        for (int n = 1; n < modules; n++) {
-            moduleButtons[n] = new MainMenuModuleButton(n, this);
-            moduleButtons[n].setPosX(30);
-            moduleButtons[n].setPosY(240*n);
-            moduleButtons[n].injectCoreRef(this);
-            intro.addToPane(moduleButtons[n].display);
-            
-        }
-        
         intro.viewport.setOnCloseRequest(e -> {
             for (int n = 0; n < modules; n++) {
                 if ((module[n] != null) && (module[n].viewport != null)) {module[n].viewport.close();}
             }
             System.exit(0);
         });
-        intro.display();
+        
         intro.viewport.requestFocus();
+        intro.display();
+        
+        for (int n = 1; n <= modules; n++) {
+            moduleButtons[n - 1] = new MainMenuModuleButton(n, this);
+            moduleButtons[n - 1].setPosX(30);
+            moduleButtons[n - 1].setPosY(240*n);
+            moduleButtons[n - 1].injectCoreRef(this);
+            intro.addToPane(moduleButtons[n - 1].display);
+        }
         
         music.play();
         music.setVolume(0);
+        
     }
     
     public void testMethod() {
@@ -87,14 +99,19 @@ public class Core extends Application {
     public void pushModule(int moduleNumber) {
         if (module[moduleNumber] == null) {
             switch(moduleNumber) {
-                case 1: module[moduleNumber] = new ProjectileMotionModule(this); module[moduleNumber].popOut(); System.out.println("poof1: projectile motion");
+                case 1: module[moduleNumber - 1] = new ProjectileMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof1: projectile motion");
+                case 2: module[moduleNumber - 1] = new LensOpticsModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof2: lens optics");
+                case 3: module[moduleNumber - 1] = new ChargeParticlePathModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof3: charge particle path");
+                case 4: module[moduleNumber - 1] = new SpringSimpleHarmonicMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof4: spring SHM");
+                case 5: module[moduleNumber - 1] = new WaveSuperpositionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof5: wave superposition");
+                case 6: module[moduleNumber - 1] = new CircularMotionModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof6: circular motion");
+                case 7: module[moduleNumber - 1] = new MomentumModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof7: momentum");
+                case 8: module[moduleNumber - 1] = new IdealGasModule(this); module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas");
                 default:
             }
         }
         if (!module[moduleNumber].viewport.isShowing()) {module[moduleNumber].viewport.show();}
     }
-    
-    
     
     public static void waitSomeTime(long delay) {
         long startTimeNano = System.nanoTime();

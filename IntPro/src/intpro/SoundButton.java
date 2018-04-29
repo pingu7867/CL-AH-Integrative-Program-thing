@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -19,6 +20,8 @@ public class SoundButton extends ImageButton {
     
     Image activatedGraphic;
     TextField volField = new TextField();
+    Text instruction = new Text("type volume as percentage (0-100)");
+    Module targetModule = null;
     
     public SoundButton(Core core) {
         super(core);
@@ -26,6 +29,15 @@ public class SoundButton extends ImageButton {
         idleGraphic = new Image(new File("src/Assets/soundButtonidle.png").toURI().toString());
         activatedGraphic = new Image(new File("src/Assets/soundButtonpress.png").toURI().toString());
         graphicOff();
+    }
+    
+    public SoundButton(Module sourceModule, Core core) {
+        super(core);
+        declareTargetModule(targetModule);
+    }
+    
+    public void declareTargetModule(Module sourceModule) {
+        this.targetModule = sourceModule;
     }
     
     @Override
@@ -46,10 +58,20 @@ public class SoundButton extends ImageButton {
         flipFlop();
         
         if (display.getImage() == idleGraphic) {
-            
             volField.setLayoutX(this.getPosX());
             volField.setLayoutY(this.getPosY());
-            core.intro.addToPane(volField);
+            instruction.setLayoutX(this.getPosX() + 150);
+            instruction.setLayoutY(this.getPosY() + 10);
+            
+            if (targetModule == null) {
+                core.intro.addToPane(instruction);
+                core.intro.addToPane(volField);
+            }
+            else {
+                targetModule.pane.getChildren().add(instruction);
+                targetModule.pane.getChildren().add(volField);
+            }
+            
             volField.setOnAction(e -> {
                 String number = volField.getText().toLowerCase();
                 String buildNum = "";
@@ -58,14 +80,35 @@ public class SoundButton extends ImageButton {
                         buildNum = buildNum + number.charAt(i);
                     }
                 }
-                core.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
-                core.intro.pane.getChildren().remove(volField);
+                if (targetModule == null) {
+                    core.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
+                    core.intro.pane.getChildren().remove(volField);
+                }
+                else {
+                    targetModule.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
+                    targetModule.pane.getChildren().remove(volField);
+                }
+                
                 volField.clear();
             });
-            volField.setOnMouseDragged(e -> {core.intro.pane.getChildren().remove(volField); volField.clear();});
+            
+            volField.setOnMouseDragged(e -> {
+                if (targetModule == null) {
+                    core.intro.pane.getChildren().remove(volField); core.intro.pane.getChildren().remove(instruction); volField.clear();
+                }
+                else {
+                    targetModule.pane.getChildren().remove(volField); targetModule.pane.getChildren().remove(instruction); volField.clear();
+                }
+            });
+            
         }
         if (display.getImage() == activatedGraphic) {
-            core.setVolume(0);
+            if (targetModule == null) {
+                core.setVolume(0);
+            }
+            else {
+                targetModule.setVolume(0);
+            }
         }
     }
 }

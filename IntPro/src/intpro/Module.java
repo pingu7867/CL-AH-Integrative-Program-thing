@@ -7,6 +7,7 @@ package intpro;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Iterator;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -15,12 +16,14 @@ import javafx.stage.Stage;
  *
  * @author Cédric
  */
+
 public class Module implements GameTickActor {
     
     public Core dataSource;
     public int moduleNumber = 0;
     public RenderSet renderSet;
     public HashSet<Element> elements;
+    public Inventory inventory;
     
     public Pane pane;
     public Scene scene;
@@ -28,6 +31,7 @@ public class Module implements GameTickActor {
     
     public double framerate = 60;
     public GameTickTimer ticker;
+    public int volume = 100;
     
     public File save;
     
@@ -37,6 +41,8 @@ public class Module implements GameTickActor {
         elements = new HashSet<Element>();
         this.ticker = new GameTickTimer(framerate);
         this.ticker.declareHost(this);
+        
+        inventory = new Inventory(getModuleName(), dataSource);
         
     }
     
@@ -69,13 +75,8 @@ public class Module implements GameTickActor {
             case 6: name = "circle";
             case 7: name = "momentum";
             case 8: name = "gas";
-            
-        }        
-        
-        
+        }
         return name;
-        
-        
     }
     
     public Element[] getElementsArray() {
@@ -93,4 +94,36 @@ public class Module implements GameTickActor {
             dataSource.flushModule(moduleNumber);
         });
     }
+    
+    public void setVolume(int vol) {
+        volume = vol;
+        Iterator it = elements.iterator();
+        while (it.hasNext()) {
+            Element element = (Element)it.next();
+            element.setVolume(volume);
+        }
+    }
+    
+    public boolean checkDecimal(String value) {
+        int minuscount = 0;
+        int pointcount = 0;
+        for (int i = 0; i < value.length();i++) {
+            if((value.charAt(i) == '.') || value.charAt(i) == '-'|| ((value.charAt(i) <= '9') && (value.charAt(i) >= '0'))) {
+                if (value.charAt(i) == '.') {pointcount++;}
+                if (value.charAt(i) == '-') {minuscount++;}
+            }
+            else {
+                return false;
+            }
+        }
+        if (pointcount > 1) {
+            return false;
+        }
+        if (minuscount > 1) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

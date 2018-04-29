@@ -30,6 +30,7 @@ public class ProjectileMotionModule extends Module {
         timer.startThread();
     }
     
+    @Override
     public void popOut() {
         scene = new Scene(pane);
         //pane.setPrefSize(dataSource.res2x, dataSource.res2y);
@@ -45,6 +46,11 @@ public class ProjectileMotionModule extends Module {
         viewport = new Stage();
         viewport.setScene(scene);
         viewport.show();
+        
+        this.viewport.setOnCloseRequest(e -> {
+            dataSource.flushModule(moduleNumber);
+        });
+        
     }
     
     @Override

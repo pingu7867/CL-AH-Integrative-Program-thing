@@ -6,12 +6,18 @@
 package intpro;
 
 import java.io.File;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  *
@@ -22,17 +28,30 @@ public class IntroUI extends UIWindow {
     public Core core;
     
     public IntroUI(Core core) {
-        super('s');
+        super('i');
         windowName = "Welcome! introduction screen";
         
         sizeX = 1200;
         sizeY = 800;
         
         ImageView background = new ImageView(new File("src/Assets/TitleBackground.png").toURI().toString());
-        pane.getChildren().add(background);
-        viewport.setTitle(windowName);
         
-        SoundButton soundBut = new SoundButton(core);
+        BackgroundFill transparent = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
+        
+        pane.setPrefSize(sizeX, sizeY);
+        scroll.setPrefSize(sizeX, sizeY);
+        content.setPrefSize(sizeX, 2200);
+        
+        pane.getChildren().add(background);
+        pane.getChildren().add(scroll);
+        scroll.setContent(content);
+        scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        
+        scroll.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
+        content.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
+        pane.setStyle("-fx-background-color: rgba(0.0, 0.0, 0.0, 0.0);");
+        
+        GlobalSoundButton soundBut = new GlobalSoundButton(core);
         addToPane(soundBut.display);
         soundBut.display.setScaleX(0.45); soundBut.display.setScaleY(0.45);
         soundBut.display.setLayoutX(1030); soundBut.display.setLayoutY(-40);
@@ -51,7 +70,7 @@ public class IntroUI extends UIWindow {
     }
     
     public void inject(MainMenuModuleButton button) {
-        pane.getChildren().add(button.display);
+        addToPane(button.display);
     }
     
 }
