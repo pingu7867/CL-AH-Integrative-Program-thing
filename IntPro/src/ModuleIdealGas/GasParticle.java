@@ -20,6 +20,7 @@ public class GasParticle extends SpritedElement{
     private double velocity;
     Rectangle bounds;
     double radius;
+    double cooldown = 0;
     
     public GasParticle(Rectangle bounds) {
         super(new ImageView());
@@ -29,11 +30,11 @@ public class GasParticle extends SpritedElement{
         this.bounds = bounds;
         sprite.setFitHeight(10); sprite.setFitWidth(10);
         radius = sprite.getFitHeight()/2;
-        sprite.setX((Math.random() * bounds.getWidth() + bounds.getX() - radius));
-        sprite.setY(Math.random() * bounds.getHeight() + bounds.getY() - radius);
-        posX = sprite.getX() + sprite.getFitWidth()/2 ; posY = sprite.getY() + sprite.getFitHeight()/2 ;
+        posX = Math.random() * bounds.getWidth() + bounds.getX() + radius; 
+        posY = Math.random() * bounds.getHeight() + bounds.getY() + radius;
         
-        
+        sprite.setX(posX - radius);
+        sprite.setY(resY - (posY - radius));
     }
     public GasParticle(Rectangle bounds,double averageKineticEnergy) {
         this(bounds);
@@ -67,26 +68,24 @@ public class GasParticle extends SpritedElement{
         
     }
     public void animateGasParticleMotion(ArrayList<GasParticle> gasParticles,int index) {
-       
+       if (cooldown == 0) {
         for (int i = index + 1; i < gasParticles.size(); i++) {
             if (4*radius * radius <= (gasParticles.get(i).posX - posX) * (gasParticles.get(i).posX - posX)
-                    + (gasParticles.get(i).posY - posY)*(gasParticles.get(i).posY - posY)) 
-                if (this.sprite.intersects(gasParticles.get(i).sprite.getX(),gasParticles.get(i).sprite.getY()
-                        , gasParticles.get(i).sprite.getFitWidth(), gasParticles.get(i).sprite.getFitHeight()))    {
+                    + (gasParticles.get(i).posY - posY)*(gasParticles.get(i).posY - posY))   {
                 double radiusAngle;
                 double tempAngle1;
                 double tempAngle2;
                 double tempAngle3;
                 double tempAngle4;
-                
+                cooldown = 16;
                 if (gasParticles.get(i).posX > posX) {
                     
                     if (gasParticles.get(i).posY > posY) {
-                        radiusAngle = Math.PI/-4;
+                        radiusAngle = Math.PI/4;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         
-                        radiusAngle = (3*Math.PI/4);
+                        radiusAngle = (3*Math.PI/-4);
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
@@ -102,12 +101,12 @@ public class GasParticle extends SpritedElement{
                         
                     }
                     else if (gasParticles.get(i).posY < posY) {
-                        radiusAngle = Math.PI/4;
+                        radiusAngle = Math.PI/-4;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1 ;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         gasParticles.get(i).setAngle(tempAngle2);
                         
-                        radiusAngle = (3*Math.PI/-4);
+                        radiusAngle = (3*Math.PI/4);
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
@@ -116,23 +115,23 @@ public class GasParticle extends SpritedElement{
                 }
                 else if (gasParticles.get(i).posX == posX) {
                         if (gasParticles.get(i).posY > posY) {
-                        radiusAngle = Math.PI/-2;
+                        radiusAngle = Math.PI/2;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         gasParticles.get(i).setAngle(tempAngle2);
                     
-                        radiusAngle = Math.PI/2;
+                        radiusAngle = Math.PI/-2;
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
                         }
                         else if (gasParticles.get(i).posY < posY) {
-                        radiusAngle = Math.PI/2;
+                        radiusAngle = Math.PI/-2;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         gasParticles.get(i).setAngle(tempAngle2);
                     
-                        radiusAngle = Math.PI/-2;
+                        radiusAngle = Math.PI/2;
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
@@ -141,11 +140,11 @@ public class GasParticle extends SpritedElement{
                 
                 else if (gasParticles.get(i).posX < posX) {
                     if (gasParticles.get(i).posY > posY) {
-                        radiusAngle = (3*Math.PI)/-4;
+                        radiusAngle = (3*Math.PI)/4;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         gasParticles.get(i).setAngle(tempAngle2);
-                        radiusAngle = Math.PI/4;
+                        radiusAngle = Math.PI/-4;
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
@@ -160,11 +159,11 @@ public class GasParticle extends SpritedElement{
                             setAngle(tempAngle4);
                     }
                     else if (gasParticles.get(i).posY < posY) {
-                        radiusAngle = (3*Math.PI)/4;
+                        radiusAngle = (3*Math.PI)/-4;
                         tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
                         gasParticles.get(i).setAngle(tempAngle2);
-                        radiusAngle = Math.PI/-4;
+                        radiusAngle = Math.PI/4;
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
@@ -174,7 +173,7 @@ public class GasParticle extends SpritedElement{
             }
                          
         }
-        
+       }   
         if (posX + 5 > bounds.getX() + bounds.getWidth() || posX < 5 + bounds.getX()) {
                velX *= -1;
            }
@@ -182,9 +181,11 @@ public class GasParticle extends SpritedElement{
                velY *= -1;
            }
 
-        posX += velX/30; posY -= velY/30;
+        posX += velX/30; posY += velY/30;
         sprite.setX(sprite.getX() + velX/30); sprite.setY(sprite.getY() - velY/30);
-        
+        if (cooldown > 0) {
+            cooldown--;
+        }
     }
     
 }
