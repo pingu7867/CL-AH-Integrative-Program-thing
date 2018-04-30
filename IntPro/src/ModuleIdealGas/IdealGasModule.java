@@ -29,7 +29,7 @@ import javafx.scene.shape.Rectangle;
  * @author Cédric
  */
 public class IdealGasModule extends Module {
-    
+    ArrayList<Container> listOfContainer = ArrayList<>();
     public IdealGasModule(Core creator) {
         super(creator);
         pane = new Pane();
