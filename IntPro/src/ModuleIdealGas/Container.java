@@ -6,9 +6,11 @@ package ModuleIdealGas;
  * @author 1630954
  */
 import intpro.SpritedElement;
+import java.io.File;
 import java.util.ArrayList;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Container extends SpritedElement{
@@ -30,12 +32,21 @@ public class Container extends SpritedElement{
     
     public Container() {
         super(new ImageView());
+        sprite.setImage(new Image(new File("src/Assets/GasTank.png").toURI().toString()));
+        sprite.setX(0); sprite.setY(0);
+        hitbox = new Rectangle(92, 265, 420, 723);
+        hitbox.setFill(Color.WHITE);
+        hitbox.setStroke(Color.BLACK);
+        
     }
     public Container(double aom, double vol, double pre, double temp) {
         this();
         amountOfMole = aom; volume = vol; pressure = pre; temperature = temp;
         
         averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
+        
+        setGasParticle();
+
     }
     public double getMoles() {
         return amountOfMole;
@@ -105,6 +116,18 @@ public class Container extends SpritedElement{
         
         if (!unlockVol) {
             
+        }
+    }
+    public void setGasParticle() {
+        double aom = 0;
+        while (aom < this.amountOfMole) {
+            particles.add(new GasParticle(hitbox,averageKineticEnergy));
+            aom += 1.2;
+        }    
+    }
+    public void setAnimation() {
+        for (int i = 0; i < particles.size(); i++) {
+            particles.get(i).setAnimation(particles,i);
         }
     }
     

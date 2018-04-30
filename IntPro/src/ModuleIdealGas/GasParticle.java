@@ -15,27 +15,42 @@ import java.util.ArrayList;
 import javafx.scene.shape.Arc;
 
 public class GasParticle extends SpritedElement{
-    private Timeline animation;
+    public Timeline animation;
     ArrayList<Arc> arcs = new ArrayList<>();
     private double velocity;
+    Rectangle bounds;
+    double radius;
     
-    public GasParticle() {
+    public GasParticle(Rectangle bounds) {
         super(new ImageView());
         this.angle = Math.random() * (2*Math.PI);
         velocity = 0;
         sprite.setImage(new Image(new File("src/Assets/Molecule0.png").toURI().toString()));
+        this.bounds = bounds;
+        sprite.setFitHeight(10); sprite.setFitWidth(10);
+        radius = sprite.getFitHeight()/2;
+        sprite.setX((Math.random() * bounds.getWidth() + bounds.getX() - radius));
+        sprite.setY(Math.random() * bounds.getHeight() + bounds.getY() - radius);
+        posX = sprite.getX() + sprite.getFitWidth()/2 ; posY = sprite.getY() + sprite.getFitHeight()/2 ;
+        
+        
     }
-    public GasParticle(double averageKineticEnergy) {
-        this();
-        velocity = (averageKineticEnergy * 2)/1.6737236 * Math.pow(10, -27);
+    public GasParticle(Rectangle bounds,double averageKineticEnergy) {
+        this(bounds);
+        velocity = (averageKineticEnergy * 2)/(2*(1.6737236 * Math.pow(10, -27)));
+        velocity /= 100000;
         velX = velocity * Math.cos(angle);
         velY = velocity * Math.sin(angle);
-        posX = 0; posY = 0;
-        sprite.setX(posX); sprite.setY(posY);
-        sprite.setFitHeight(10); sprite.setFitWidth(10);
+
     }
     public double getVelocity() {
         return velocity;
+    }
+    @Override
+    public void setAngle(double angle) {
+        this.angle = angle;
+        velX = velocity * Math.cos(angle);
+        velY = velocity * Math.sin(angle);
     }
     public void setHitBox() {
         double startingAngle = 0;
@@ -45,48 +60,124 @@ public class GasParticle extends SpritedElement{
             startingAngle+=10;
         }
     }
-    public void animateGasParticleMotion(ArrayList<GasParticle> gasParticles,int index,Rectangle bounds) {
-        boolean quit1 = false;
+    public void setAnimation(ArrayList<GasParticle> gasParticles,int index) {
+        animation = new Timeline(new KeyFrame(Duration.millis(1000/30), e-> { animateGasParticleMotion(gasParticles, index);
+        }));
+        animation.setCycleCount(Timeline.INDEFINITE);
         
+    }
+    public void animateGasParticleMotion(ArrayList<GasParticle> gasParticles,int index) {
+       /* 
         for (int i = index + 1; i < gasParticles.size(); i++) {
-            if (this.sprite.intersects(gasParticles.get(i).sprite.getX(), gasParticles.get(i).sprite.getY(),
-               gasParticles.get(i).sprite.getFitWidth(), gasParticles.get(i).sprite.getFitHeight())) {
-               for (int j = 0; j < arcs.size(); j++) {
-                   for (int k = 0; k < gasParticles.get(i).arcs.size(); k++) {
-                       if (arcs.get(j).intersects(gasParticles.get(i).arcs.get(k).getBoundsInLocal())) {
-                           
-                           gasParticles.get(i).setAngle((gasParticles.get(i).getAngleRad() + arcs.get(j).getStartAngle()) % (2*Math.PI));
-                           gasParticles.get(i).setVelX(gasParticles.get(i).getVelocity() * Math.cos(gasParticles.get(i).getAngleRad()));
-                           gasParticles.get(i).setVelY(gasParticles.get(i).getVelocity() * Math.sin(gasParticles.get(i).getAngleRad()));
-                           
-                           angle = (angle + gasParticles.get(i).arcs.get(k).getStartAngle()) % (2*Math.PI);
-                           velX = velocity * Math.cos(angle);
-                           velY = velocity * Math.sin(angle);
-                           quit1 = true;
-                           break;
-                           
-                       }
-                   }
-                   if (quit1) {
-                       break;
-                   }
-               }
-           }
-           
+            //if (4*radius * radius <= (gasParticles.get(i).posX - posX) * (gasParticles.get(i).posX - posX)
+                  //  + (gasParticles.get(i).posY - posY)*(gasParticles.get(i).posY - posY)) 
+                if (this.sprite.intersects(gasParticles.get(i).sprite.getX(),gasParticles.get(i).sprite.getY()
+                        , gasParticles.get(i).sprite.getFitWidth(), gasParticles.get(i).sprite.getFitHeight()))    {
+                double radiusAngle;
+                double tempAngle1;
+                double tempAngle2;
+                double tempAngle3;
+                double tempAngle4;
+                
+                if (gasParticles.get(i).posX > posX) {
+                    
+                    if (gasParticles.get(i).posY > posY) {
+                        radiusAngle = Math.PI/4;
+                        if (gasParticles.get(i).getAngle() >= (radiusAngle + Math.PI)) {
+                            tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1 ;
+                            tempAngle2 = tempAngle1 + radiusAngle;
+                            
+                            gasParticles.get(i).setAngle(tempAngle2);
+                            
+                            
+                        }
+                        else if (gasParticles.get(i).getAngle() < (radiusAngle + Math.PI)) {
+                            tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                            tempAngle2 = tempAngle1 + radiusAngle;
+                            
+                            gasParticles.get(i).setAngle(tempAngle2);
+                        }
+                        radiusAngle = (3*Math.PI/-4);
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }
+                    else if (gasParticles.get(i).posY == posY) {
+                        radiusAngle = 0;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        radiusAngle = Math.PI;
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                        
+                    }
+                    else if (gasParticles.get(i).posY < posY) {
+                        radiusAngle = Math.PI/-4;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        radiusAngle = (3*Math.PI/4);
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }
+                }
+                else if (gasParticles.get(i).posX == posX) {
+                        radiusAngle = Math.PI/2;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        radiusAngle = Math.PI/-2;
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }
+                
+                else if (gasParticles.get(i).posX < posX) {
+                    if (gasParticles.get(i).posY > posY) {
+                        radiusAngle = (3*Math.PI)/4;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        gasParticles.get(i).setAngle(tempAngle2);
+                        radiusAngle = Math.PI/-4;
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }
+                    else if (gasParticles.get(i).posY == posY) {
+                        radiusAngle = Math.PI;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        radiusAngle = 0;
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }
+                    else if (gasParticles.get(i).posY < posY) {
+                        radiusAngle = (3*Math.PI)/-4;
+                        tempAngle1 = (gasParticles.get(i).getAngle() - Math.PI - radiusAngle) * -1;
+                        tempAngle2 = tempAngle1 + radiusAngle;
+                        gasParticles.get(i).setAngle(tempAngle2);
+                        radiusAngle = Math.PI/4;
+                        tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
+                        tempAngle4 = tempAngle3 + radiusAngle;
+                            setAngle(tempAngle4);
+                    }    
+                }
+            }
+                         
         }
+        */
+        
         if (posX + 5 > bounds.getX() + bounds.getWidth() || posX < 5 + bounds.getX()) {
                velX *= -1;
            }
-           if (posY + 5 > bounds.getY() + bounds.getHeight() || posY < 5 + bounds.getY()) {
+        if (posY + 5 > bounds.getY() + bounds.getHeight() || posY < 5 + bounds.getY()) {
                velY *= -1;
            }
-        posX += velX/60; posY -= velY/60;
-        sprite.setX(sprite.getX() + velX/60); sprite.setY(sprite.getY() - velY/60);
+
+        posX += velX/30; posY -= velY/30;
+        sprite.setX(sprite.getX() + velX/30); sprite.setY(sprite.getY() - velY/30);
         
-        for (int i = 0; i < arcs.size(); i++) {
-            arcs.get(i).setCenterX(arcs.get(i).getCenterX() + velX);
-            arcs.get(i).setCenterY(arcs.get(i).getCenterY() - velY);
-        }
     }
     
 }
