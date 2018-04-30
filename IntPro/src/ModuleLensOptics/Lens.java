@@ -13,15 +13,23 @@ import intpro.Element;
  * @author Cédric
  */
 public class Lens extends Element {
-    private double RadiusLeftSideCurvature;
-    private double RadiusRightSideCurvature;
-    private double Height;
-    private double FocalLength;
-    private double Vergence;
+    private double radiusLeftSideCurvature;
+    private double radiusRightSideCurvature;
+    private double height;
+    private double focalLength;
+    private double vergence;
     private String typeOfLen;
-    private double RefractionIndex = 1.52;
+    private double refractionIndex = 1.52;
     
     public Lens() {
+        
+    }
+    public Lens(double height, double radiusLeftSideCurvature,double radiusRightSideCurvature) {
+        this.height = height;
+        this.radiusLeftSideCurvature = radiusLeftSideCurvature;
+        this.radiusRightSideCurvature = radiusRightSideCurvature;
+        focalLength = (refractionIndex - 1) (1/this.radiusLeftSideCurvature - 1/this.radiusRightSideCurvature);
+        vergence = 1/focalLength;
         
     }
     public double getRadiusLeftSideCurvature() {
