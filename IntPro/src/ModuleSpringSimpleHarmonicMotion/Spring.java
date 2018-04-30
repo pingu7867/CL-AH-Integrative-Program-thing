@@ -18,7 +18,7 @@ public class Spring extends Element {
     Oscillator oscillator;
     double length;
     double kconstant;
-    Weight weight
+    Weight weight;
     public Spring(double length, double kconstant, Oscillator oscill, Weight weight) {
         this.lines = new ArrayList<Line>();
         this.length = length;
