@@ -76,13 +76,13 @@ public class SpringSimpleHarmonicMotionModule extends Module {
            double massValue = Double.parseDouble(fieldforMass.getText());
            double lengthValue = Double.parseDouble(fieldforLength.getText());
            double kconstantValue = Double.parseDouble(fieldforKConstant.getText());
-           Spring spring = new Spring(massValue,lengthValue,kconstantValue);
+           Spring spring = new Spring(lengthValue,kconstantValue, new Oscillator(), new Weigth(massValue));
            spring.setBody();
            listOfSpring.add(spring);
            stage.close();
         });
         
-        WindowLayout.getChildren().addAll(labelforHeight, labelforRadiusLeft, labelforRadiusRight, buttons);
+        WindowLayout.getChildren().addAll(labelforMass, labelforLength, labelforkconstant, buttons);
         if (!viewport.isShowing()) {
             stage.close();
         }
