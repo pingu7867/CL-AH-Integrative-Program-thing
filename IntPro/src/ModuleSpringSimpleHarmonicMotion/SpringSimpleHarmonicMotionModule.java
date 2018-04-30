@@ -14,8 +14,8 @@ import intpro.*;
  */
 public class SpringSimpleHarmonicMotionModule extends Module {
     ArrayList<Spring> listOfSprings = new ArrayList<>();
-    public SpringSimpleHarmonicMotionModule(Core core) {
-        super(core);
+    public SpringSimpleHarmonicMotionModule(Core core, int moduleNumber) {
+        super(core, moduleNumber);
     }
     public generateSpringWindow() {
      Stage stage = new Stage();

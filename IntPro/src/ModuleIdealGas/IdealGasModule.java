@@ -30,8 +30,8 @@ import javafx.scene.shape.Rectangle;
  */
 public class IdealGasModule extends Module {
     ArrayList<Container> listOfContainer = ArrayList<>();
-    public IdealGasModule(Core creator) {
-        super(creator);
+    public IdealGasModule(Core creator, int moduleNumber) {
+        super(creator, moduleNumber);
         pane = new Pane();
         scene = new Scene(pane);
         viewport = new Stage();

@@ -32,8 +32,8 @@ import java.util.ArrayList;
  */
 public class WaveSuperpositionModule extends Module {
     ArrayList<Curve> curves = new ArrayList<>();
-    public WaveSuperpositionModule(Core creator) {
-        super(creator);
+    public WaveSuperpositionModule(Core creator, int moduleNumber) {
+        super(creator, moduleNumber);
         pane = new Pane();
         
         viewport = new Stage();

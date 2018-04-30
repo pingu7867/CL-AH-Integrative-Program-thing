@@ -15,6 +15,7 @@ import ModuleChargeParticlePath.ChargeParticle;
 import ModuleChargeParticlePath.ParallelPlateCapacitor;
 import ModuleCircularMotion.Branch;
 import ModuleWaveSuperposition.*;
+import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 
 /**
@@ -32,10 +33,10 @@ public class InventoryIcon extends ImageButton {
         switch(this.type.toLowerCase()) {
             case "cannon": simpleGraphicSetUp("idle", "CannonInventoryIcon"); break;
             case "vehicle": simpleGraphicSetUp("idle", "VehicleInventoryIcon"); break;
-            case "lens": simpleGraphicSetUp("idle", ""); break;
+            case "lens": simpleGraphicSetUp("idle", "LensInventoryIcon"); break;
             case "spring": simpleGraphicSetUp("idle", "SpringInventoryIcon"); break;
             case "weight": simpleGraphicSetUp("idle", "WeightInventoryIcon"); break;
-            case "physical body": simpleGraphicSetUp("idle", ""); break;
+            case "physical body": simpleGraphicSetUp("idle", "PhysicalBodyInventoryIcon"); break;
             case "charged particle": simpleGraphicSetUp("idle", "ChargeParticleInventoryIcon"); break;
             case "capacitor": simpleGraphicSetUp("idle", "CapacitorInventoryIcon"); break;
             case "branch": simpleGraphicSetUp("idle", "CircularMotionBranchInventoryIcon"); break;
@@ -80,5 +81,44 @@ public class InventoryIcon extends ImageButton {
             case "composite function": return new Curve(new CompositeFunction());
             default: return null;
         }
+    }
+    
+    public void expandDown(int fallLength) {
+        System.out.print("startdown ");
+        long milliTime = 0;
+        long startMilliTime = System.currentTimeMillis();
+        long stepMilliTime = 0;
+        long frame = 0;
+        double keyframeProportion = 0;
+        while (startMilliTime + milliTime > System.currentTimeMillis() + 1000) {
+            milliTime = System.currentTimeMillis() - startMilliTime;
+            stepMilliTime = 0;
+            
+            while (milliTime - stepMilliTime < 10) {
+                
+                milliTime = System.currentTimeMillis() - startMilliTime;
+                stepMilliTime = System.currentTimeMillis();
+                
+            }
+            
+            frame++;
+            keyframeProportion = (frame / 100);
+            
+            display.setOpacity(1 - keyframeProportion);
+            changePosY(posY() + keyframeProportion * fallLength);
+            
+        }
+        display.setOpacity(1);
+        changePosY(posY() + 2 * fallLength);
+        
+    }
+    public void retractUp(int riseLength) {
+        
+    }
+    
+    @Override
+    public void changePosY(double y) {
+        posY = y;
+        display.setLayoutY(y);
     }
 }

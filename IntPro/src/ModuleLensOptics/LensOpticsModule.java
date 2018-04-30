@@ -31,8 +31,8 @@ import java.util.ArrayList;
  */
 public class LensOpticsModule extends Module {
     ArrayList<SystemOfLens> listOfSystemOfLens = new ArrayList<>();
-    public LensOpticsModule(Core creator) {        
-        super(creator);
+    public LensOpticsModule(Core creator, int moduleNumber) {        
+        super(creator, moduleNumber);
         
     }
     public Stage generateSystemOfLensWindow() {

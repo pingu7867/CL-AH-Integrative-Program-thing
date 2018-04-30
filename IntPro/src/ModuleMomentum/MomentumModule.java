@@ -14,8 +14,8 @@ import intpro.*;
  */
 public class MomentumModule extends Module {
     ArrayList<PhysicalBody> listOfPhysicalBodies = new ArrayList<>();
-    public MomentumModule(Core creator) {
-        super(creator);
+    public MomentumModule(Core creator, int moduleNumber) {
+        super(creator, moduleNumber);
     }
     
     public generatePhysicalBodyWindow() {

@@ -33,9 +33,8 @@ public class ChargeParticlePathModule extends Module {
     ArrayList<ChargeParticle> listOfParticles = new ArrayList<>();
     boolean IsPlaying = false;
     
-    public ChargeParticlePathModule(Core creator) {
-        super(creator);
-        moduleNumber = 3;
+    public ChargeParticlePathModule(Core creator, int moduleNumber) {
+        super(creator, moduleNumber);
         BorderPane bord = new BorderPane();
         
         pane = new Pane();

@@ -14,8 +14,8 @@ import intpro.*;
  */
 public class CircularMotionModule extends Module {
     
-    public CircularMotionModule(Core creator) {
-        super(creator);
+    public CircularMotionModule(Core creator, int moduleNumber) {
+        super(creator, moduleNumber);
     }
     
 }

@@ -15,6 +15,8 @@ import ModuleChargeParticlePath.*;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  *
@@ -58,7 +60,7 @@ public class Core extends Application {
     }
     
     @Override
-    public void start(Stage primaryStage) throws InterruptedException {
+    public void start(Stage primaryStage) throws InterruptedException, IOException {
         intro = new IntroUI(this);
         MainMenuModuleButton[] moduleButtons;
         
@@ -92,7 +94,7 @@ public class Core extends Application {
         
     }
     
-    public void flushModule(int moduleNumber) {
+    public void flushModule(int moduleNumber) throws IOException {
         System.out.println("closing module " + moduleNumber);
         module[moduleNumber - 1].viewport.close();
         module[moduleNumber - 1] = null;
@@ -101,14 +103,14 @@ public class Core extends Application {
     public void pushModule(int moduleNumber) {
         if (module[moduleNumber - 1] == null) {
             switch(moduleNumber) {
-                case 1: module[moduleNumber - 1] = new ProjectileMotionModule(this); module[moduleNumber - 1].moduleNumber = 1; module[moduleNumber - 1].popOut(); System.out.println("poof1: projectile motion"); break;
-                case 2: module[moduleNumber - 1] = new LensOpticsModule(this); module[moduleNumber - 1].moduleNumber = 2; module[moduleNumber - 1].popOut(); System.out.println("poof2: lens optics"); break;
-                case 3: module[moduleNumber - 1] = new ChargeParticlePathModule(this); module[moduleNumber - 1].moduleNumber = 3; module[moduleNumber - 1].popOut(); System.out.println("poof3: charge particle path"); break;
-                case 4: module[moduleNumber - 1] = new SpringSimpleHarmonicMotionModule(this); module[moduleNumber - 1].moduleNumber = 4; module[moduleNumber - 1].popOut(); System.out.println("poof4: spring SHM"); break;
-                case 5: module[moduleNumber - 1] = new WaveSuperpositionModule(this); module[moduleNumber - 1].moduleNumber = 5; module[moduleNumber - 1].popOut(); System.out.println("poof5: wave superposition"); break;
-                case 6: module[moduleNumber - 1] = new CircularMotionModule(this); module[moduleNumber - 1].moduleNumber = 6; module[moduleNumber - 1].popOut(); System.out.println("poof6: circular motion"); break;
-                case 7: module[moduleNumber - 1] = new MomentumModule(this); module[moduleNumber - 1].moduleNumber = 7; module[moduleNumber - 1].popOut(); System.out.println("poof7: momentum"); break;
-                case 8: module[moduleNumber - 1] = new IdealGasModule(this); module[moduleNumber - 1].moduleNumber = 8; module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas"); break;
+                case 1: module[moduleNumber - 1] = new ProjectileMotionModule(this, 1); module[moduleNumber - 1].popOut(); System.out.println("poof1: projectile motion"); break;
+                case 2: module[moduleNumber - 1] = new LensOpticsModule(this, 2); module[moduleNumber - 1].popOut(); System.out.println("poof2: lens optics"); break;
+                case 3: module[moduleNumber - 1] = new ChargeParticlePathModule(this, 3); module[moduleNumber - 1].popOut(); System.out.println("poof3: charge particle path"); break;
+                case 4: module[moduleNumber - 1] = new SpringSimpleHarmonicMotionModule(this, 4); module[moduleNumber - 1].popOut(); System.out.println("poof4: spring SHM"); break;
+                case 5: module[moduleNumber - 1] = new WaveSuperpositionModule(this, 5); module[moduleNumber - 1].popOut(); System.out.println("poof5: wave superposition"); break;
+                case 6: module[moduleNumber - 1] = new CircularMotionModule(this, 6); module[moduleNumber - 1].popOut(); System.out.println("poof6: circular motion"); break;
+                case 7: module[moduleNumber - 1] = new MomentumModule(this, 7); module[moduleNumber - 1].popOut(); System.out.println("poof7: momentum"); break;
+                case 8: module[moduleNumber - 1] = new IdealGasModule(this, 8); module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas"); break;
                 default:
             }
         }

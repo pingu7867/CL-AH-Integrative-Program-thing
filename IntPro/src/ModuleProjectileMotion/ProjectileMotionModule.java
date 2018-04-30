@@ -18,8 +18,8 @@ public class ProjectileMotionModule extends Module {
     
     public ImageButton testButtipiton;
     
-    public ProjectileMotionModule(Core core) {
-        super(core);
+    public ProjectileMotionModule(Core core, int moduleNumber) {
+        super(core, moduleNumber);
         pane = new Pane();
         testButtipiton = new ImageButton(core);
         testButtipiton.display.setLayoutX(500); testButtipiton.display.setLayoutY(300);
@@ -57,7 +57,7 @@ public class ProjectileMotionModule extends Module {
     public void tickProcess() {
     }
     
-    public generateCannonWindow() {
+    public void generateCannonWindow() {
      Stage stage = new Stage();
         VBox WindowLayout = new VBox(20);
         CheckBox checkToPutMountedCannon= new CheckBox();
@@ -116,5 +116,5 @@ public class ProjectileMotionModule extends Module {
         stage.setScene(new Scene(WindowLayout));
         stage.requestFocus();
         return stage;
-    }   
+    }
 }
