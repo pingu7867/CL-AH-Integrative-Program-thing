@@ -12,7 +12,7 @@ import intpro.Element;
  *
  * @author Cédric
  */
-public class Lens extends Element {
+public class Lens extends SpritedElement {
     private double radiusLeftSideCurvature;
     private double radiusRightSideCurvature;
     private double height;
