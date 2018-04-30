@@ -15,10 +15,16 @@ import javafx.scene.shape.Line;
  */
 public class Spring extends Element {
     ArrayList<Line> lines;
-    
-    public Spring() {
+    Oscillator oscillator;
+    double length;
+    double kconstant;
+    Weight weight
+    public Spring(double length, double kconstant, Oscillator oscill, Weight weight) {
         this.lines = new ArrayList<Line>();
-        
+        this.length = length;
+        this.kconstant = kconstant;
+        this.oscillator = oscill;
+        this.weigth = weight;
     }
     
     public void setLength() {
