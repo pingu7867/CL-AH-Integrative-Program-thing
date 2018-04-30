@@ -12,9 +12,14 @@ import intpro.SpritedElement;
  * @author Cédric
  */
 public class Weight extends SpritedElement {
-    
+    double mass;
+    double force;
+    final double INTENSITY_GRAVITATIONAL_PULL = 9.8;
     public Weight() {
         
+    }
+    public Weight(double mass) {
+        this.mass = mass;
     }
     
 }
