@@ -33,6 +33,21 @@ public class Cannon extends SpritedElement {
         barrel = cannon;
     }
     
+    public double getAngleRad(double velX, double velY) {
+        double tempVelX = getPosX();
+        double tempVelY = getPosY();
+        
+        setPosX(velX);
+        setPosY(velY);
+        
+        double ang = getAngleRad();
+        
+        setPosX(tempVelX);
+        setPosY(tempVelY);
+        
+        return ang;
+    }
+    
     public void fire() {
         
     }

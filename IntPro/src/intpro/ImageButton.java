@@ -8,13 +8,14 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.media.Media;
 
 /**
  *
  * @author 1631810
  */
 
-public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
+public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower implements SoundPlay {
     
     public Image pressGraphic;
     public Image idleGraphic;
@@ -29,6 +30,8 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
     ClickTimeHandler clicker;
     Thread displayThread;
     DisplayTimeHandler displayer;
+    
+    javafx.scene.media.MediaPlayer sound = new javafx.scene.media.MediaPlayer(new Media(new File("src/Assets/click.mp3").toURI().toString()));
     
     public ImageButton(Core core) {
         this.core = core;
@@ -46,7 +49,7 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
         refreshThreads();
         
         display.setOnMousePressed((MouseEvent e) -> {
-            
+            playSound("");
             if (doubleClickDuration == 0) {
                lastClicked = System.currentTimeMillis();
                action();
@@ -170,6 +173,14 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower {
     @Override
     public void changePosY(double posY) {
         this.display.setLayoutY(posY);
+    }
+    
+    
+    
+    @Override
+    public void playSound(String mode) {
+        sound.setVolume(core.volume);
+        sound.play();
     }
     
 }

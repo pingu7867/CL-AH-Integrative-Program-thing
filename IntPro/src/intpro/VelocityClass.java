@@ -10,17 +10,28 @@ package intpro;
  * @author Cédric
  */
 
-public abstract class VelocityClass extends PositionClass {
+public abstract class VelocityClass extends ResScalable {
     protected double velX = 0;
     protected double velY = 0;
+    
+    protected double init_velX = 0;
+    protected double init_velY = 0;
     //radians
-    protected double angle = 0;
+    protected double vel_angle = 0;
     
     public void setVelY(double velY) {
-        this.velY = velY;
+        this.init_velY = velY;
     }
     
     public void setVelX(double velX) {
+        this.init_velX = velX;
+    }
+    
+    public void changeVelY(double velY) {
+        this.velY = velY;
+    }
+    
+    public void changeVelX(double velX) {
         this.velX = velX;
     }
     
@@ -30,6 +41,14 @@ public abstract class VelocityClass extends PositionClass {
     
     public double getVelY() {
        return this.velY;
+    }
+    
+    public double getInitVelX() {
+       return this.init_velX;
+    }
+    
+    public double getInitVelY() {
+       return this.init_velY;
     }
     
     public double getAngleRad() {
@@ -74,10 +93,16 @@ public abstract class VelocityClass extends PositionClass {
     }
     
     public double getAngle() {
-        return angle;
+        return vel_angle;
     }
     
     public void setAngle(double newAngle) {
-        angle = newAngle;
+        vel_angle = newAngle;
     }
+    
+    public void initializeVelocity() {
+        velX = this.init_velX;
+        velY = this.init_velY;
+    }
+    
 }

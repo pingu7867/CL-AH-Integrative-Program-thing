@@ -43,7 +43,7 @@ public class Core extends Application {
     public int res2y = 800;
     
     public int framerate = 60;
-    public int volume = 100 / 400;
+    public double volume = 100 / 400;
     
     public boolean showHints = true;
     public boolean showContextHints = true;
@@ -85,13 +85,18 @@ public class Core extends Application {
             
         }
         
+        music.setVolume(volume);
         music.play();
-        music.setVolume(0);
+        
         
     }
     
     public void testMethod() {
         
+    }
+    
+    public void injectModuleRef(int num, Module mod) {
+        module[num - 1].inventory.injectModuleRef(mod);
     }
     
     public void flushModule(int moduleNumber) throws IOException {
@@ -113,8 +118,11 @@ public class Core extends Application {
                 case 8: module[moduleNumber - 1] = new IdealGasModule(this, 8); module[moduleNumber - 1].popOut(); System.out.println("poof8: ideal gas"); break;
                 default:
             }
+            injectModuleRef(moduleNumber, module[moduleNumber - 1]);
         }
+        
         if (!module[moduleNumber - 1].viewport.isShowing()) {module[moduleNumber - 1].viewport.show();}
+        
     }
     
     public static void waitSomeTime(long delay) {

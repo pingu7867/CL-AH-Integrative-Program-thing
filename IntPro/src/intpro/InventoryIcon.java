@@ -15,6 +15,8 @@ import ModuleChargeParticlePath.ChargeParticle;
 import ModuleChargeParticlePath.ParallelPlateCapacitor;
 import ModuleCircularMotion.Branch;
 import ModuleWaveSuperposition.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.image.ImageView;
 
@@ -24,6 +26,8 @@ import javafx.scene.image.ImageView;
  */
 public class InventoryIcon extends ImageButton {
     public String type = "";
+    public Inventory inventory;
+    public Thread transitionThread;
     
     public InventoryIcon(String type, Core core) {
         super(core);
@@ -46,12 +50,15 @@ public class InventoryIcon extends ImageButton {
             case "saw wave": simpleGraphicSetUp("idle", "SawWaveInventoryIcon"); break;
             case "linear function": simpleGraphicSetUp("idle", "LinearFuncInventoryIcon"); break;
             case "quadratic function": simpleGraphicSetUp("idle", "QuadraticFuncInventoryIcon"); break;
-            case "cubic": simpleGraphicSetUp("idle", "CubicFuncInventoryIcon"); break;
+            case "cubic function": simpleGraphicSetUp("idle", "CubicFuncInventoryIcon"); break;
             case "polynomial function":simpleGraphicSetUp("idle", "PolynomialFuncInventoryIcon"); break;
             case "composite function": simpleGraphicSetUp("idle", "CompositeFuncInventoryIcon"); break;
             default: 
         }
         
+        display.setOnMouseClicked(e -> {
+            inventory.module.newestCreatedElement = deploy();
+        });
     }
     
     @Override
@@ -70,7 +77,7 @@ public class InventoryIcon extends ImageButton {
             case "charged particle": return new ChargeParticle();
             case "capacitor": return new ParallelPlateCapacitor();
             case "branch": return new Branch();
-            case "sine wave": return new Curve(new SinFunction());
+            //case "sine wave": return new Curve(new SinWaveFunction());
             case "square wave": return new Curve(new SquareWaveFunction());
             case "triangle wave": return new Curve(new TriangleWaveFunction());
             case "saw wave": return new Curve(new SawWaveFunction());
@@ -83,36 +90,107 @@ public class InventoryIcon extends ImageButton {
         }
     }
     
-    public void expandDown(int fallLength) {
-        System.out.print("startdown ");
-        long milliTime = 0;
-        long startMilliTime = System.currentTimeMillis();
-        long stepMilliTime = 0;
-        long frame = 0;
-        double keyframeProportion = 0;
-        while (startMilliTime + milliTime > System.currentTimeMillis() + 1000) {
-            milliTime = System.currentTimeMillis() - startMilliTime;
-            stepMilliTime = 0;
-            
-            while (milliTime - stepMilliTime < 10) {
+    public void expandDown() {
+        transitionThread.start();
+    }
+    public void primeExpandThread(double fallLength) {
+        
+        transitionThread = new Thread(() -> {
+            long nanoTime = 0;
+            long startNanoTime = System.nanoTime();
+            long stepNanoTime = 0;
+            long frame = 0;
+            int overflows = 0;
+            double keyframeProportion = 0;
+
+            while ((frame < 100) || (display.getOpacity() != 1)) {
                 
-                milliTime = System.currentTimeMillis() - startMilliTime;
-                stepMilliTime = System.currentTimeMillis();
+                nanoTime = System.nanoTime();
+                stepNanoTime = nanoTime;
+
+                while (nanoTime - stepNanoTime < 10000000) {
+                    nanoTime = System.nanoTime();
+                }
+
+                frame++;
+                frame = Math.min(frame, 100);
+                keyframeProportion = ((double)frame / 100.0);
+                
+                display.setOpacity(keyframeProportion);
+                
+                if (display.getLayoutY() > (module.scene.getHeight() - 100)) {
+                    //System.out.println("inventory overflow, moving to next column");
+                    overflows = overflows + 1;
+                    //changePosY(inventory.deployIcon.display.getLayoutY() + (keyframeProportion * fallLength) - (overflows * 100));
+                }
+                
+                changePosX(inventory.deployIcon.display.getLayoutX() + (overflows * 100));
+                changePosY(inventory.deployIcon.display.getLayoutY() + (keyframeProportion * fallLength) - (overflows * 600));
+                
+                //System.out.println("frame" + frame + " at " + keyframeProportion + " proportion of " + fallLength);
+                
+            }
+            display.setOpacity(1);
+            changePosX(inventory.deployIcon.display.getLayoutX() + (overflows * 100));
+        });
+        
+        
+    }
+    
+    public void retractUp() {
+        transitionThread.start();
+    }
+    public void primeRetractThread(double riseLength) {
+        transitionThread = new Thread(() -> {
+            long nanoTime = 0;
+            long startNanoTime = System.nanoTime();
+            long stepNanoTime = 0;
+            long frame = 0;
+            double keyframeProportion = 0;
+
+            while ((frame < 100) || (display.getOpacity() != 0)) {
+                
+                nanoTime = System.nanoTime();
+                stepNanoTime = nanoTime;
+
+                while (nanoTime - stepNanoTime < 10000000) {
+                    nanoTime = System.nanoTime();
+                }
+
+                frame++;
+                frame = Math.min(frame, 100);
+                keyframeProportion = 1.0 - ((double)frame / 100.0);
+                
+                display.setOpacity(keyframeProportion);
+                
+                changePosY(display.getLayoutY() - keyframeProportion * riseLength);
+                
+                //System.out.println("frame" + frame + " at " + keyframeProportion + " proportion of " + fallLength);
                 
             }
             
-            frame++;
-            keyframeProportion = (frame / 100);
+            display.setOpacity(0);
+            Platform.runLater(() -> {
+                module.pane.getChildren().remove(display);
+            });
             
-            display.setOpacity(1 - keyframeProportion);
-            changePosY(posY() + keyframeProportion * fallLength);
-            
-        }
-        display.setOpacity(1);
-        changePosY(posY() + 2 * fallLength);
+        });
         
     }
-    public void retractUp(int riseLength) {
+    
+    public void injectThisAndModuleRefs(Inventory inv, Module mod) {
+        
+        if (!((inv == null) || (mod == null))) {
+            inventory = inv;
+            module = mod;
+        }
+        else {
+            System.out.println("catastrophic failure: ");
+            if (inv == null) {System.out.println("inventory unassigned");}
+            if (mod == null) {System.out.println("module unassignable");}
+        }
+        
+        
         
     }
     
@@ -120,5 +198,8 @@ public class InventoryIcon extends ImageButton {
     public void changePosY(double y) {
         posY = y;
         display.setLayoutY(y);
+        //System.out.println("position changed to " + posY);
     }
+    
+    
 }
