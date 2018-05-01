@@ -16,6 +16,8 @@ import javafx.scene.Node;
 
 public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     
+    public double init_velY;
+    public double init_velX;
     public String name;
     public int volume;
     
@@ -104,6 +106,25 @@ public class Element extends GeneralFunctionalitiesStackedInheritanceTower {
     public void unlockPosition() {
         canMove = true;
     }
-    
+    public boolean checkDecimal(String value) {
+        int minuscount = 0;
+        int pointcount = 0;
+        for (int i = 0; i < value.length();i++) {
+            if((value.charAt(i) == '.') || value.charAt(i) == '-'|| ((value.charAt(i) <= '9') && (value.charAt(i) >= '0'))) {
+                if (value.charAt(i) == '.') {pointcount++;}
+                if (value.charAt(i) == '-') {minuscount++;}
+            }
+            else {
+                return false;
+            }
+        }
+        if (pointcount > 1) {
+            return false;
+        }
+        if (minuscount > 1) {
+            return false;
+        }
+        return true;
+    }
     
 }
