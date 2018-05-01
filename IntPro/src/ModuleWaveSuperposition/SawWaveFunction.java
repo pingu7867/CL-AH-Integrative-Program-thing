@@ -11,25 +11,25 @@ package ModuleWaveSuperposition;
  */
 public class SawWaveFunction extends PeriodicFunction {
     public SawWaveFunction() {
-        super(100,1,50);
+        super(100,1,50,50);
     }
-    public SawWaveFunction(double amp, double fre, double wavl) {
-        super(amp,fre,wavl);
+    public SawWaveFunction(double amp, double fre, double wavl, double velocity) {
+        super(amp,fre,wavl,velocity);
     }
     @Override
-    public double evaluateAt(double x) {
+    public double evaluateAt(double x, double posY) {
         if (velocity > 0) {
-        return amplitude*(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)/wavelength);
+        return posY - amplitude*(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)/wavelength);
     
         }
         else if (velocity < 0){
             x = 1200 - x;
         
-            return amplitude*(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)/wavelength);
+            return posY- amplitude*(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)/wavelength);
         }
         else {
             return 0;
         }
     
-}
+    }
 }

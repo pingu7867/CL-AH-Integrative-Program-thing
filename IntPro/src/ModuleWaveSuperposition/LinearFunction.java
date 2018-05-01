@@ -20,7 +20,7 @@ public class LinearFunction extends Function {
         yintercept = yinter;
     }
     @Override
-    public double evaluateAt(double x) {
-        return slope * (x + motionOffsetX);
+    public double evaluateAt(double x, double posY) {
+        return posY - slope * (x + motionOffsetX);
     }
 }

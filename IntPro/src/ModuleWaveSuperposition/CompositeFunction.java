@@ -12,11 +12,17 @@ import java.util.ArrayList;
 public class CompositeFunction extends Function {
     ArrayList<Function> functions = new ArrayList<>();
     
+    public CompositeFunction(){
+        
+    }
+    public CompositeFunction(ArrayList<Function> fcts) {
+        functions.addAll(fcts);
+    }
     @Override
-    public double evaluateAt(double x) {
+    public double evaluateAt(double x, double posY) {
         double result = 0;
         for (Function e: functions) {
-            result += e.evaluateAt(x);
+            result += e.evaluateAt(x,posY);
         }
         return result;
     }

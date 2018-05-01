@@ -26,135 +26,67 @@ import javafx.scene.control.ContentDisplay;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import javafx.scene.control.ScrollBar;
 /**
  *
  * @author Cédric
  */
 public class WaveSuperpositionModule extends Module {
     ArrayList<Curve> curves = new ArrayList<>();
-    public WaveSuperpositionModule(Core creator, int moduleNumber) {
+    ArrayList<BorderPane> wavePanes = new ArrayList<>();
+    VBox box = new VBox(20);
+    
+      public WaveSuperpositionModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
+        BorderPane mainBord = new BorderPane();
+        ExitButton exit = new ExitButton(creator, this);
+        HBox buttons = new HBox(10);
+        HBox bottombutton = new HBox(10);
+        
+        DeleteButton delete = new DeleteButton(creator,this);
+        bottombutton.getChildren().add(exit.display);
+        bottombutton.setAlignment(Pos.CENTER_LEFT);
+        
         pane = new Pane();
         
+        SawWaveInventoryIcon sawIcon = new SawWaveInventoryIcon(creator,this);
+        SineWaveInventoryIcon sineIcon = new SineWaveInventoryIcon(creator,this);
+        SquareWaveInventoryIcon squareIcon = new SquareWaveInventoryIcon(creator,this);
+        TriangleWaveInventoryIcon triangleIcon = new TriangleWaveInventoryIcon(creator,this);
+        CompositeFunctionInventoryIcon compIcon = new CompositeFunctionInventoryIcon(creator,this);
+        
+        buttons.getChildren().addAll(sawIcon.display,sineIcon.display,squareIcon.display ,triangleIcon.display,compIcon.display,delete.display);
         viewport = new Stage();
-    }
-    
-    public Stage generateCurveWindow() {
-        Stage stage = new Stage();
-        BorderPane bordWindow = new BorderPane();
-        VBox WindowLayout = new VBox(20);
-            
-        BorderPane bordComboBoxPane = new BorderPane();
-        bordComboBoxPane.setLeft(new Label("Select the type of function"));
-        
-        String[] typesOfCurves = {"Sine Wave Function", "Saw Wave Function", "Square Wave Function", "Triangle Wave Function"};
-        
-        
-        ComboBox<String> cboTypeOfCurves = new ComboBox<>();
-        cboTypeOfCurves.setItems(FXCollections.observableArrayList(typesOfCurves));
-        cboTypeOfCurves.setValue("Sine Wave");
-        bordComboBoxPane.setCenter(cboTypeOfCurves);
-        
-        HBox buttons = new HBox(8);
-            buttons.setAlignment(Pos.BOTTOM_RIGHT);
-            Button Create = new Button("Create");        
-            Button Cancel = new Button("Cancel");
-            buttons.getChildren().addAll(Cancel, Create);
-          
-        WindowLayout.getChildren().add(cboTypeOfCurves);
-        cboTypeOfCurves.setOnAction(oh-> {
-            
-            TextField fieldForAmplitude = new TextField("20");
-        fieldForAmplitude.setPrefColumnCount(3);
-        fieldForAmplitude.textProperty().addListener(ov-> {
-            String text = fieldForAmplitude.getText();
-            if (!checkDecimal(text)) {
-               text = text.substring(0, text.length() - 1);
-               fieldForAmplitude.setText(text);
-            }
-        });
-        
-        TextField fieldForWavelength = new TextField("2");
-        fieldForWavelength.setPrefColumnCount(3);
-        fieldForWavelength.textProperty().addListener(ov-> {
-            String text = fieldForWavelength.getText();
-            if (!checkDecimal(text)) {
-               text = text.substring(0, text.length() - 1);
-               fieldForWavelength.setText(text);
-            }
-        });
-        
-        TextField fieldForFrequency = new TextField("100");
-        fieldForFrequency.setPrefColumnCount(3);
-        fieldForFrequency.textProperty().addListener(ov-> {
-            String text = fieldForFrequency.getText();
-            if (!checkDecimal(text)) {
-               text = text.substring(0, text.length() - 1);
-               fieldForFrequency.setText(text);
-            }
-        });
-        
-        TextField fieldForVelocity = new TextField("200");
-        fieldForVelocity.setPrefColumnCount(3);
-        fieldForVelocity.textProperty().addListener(ov-> {
-            String text = fieldForVelocity.getText();
-            if (!checkDecimal(text)) {
-               text = text.substring(0, text.length() - 1);
-               fieldForVelocity.setText(text);
-            }
-        });
-        
-        
-        Label labelForAmplitude = new Label("Amplitude (m)", fieldForAmplitude);
-        labelForAmplitude.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelForWavelength = new Label("Velocity in Y (m/s)", fieldForWavelength);
-        labelForWavelength.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelForFrequency = new Label("Charge (C)", fieldForFrequency);
-        labelForFrequency.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelForVelocity = new Label("Mass (kg)", fieldForVelocity);
-        labelForVelocity.setContentDisplay(ContentDisplay.RIGHT);
-        
-
-        WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity);
-            Create.setOnAction(eh -> {
-           
-           
-           double amplitudeValue = Double.parseDouble(fieldForAmplitude.getText().trim());
-           double wavelengthValue = Double.parseDouble(fieldForWavelength.getText().trim());
-           double frequencyValue = Double.parseDouble(fieldForFrequency.getText().trim());
-           double velocityValue = Double.parseDouble(fieldForVelocity.getText().trim());
-           
-           switch (cboTypeOfCurves.getValue()) {
-               case "Sine Wave Function" : new Curve(new SineWaveFunction(amplitudeValue,frequencyValue,wavelengthValue)); break;
-               case "Saw Wave Function" : new Curve(new SawWaveFunction(amplitudeValue,frequencyValue,wavelengthValue)); break;
-               case "Square Wave Function" : new Curve(new SquareWaveFunction(amplitudeValue,frequencyValue,wavelengthValue)); break;
-               case "Triangle Wave Function" : new Curve(new TriangleWaveFunction(amplitudeValue,frequencyValue,wavelengthValue)); break;
-           }
-           
-           
-           stage.close();
-            });
-        });
-        Cancel.setOnAction(eh-> {
-              stage.close();
-            });
-            
-        bordWindow.setCenter(WindowLayout);
-        bordWindow.setBottom(buttons);
-                
-        stage.setScene(new Scene(WindowLayout));
-        
-        return new Stage();
-    }
-
-    public Stage generateSuperposedFunctionCurveWindow() {
-        return new Stage();
+        mainBord.setTop(buttons);
+        mainBord.setBottom(bottombutton);
+        mainBord.setCenter(box);
+        scene = new Scene(mainBord,creator.getRes1X(),creator.getRes1Y());
+        viewport.setScene(scene);
     }
     @Override
+    public void popOut() {
+        viewport.show();
+    }
+    public void setWavePane(Curve curve) {
+        HBox buttons = new HBox(10);
+        Pane wpane = new Pane();
+        BorderPane bord = new BorderPane();
+        
+        RunSimulationOneWave rsowbutton = new RunSimulationOneWave(dataSource,curve);
+        PauseButtonOneWave pbowbutton = new PauseButtonOneWave(dataSource,curve);
+        
+        buttons.getChildren().addAll(rsowbutton.display, pbowbutton.display);
+        
+        wpane.getChildren().addAll(curve.xAxis,curve.curve);
+        
+        bord.setTop(buttons);
+        bord.setCenter(wpane);
+        wavePanes.add(bord);
+        box.getChildren().add(bord);
+    }
+      
+    @Override
     public String getModuleName(){
-        return "charge particle path";
+        return "wave superposition";
     }
 }

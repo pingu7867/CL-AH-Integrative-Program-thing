@@ -11,18 +11,18 @@ package ModuleWaveSuperposition;
  */
 public class SquareWaveFunction extends PeriodicFunction {
     public SquareWaveFunction() {
-        super(100, 1,50);
+        super(100, 1,50,50);
     }
-    public SquareWaveFunction(double amp, double fre, double wavl) {
-        super(amp,fre,wavl);
+    public SquareWaveFunction(double amp, double fre, double wavl, double velocity) {
+        super(amp,fre,wavl,velocity);
     }
     @Override
-    public double evaluateAt(double x) {
-        if ((wavelength + (x + phaseShift) ) % wavelength < wavelength/2) {
-            return amplitude;
+    public double evaluateAt(double x, double posY) {
+        if ((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength < wavelength/2) {
+            return posY - amplitude;
         }
         else {
-            return -amplitude;
+            return posY + amplitude;
         }
     }            
 }

@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class TestWavePane extends Application {
     @Override
     public void start(Stage primaryStage) {
-       WaveSuperpositionModule n = new WaveSuperpositionModule(new Core()); 
+       WaveSuperpositionModule n = new WaveSuperpositionModule(new Core(),5); 
        n.viewport.show();
     }
     public static void main(String[] args) {

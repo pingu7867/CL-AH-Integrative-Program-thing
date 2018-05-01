@@ -7,13 +7,8 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
-public class Function {
-    double motionOffsetX = 0;
-    double velocity;
-    public double evaluateAt(double x,double posY) {
-        return 0 + motionOffsetX + posY;
-    }
+public class RunSimulationAllWaves {
     
 }

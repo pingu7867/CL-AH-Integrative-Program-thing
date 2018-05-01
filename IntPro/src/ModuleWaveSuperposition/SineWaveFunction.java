@@ -12,13 +12,13 @@ package ModuleWaveSuperposition;
 public class SineWaveFunction extends PeriodicFunction {
     
     public SineWaveFunction() {
-        super(100, 1,50);
+        super(100, 1,50,50);
     }
-    public SineWaveFunction(double amp, double fre, double wavl) {
-        super(amp,fre,wavl);
+    public SineWaveFunction(double amp, double fre, double wavl, double velocity) {
+        super(amp,fre,wavl,velocity);
     }
     @Override
-    public double evaluateAt(double x) {
-        return amplitude*(Math.sin((wavelength + (x + phaseShift) )/wavelength * 2*Math.PI));
+    public double evaluateAt(double x, double posY) {
+        return posY - amplitude*(Math.sin((wavelength + (x + motionOffsetX) )/wavelength * 2*Math.PI));
     }
 }
