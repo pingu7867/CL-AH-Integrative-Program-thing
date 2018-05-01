@@ -149,6 +149,10 @@ public class ParallelPlateCapacitor extends Element {
             else {
                 
             }
+            if(eh.isShiftDown()) {
+                Stage window = generateWindowCustomizeCapacitor();
+                window.show();
+            }
         });
         botPlate.sprite.setOnMouseDragged(eh-> {
             if (canMove) {
@@ -163,13 +167,14 @@ public class ParallelPlateCapacitor extends Element {
             else {
                 
             }
-            });
-        
-        topPlate.sprite.setOnMouseClicked(eh-> {
-            if(eh.isControlDown()) {
+            if(eh.isShiftDown()) {
                 Stage window = generateWindowCustomizeCapacitor();
                 window.show();
             }
+            });
+        
+        topPlate.sprite.setOnMouseClicked(eh-> {
+            
         });
         botPlate.sprite.setOnMouseClicked(eh-> {
             if(eh.isControlDown()) {

@@ -121,30 +121,31 @@ public class ChargeParticle extends SpritedElement{
             this.sprite.setX(md.getX() - this.sprite.getImage().getWidth()/2);
             this.sprite.setY(md.getY() - this.sprite.getImage().getHeight()/2);
             }
-            });
-        this.sprite.setOnMouseClicked(eh -> {
-            if(eh.isControlDown()) {
+            if(md.isShiftDown()) {
                 Stage window = generateWindowCustomizeCapacitor();
                 window.show();
             }
-            
-            
-        });
+            });
+        
+      
+    }
+    public void setUp(ArrayList<ParallelPlateCapacitor> listOfCapacitors){
+        this.listOfCapacitors = listOfCapacitors;
         
     }
-    public void play(ArrayList<ParallelPlateCapacitor> listOfCapacitors){
+    public void play(){
         
-        this.listOfCapacitors = listOfCapacitors;
         animation.play();
     }
     public void stop() {
         animation.stop();
     }
+    
     public void particleMotion() {
         for(ParallelPlateCapacitor capa: listOfCapacitors){
             if (posX >= capa.getBotPlate().sprite.getX() 
                 && posX <= capa.getBotPlate().sprite.getX() + capa.getBotPlate().sprite.getFitWidth()
-                && posY >= capa.getTopPlate().sprite.getY()
+                && posY >= capa.getTopPlate().sprite.getY() + capa.getTopPlate().sprite.getFitHeight()
                 && posY <= capa.getBotPlate().sprite.getY()){
                 this.electricForceX = charge * capa.getElectricFieldX();
                 this.electricForceY = charge * capa.getElectricFieldY();
@@ -162,7 +163,7 @@ public class ChargeParticle extends SpritedElement{
         velY -= (this.electricForceY/mass)/30;
         posX += velX/30; posY -= velY/30;
         this.sprite.setX(sprite.getX() + velX/30); this.sprite.setY(sprite.getY() - velY/30);
-        
+        System.out.println("VelX is" + velX + " VelY is " + velY);
         
     }
     public Stage generateWindowCustomizeCapacitor() {
