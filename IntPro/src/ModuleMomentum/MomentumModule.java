@@ -7,89 +7,70 @@ package ModuleMomentum;
 
 import intpro.Module;
 import intpro.*;
-
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ContentDisplay;
+import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
+import java.util.ArrayList;
 /**
  *
  * @author Cédric
  */
 public class MomentumModule extends Module {
     ArrayList<PhysicalBody> listOfPhysicalBodies = new ArrayList<>();
+    String typeOfCollision = "elastic";
+    Label labelTypeOfCollision = new Label("Type of Collision" + typeOfCollision);
     public MomentumModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
+        BorderPane bord = new BorderPane();
+        pane = new Pane();
+        ExitButton exit = new ExitButton(creator, this);
+        HBox buttons = new HBox(10);
+        HBox bottombutton = new HBox(10);
+        
+        bottombutton.getChildren().add(exit.display);
+        bottombutton.setAlignment(Pos.CENTER_LEFT);
+        
+        bord.setCenter(pane);
+        bord.setTop(buttons);
+        bord.setBottom(bottombutton);
+        
+        PhysicalBodyInventoryIcon pbIcon = new PhysicalBodyInventoryIcon(creator,this);
+        ElasticButton ebutton = new ElasticButton(creator,this);
+        InelasticButton inebutton = new InelasticButton(creator,this);
+        PerfectlyInelasticButton pinebutton = new PerfectlyInelasticButton(creator,this);
+        RunSimulationMomentum runSimulation = new RunSimulationMomentum(creator,this);
+        PauseButtonMomentum pausebutton = new PauseButtonMomentum(creator,this);
+        ResetButtonMomentum resetbutton = new ResetButtonMomentum(creator,this);
+        DeleteButton delete = new DeleteButton(creator,this);
+        
+        buttons.getChildren().addAll(pbIcon.display, ebutton.display,inebutton.display,pinebutton.display,labelTypeOfCollision,
+                runSimulation.display,pausebutton.display,resetbutton.display, delete.display);
+        viewport = new Stage();
+        
+        scene = new Scene(bord,this.getResolutionX(), this.getResolutionY());
+        viewport.setScene(scene);
+        
     }
-    
-    public generatePhysicalBodyWindow() {
-     Stage stage = new Stage();
-        VBox WindowLayout = new VBox(20);
-
-        TextField fieldforMass = new TextField("1");
-        fieldforMass.setPrefColumnCount(3);
-        fieldforMass.textProperty().addListener(ov-> {
-            String text = fieldforMass.getText();
-            if (!checkDecimal(text)) {
-               text = text.substring(0, text.length() - 1);
-               fieldforMass.setText(text);
-            }
-        });
-        
-        TextField fieldforVelX = new TextField("1");
-        fieldforVelX .setPrefColumnCount(3);
-        fieldforVelX .textProperty().addListener(ov-> {
-            String text = fieldforVelX.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text = text.substring(0, text.length() - 1);
-               text.replace("-", "");
-               fieldforVelX .setText(text);
-            }
-        });
-        
-        TextField fieldforVelY = new TextField("0");
-        fieldforVelY.setPrefColumnCount(3);
-        fieldforVelY.textProperty().addListener(ov-> {
-            String text = fieldforVelY.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text.replace("-", "");
-               text = text.substring(0, text.length() - 1);
-               fieldforVelY.setText(text);
-            }
-        });
-
-        Label labelforMass = new Label("Sheet Charge Density (C/m^2)", fieldforMass);
-        labelforMass.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelforVelX = new Label("Separation Distance of the 2 plates (m)", fieldforVelX);
-        labelforVelX.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelforVelY = new Label("Orientation (degrees)", fieldforVelY);
-        labelforVelY.setContentDisplay(ContentDisplay.RIGHT);
-        
-        
-        HBox buttons = new HBox(8);
-        buttons.setAlignment(Pos.BOTTOM_RIGHT);
-        Button Create = new Button("Create");        
-        Button Cancel = new Button("Cancel");
-        buttons.getChildren().addAll(Cancel, Create);
-        
-        Cancel.setOnAction(eh-> {
-            stage.close();
-        });
-        Create.setOnAction(eh -> {
-           double massValue = Double.parseDouble(fieldforMass.getText());
-           double velXValue = Double.parseDouble(fieldforVelX.getText());
-           double velYValue = Double.parseDouble(fieldforVelY.getText());
-           PhysicalBody body = new PhysicalBody(massValue,velXValue,velYValue);
-           body.setBody();
-           listOfPhysicalBodies.add(body);
-           stage.close();
-        });
-        
-        WindowLayout.getChildren().addAll(labelforHeight, labelforRadiusLeft, labelforRadiusRight, buttons);
-        if (!viewport.isShowing()) {
-            stage.close();
-        }
-        stage.setScene(new Scene(WindowLayout));
-        stage.requestFocus();
-        return stage;
-    }   
+    @Override
+    public void popOut() {
+        viewport.show();
+    }
+    @Override
+    public String getModuleName(){
+        return "momentum";
+    }
  }
+    
 
