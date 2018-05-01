@@ -13,6 +13,7 @@ public class RunSimulationChargeParticlePath extends RunSimulationButton{
     ChargeParticlePathModule module;
     public RunSimulationChargeParticlePath(Core creator, ChargeParticlePathModule module) {
         super(creator);
+        this.doubleClickDuration = 0;
         this.module = module;
     }
     @Override

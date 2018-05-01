@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class TestModule extends Application{
     @Override
     public void start(Stage primaryStage) {
-       ChargeParticlePathModule n = new ChargeParticlePathModule(new Core()); 
+       ChargeParticlePathModule n = new ChargeParticlePathModule(new Core(),3); 
        n.viewport.show();
     }
     public static void main(String[] args) {

@@ -40,7 +40,7 @@ public class ChargeParticle extends SpritedElement{
         super();
         animation = new Timeline(new KeyFrame(Duration.millis(1000/30),eh-> particleMotion()));
         animation.setCycleCount(Timeline.INDEFINITE);
-        this.sprite.setFitWidth(10); this.sprite.setFitHeight(10);
+        this.sprite.setFitWidth(15); this.sprite.setFitHeight(15);
         posX = this.sprite.getFitWidth()/2; posY = this.sprite.getFitHeight()/2;
         
     }
@@ -123,10 +123,12 @@ public class ChargeParticle extends SpritedElement{
             }
             });
         this.sprite.setOnMouseClicked(eh -> {
-            if(eh.isShiftDown()) {
+            if(eh.isControlDown()) {
                 Stage window = generateWindowCustomizeCapacitor();
                 window.show();
             }
+            
+            
         });
         
     }
@@ -134,6 +136,9 @@ public class ChargeParticle extends SpritedElement{
         
         this.listOfCapacitors = listOfCapacitors;
         animation.play();
+    }
+    public void stop() {
+        animation.stop();
     }
     public void particleMotion() {
         for(ParallelPlateCapacitor capa: listOfCapacitors){

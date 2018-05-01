@@ -166,13 +166,13 @@ public class ParallelPlateCapacitor extends Element {
             });
         
         topPlate.sprite.setOnMouseClicked(eh-> {
-            if(eh.isShiftDown()) {
+            if(eh.isControlDown()) {
                 Stage window = generateWindowCustomizeCapacitor();
                 window.show();
             }
         });
         botPlate.sprite.setOnMouseClicked(eh-> {
-            if(eh.isShiftDown()) {
+            if(eh.isControlDown()) {
                 Stage window = generateWindowCustomizeCapacitor();
                 window.show();
             }
@@ -245,7 +245,7 @@ public class ParallelPlateCapacitor extends Element {
            this.setSheetChargeDensity(densityValue);
            this.setDistance(distanceValue);
            this.setOrientation(orientationValue);
-           this.setCapacitor();
+           this.remakeCapacitor();
            
            stage.close();
         });
@@ -261,5 +261,27 @@ public class ParallelPlateCapacitor extends Element {
         return stage;
     }
 
-    
+    public void remakeCapacitor() {
+        if (sheetChargeDensity >= 0) {
+            arrowDirection = "down";
+            topPlate = new ElectricPlate("+",arrowDirection);
+            botPlate = new ElectricPlate("-",arrowDirection);
+        }
+        else if (sheetChargeDensity < 0) {
+            arrowDirection = "up";
+            topPlate = new ElectricPlate("-",arrowDirection);
+            botPlate = new ElectricPlate("+",arrowDirection);
+        }
+        
+        topPlate.sprite.setRotate(-1*orientation);
+        botPlate.sprite.setRotate(-1*orientation);
+        
+        topPlate.sprite.setX(posX);
+        topPlate.sprite.setY(posY);
+        
+        botPlate.sprite.setX(topPlate.sprite.getX() + (distance + topPlate.sprite.getImage().getHeight())*Math.sin(Math.toRadians(orientation)));
+        botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight())
+                *Math.cos(Math.toRadians(orientation)));
+        
+    }
 }

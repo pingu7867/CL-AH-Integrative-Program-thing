@@ -34,13 +34,21 @@ public class ChargeParticlePathModule extends Module {
     boolean IsPlaying = false;
     
     public ChargeParticlePathModule(Core creator, int moduleNumber) {
-        super(creator, moduleNumber);
+        super(creator,moduleNumber);
+        moduleNumber = 3;
         BorderPane bord = new BorderPane();
         
         pane = new Pane();
+        ExitButton exit = new ExitButton(creator, this);
         HBox buttons = new HBox(10);
+        HBox bottombutton = new HBox(10);
+        
+        bottombutton.getChildren().add(exit.display);
+        bottombutton.setAlignment(Pos.CENTER_LEFT);
+        
         bord.setCenter(pane);
         bord.setTop(buttons);
+        bord.setBottom(bottombutton);
         scene = new Scene(bord,creator.getRes1X(),creator.getRes1Y());
         viewport = new Stage();
         viewport.setScene(scene); viewport.setTitle("Cedamine Physics Toolkit: Charged Particle Path");
@@ -48,11 +56,13 @@ public class ChargeParticlePathModule extends Module {
         ChargeParticleInventoryIcon cppIcon = new ChargeParticleInventoryIcon(creator,this);
         ParallelPlateCapacitorInventoryIcon ppcIcon = new ParallelPlateCapacitorInventoryIcon(creator,this);
         RunSimulationChargeParticlePath RunSimulation = new RunSimulationChargeParticlePath(creator, this);
-
-        buttons.getChildren().addAll(ppcIcon.display,cppIcon.display,RunSimulation.display);
+        DeleteButton delete = new DeleteButton(creator,this);
+        PauseButtonChargeParticlePath pausebutton = new PauseButtonChargeParticlePath(creator, this);
+        ResetButtonChargeParticlePath resetbutton = new ResetButtonChargeParticlePath(creator, this);
+        buttons.getChildren().addAll(ppcIcon.display,cppIcon.display,RunSimulation.display, pausebutton.display,delete.display,resetbutton.display);
         
     }
-    
+    @Override
     public void popOut() {
         viewport.show();
     }
@@ -125,6 +135,22 @@ public class ChargeParticlePathModule extends Module {
            pane.getChildren().addAll(capacitor.getTopPlate().sprite, capacitor.getBotPlate().sprite);
            elements.add(capacitor);
            listOfCapacitors.add(capacitor);
+           
+           capacitor.getTopPlate().sprite.setOnMouseClicked(oh-> {
+               if (deleteModeActivated) {
+                   elements.remove(capacitor);
+                   listOfCapacitors.remove(capacitor);
+                   pane.getChildren().removeAll(capacitor.getTopPlate().sprite,capacitor.getBotPlate().sprite);
+               }
+           });
+           capacitor.getBotPlate().sprite.setOnMouseClicked(oh-> {
+               if (deleteModeActivated) {
+                   elements.remove(capacitor);
+                   listOfCapacitors.remove(capacitor);
+                   pane.getChildren().removeAll(capacitor.getTopPlate().sprite,capacitor.getBotPlate().sprite);
+               }
+           });
+           
            stage.close();
         });
         
@@ -220,6 +246,14 @@ public class ChargeParticlePathModule extends Module {
            pane.getChildren().add(particle.sprite);
            elements.add(particle);
            this.listOfParticles.add(particle);
+           particle.sprite.setOnMouseClicked(oh -> {
+               if(deleteModeActivated) {
+                   elements.remove(particle);
+                   listOfParticles.remove(particle);
+                   pane.getChildren().remove(particle.sprite);
+               }
+           });
+           
            stage.close();
         });
         if (!viewport.isShowing()) {
