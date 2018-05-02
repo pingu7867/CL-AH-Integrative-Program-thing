@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 public class TestIdealGasModule  extends Application{
     @Override
     public void start(Stage primaryStage) {
-       IdealGasModule n = new IdealGasModule(new Core()); 
+       IdealGasModule n = new IdealGasModule(new Core(),8); 
        n.viewport.show();
     }
     public static void main(String[] args) {

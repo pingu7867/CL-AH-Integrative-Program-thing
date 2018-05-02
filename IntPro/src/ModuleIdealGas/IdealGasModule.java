@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 package ModuleIdealGas;
-
+import ModuleProjectileMotion.ProjectileMotionModule;
 import intpro.Module;
 import intpro.*;
+import java.io.IOException;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -23,36 +24,53 @@ import javafx.scene.control.ContentDisplay;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.shape.Rectangle;
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class IdealGasModule extends Module {
-    ArrayList<Container> listOfContainer = ArrayList<>();
+    ArrayList<Container> listOfContainer = new ArrayList<>();
     public IdealGasModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
         pane = new Pane();
-        scene = new Scene(pane);
-        viewport = new Stage();
-        viewport.setScene(scene);
-        Container cont = new Container(11,1,101.3,273);
-        Rectangle hitbox = new Rectangle(92, 265, 420, 723);
-        hitbox.setFill(Color.BLACK);
-        hitbox.setStroke(Color.BLACK);
+        BorderPane bord = new BorderPane();
+        //ExitButton exit = new ExitButton(creator, this);
+        
+        HBox bottombutton = new HBox(10);
+        //bottombutton.getChildren().add(exit.display);
+        bottombutton.setAlignment(Pos.CENTER_LEFT);
+        
+        Container cont = new Container(1,1,101.3,273,this);
         pane.getChildren().add(cont.sprite);
         
-        
-        for (int i = 0; i < cont.particles.size(); i++) {
-            pane.getChildren().add(cont.particles.get(i).sprite);
-        }
-        
-        cont.setAnimation();
+        bord.setCenter(pane);
+        bord.setBottom(bottombutton);
+        scene = new Scene(bord);
         
     }
     @Override
     public void popOut() {
+        
+        
+        viewport = new Stage();
+        viewport.setTitle("Ideal Gas Module");
+        viewport.setScene(scene);
         viewport.show();
+        
+        this.viewport.setOnCloseRequest(e -> {
+            try {
+                dataSource.flushModule(moduleNumber);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjectileMotionModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
-    
+    @Override
+    public String getModuleName(){
+        return "ideal gas";
+    }
 }
+
