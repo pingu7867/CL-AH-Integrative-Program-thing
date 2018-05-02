@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -28,8 +29,10 @@ public class Module implements GameTickActor {
     public Core dataSource;
     public int moduleNumber = 0;
     public RenderSet renderSet;
-    public HashSet<Element> elements;
+    public ArrayList<Element> elements;
     public Inventory inventory;
+    public Element newestCreatedElement;
+    public boolean deleteModeActivated = false;
     
     public Pane pane;
     public Scene scene;
@@ -46,12 +49,9 @@ public class Module implements GameTickActor {
         this.moduleNumber = moduleNumber;
         this.dataSource = creator;
         renderSet = new RenderSet();
-        elements = new HashSet<Element>();
+        elements = new ArrayList<Element>();
         this.ticker = new GameTickTimer(framerate);
         this.ticker.declareHost(this);
-        
-        inventory = new Inventory(getModuleName(), dataSource);
-        
     }
     
     public int getResolutionX() {
@@ -67,7 +67,7 @@ public class Module implements GameTickActor {
     }
     
     public void saveState() throws IOException {
-   
+       
        String date = new java.util.Date().toString().replace(" ", "_");
        String path = ("src/saves/save_" + getModuleName() + "_" + date + ".txt").replace(" ", "_").replace(":", "_");
        
@@ -91,19 +91,18 @@ public class Module implements GameTickActor {
     }
     
     public String getModuleName() {
-        String name = "null";
         switch (moduleNumber) {
-            case 0: name = "null"; break;
-            case 1: name = "projectile motion"; break;
-            case 2: name = "lens optics"; break;
-            case 3: name = "charge particle path"; break;
-            case 4: name = "spring simple harmonic motion"; break;
-            case 5: name = "wave superposition"; break;
-            case 6: name = "circular motion"; break;
-            case 7: name = "momentum"; break;
-            case 8: name = "ideal gas"; break;
+            case 0: return "null";
+            case 1: return "projectile motion";
+            case 2: return "lens optics";
+            case 3: return "charge particle path";
+            case 4: return "spring simple harmonic motion";
+            case 5: return "wave superposition";
+            case 6: return "circular motion";
+            case 7: return "momentum";
+            case 8: return "ideal gas";
+            default: return "not found";
         }
-        return name;
     }
     
     public Element[] getElementsArray() {
