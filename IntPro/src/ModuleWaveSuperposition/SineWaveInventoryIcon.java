@@ -110,6 +110,20 @@ public class SineWaveInventoryIcon extends InventoryIcon{
                 fieldForVelocity.setText(""+(1 * Double.parseDouble(text) * Double.parseDouble(fieldForFrequency.getText())));
             }
         });
+        TextField fieldForPhaseShift= new TextField("0");
+        fieldForPhaseShift.setPrefColumnCount(3);
+        fieldForPhaseShift.textProperty().addListener(ov-> {
+            String text = fieldForPhaseShift.getText();
+            if (text.equals("")) {
+                text = "0";
+                fieldForPhaseShift.setText("0");
+            }
+            if (!module.checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForPhaseShift.setText(text);
+            }
+            
+        });
         
         Label labelForAmplitude = new Label("Amplitude (cm)", fieldForAmplitude);
         labelForAmplitude.setContentDisplay(ContentDisplay.RIGHT);
@@ -123,8 +137,10 @@ public class SineWaveInventoryIcon extends InventoryIcon{
         Label labelForVelocity = new Label("Velocity (cm/s)", fieldForVelocity);
         labelForVelocity.setContentDisplay(ContentDisplay.RIGHT);
         
+        Label labelForPhaseShift = new Label("Phase Shift (cm)", fieldForPhaseShift);
+        labelForPhaseShift.setContentDisplay(ContentDisplay.RIGHT);
 
-        WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity, buttons);
+        WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity, labelForPhaseShift, buttons);
         
         Create.setOnAction(eh -> {
            
@@ -132,10 +148,11 @@ public class SineWaveInventoryIcon extends InventoryIcon{
            double wavelengthValue = Double.parseDouble(fieldForWavelength.getText());
            double frequencyValue = Double.parseDouble(fieldForFrequency.getText());
            double velocityValue = Double.parseDouble(fieldForVelocity.getText());
+           double phaseShiftValue = Double.parseDouble(fieldForPhaseShift.getText());
            
-           Curve curve = new Curve(new SineWaveFunction(amplitudeValue,frequencyValue,wavelengthValue,velocityValue), module.getResolutionX());
+           Curve curve = new Curve(new SineWaveFunction(amplitudeValue,frequencyValue,wavelengthValue,velocityValue,phaseShiftValue), module.getResolutionX());
            module.curves.add(curve);
-           setWavePane(curve);
+           module.setWavePane(curve);
            stage.close();
             });
         Cancel.setOnAction(eh-> {
@@ -146,19 +163,5 @@ public class SineWaveInventoryIcon extends InventoryIcon{
         stage.setScene(new Scene(WindowLayout));
         return stage;
     }
-    public void setWavePane(Curve curve) {
-        HBox buttons = new HBox(10);
-        Pane wpane = new Pane();
-        BorderPane bord = new BorderPane();
-        
-        RunSimulationOneWave rsowbutton = new RunSimulationOneWave(module.dataSource,curve);
-        buttons.getChildren().addAll(rsowbutton.display);
-        
-        wpane.getChildren().addAll(curve.xAxis,curve.curve);
-        
-        bord.setTop(buttons);
-        bord.setCenter(wpane);
-        module.wavePanes.add(bord);
-        module.box.getChildren().add(bord);
-    }
+
 }

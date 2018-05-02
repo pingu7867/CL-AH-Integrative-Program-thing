@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 import java.util.ArrayList;
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class CompositeFunction extends Function {
     ArrayList<Function> functions = new ArrayList<>();
@@ -23,7 +23,8 @@ public class CompositeFunction extends Function {
         double result = 0;
         for (Function e: functions) {
             result += e.evaluateAt(x,posY);
+            
         }
-        return result;
+        return result - (posY *(functions.size() - 1));
     }
 }

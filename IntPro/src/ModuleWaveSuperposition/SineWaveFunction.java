@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class SineWaveFunction extends PeriodicFunction {
     
@@ -17,8 +17,11 @@ public class SineWaveFunction extends PeriodicFunction {
     public SineWaveFunction(double amp, double fre, double wavl, double velocity) {
         super(amp,fre,wavl,velocity);
     }
+    public SineWaveFunction(double amp, double fre, double wavl, double velocity, double phS) {
+        super(amp,fre,wavl,velocity,phS);
+    }
     @Override
     public double evaluateAt(double x, double posY) {
-        return posY - amplitude*(Math.sin((wavelength + (x + motionOffsetX) )/wavelength * 2*Math.PI));
+        return posY - amplitude*(Math.sin((wavelength + (x + motionOffsetX + phaseShift) )/wavelength * 2*Math.PI));
     }
 }

@@ -18,6 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.shape.Polyline;
+import javafx.scene.layout.Pane;
 import java.util.ArrayList;
 /**
  *
@@ -27,7 +29,7 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
     WaveSuperpositionModule module;
     public CompositeFunctionInventoryIcon(Core creator, WaveSuperpositionModule module) {
         super("composite function",creator);
-        simpleGraphicSetUp("display", "CompositeFunctionInventoryIcon");
+        simpleGraphicSetUp("display", "CompositeFuncInventoryIcon");
         this.module = module;
     }
     @Override
@@ -63,16 +65,25 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
            String[] indexes = text.split("/");
            ArrayList<Function> listOfFunctions = new ArrayList<>();
            for (int i =0; i < indexes.length; i++) {
+               if (module.curves.get(Integer.parseInt(indexes[i])).function instanceof CompositeFunction) {
+                   CompositeFunction tempFunc = (CompositeFunction)module.curves.get(Integer.parseInt(indexes[i])).function;
+                   
+                   listOfFunctions.addAll(tempFunc.functions);
+               }
+               else {
                listOfFunctions.add(module.curves.get(Integer.parseInt(indexes[i])).function);
+               }
            }
-           
            Curve curve = new Curve(new CompositeFunction(listOfFunctions), module.getResolutionX());
+           module.curves.add(curve);
+           module.setWavePane(curve);
            
            stage.close();
             });
         Cancel.setOnAction(eh-> {
               stage.close();
             });
+        WindowLayout.getChildren().addAll(labelforCurvesIndex,buttons);
                 
         stage.setScene(new Scene(WindowLayout));
         
@@ -89,4 +100,5 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
         }
         return true;
     }
+   
 }

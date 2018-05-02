@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 
 public class PolynomialFunction extends Function {
@@ -20,6 +20,14 @@ public class PolynomialFunction extends Function {
     
     public PolynomialFunction(int deg) {
         this.degree = deg;
+    }
+    @Override
+    public double evaluateAt(double x, double posY) {
+        double result = 1;
+        for (int i = 0; i < degree; i++) {
+            result*=x;
+        }
+        return posY - result;
     }
     
 }

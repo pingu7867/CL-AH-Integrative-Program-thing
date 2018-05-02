@@ -18,6 +18,7 @@ public class ResetButtonWaveSuperposition extends ResetButton{
     }
     @Override
     public void action() {
+        
         module.pane.getChildren().clear();
         module.box.getChildren().clear();
         module.curves.clear();

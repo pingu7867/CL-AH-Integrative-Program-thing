@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class SquareWaveFunction extends PeriodicFunction {
     public SquareWaveFunction() {
@@ -15,6 +15,9 @@ public class SquareWaveFunction extends PeriodicFunction {
     }
     public SquareWaveFunction(double amp, double fre, double wavl, double velocity) {
         super(amp,fre,wavl,velocity);
+    }
+    public SquareWaveFunction(double amp, double fre, double wavl, double velocity, double phS) {
+        super(amp,fre,wavl,velocity,phS);
     }
     @Override
     public double evaluateAt(double x, double posY) {

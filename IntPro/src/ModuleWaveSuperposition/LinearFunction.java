@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class LinearFunction extends Function {
     double slope;

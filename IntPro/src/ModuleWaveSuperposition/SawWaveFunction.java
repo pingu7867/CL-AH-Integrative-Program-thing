@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class SawWaveFunction extends PeriodicFunction {
     public SawWaveFunction() {
@@ -15,6 +15,9 @@ public class SawWaveFunction extends PeriodicFunction {
     }
     public SawWaveFunction(double amp, double fre, double wavl, double velocity) {
         super(amp,fre,wavl,velocity);
+    }
+    public SawWaveFunction(double amp, double fre, double wavl, double velocity, double phS) {
+        super(amp,fre,wavl,velocity,phS);
     }
     @Override
     public double evaluateAt(double x, double posY) {

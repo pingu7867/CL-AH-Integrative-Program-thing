@@ -65,11 +65,11 @@ public class SawWaveInventoryIcon extends InventoryIcon{
                fieldForVelocity.setText(text);
             }
         });
-        TextField fieldForWavelength = new TextField("2");
+        TextField fieldForWavelength = new TextField("100");
         fieldForWavelength.setPrefColumnCount(3);
         
         
-        TextField fieldForFrequency = new TextField("100");
+        TextField fieldForFrequency = new TextField("2");
         fieldForFrequency.setPrefColumnCount(3);
         fieldForFrequency.textProperty().addListener(ov-> {
             String text = fieldForFrequency.getText();
@@ -109,6 +109,20 @@ public class SawWaveInventoryIcon extends InventoryIcon{
                 fieldForVelocity.setText(""+(1 * Double.parseDouble(text) * Double.parseDouble(fieldForFrequency.getText())));
             }
         });
+        TextField fieldForPhaseShift= new TextField("0");
+        fieldForPhaseShift.setPrefColumnCount(3);
+        fieldForPhaseShift.textProperty().addListener(ov-> {
+            String text = fieldForPhaseShift.getText();
+            if (text.equals("")) {
+                text = "0";
+                fieldForPhaseShift.setText("0");
+            }
+            if (!module.checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForPhaseShift.setText(text);
+            }
+            
+        });
         
         Label labelForAmplitude = new Label("Amplitude (cm)", fieldForAmplitude);
         labelForAmplitude.setContentDisplay(ContentDisplay.RIGHT);
@@ -122,8 +136,10 @@ public class SawWaveInventoryIcon extends InventoryIcon{
         Label labelForVelocity = new Label("Velocity (cm/s)", fieldForVelocity);
         labelForVelocity.setContentDisplay(ContentDisplay.RIGHT);
         
+        Label labelForPhaseShift = new Label("Phase Shift (cm)", fieldForPhaseShift);
+        labelForPhaseShift.setContentDisplay(ContentDisplay.RIGHT);
 
-        WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity, buttons);
+        WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity, labelForPhaseShift, buttons);
         
         Create.setOnAction(eh -> {
            
@@ -131,8 +147,9 @@ public class SawWaveInventoryIcon extends InventoryIcon{
            double wavelengthValue = Double.parseDouble(fieldForWavelength.getText());
            double frequencyValue = Double.parseDouble(fieldForFrequency.getText());
            double velocityValue = Double.parseDouble(fieldForVelocity.getText());
+           double phaseShiftValue = Double.parseDouble(fieldForPhaseShift.getText());
            
-           Curve curve = new Curve(new SawWaveFunction(amplitudeValue,frequencyValue,wavelengthValue,velocityValue), module.getResolutionX());
+           Curve curve = new Curve(new SawWaveFunction(amplitudeValue,frequencyValue,wavelengthValue,velocityValue,phaseShiftValue), module.getResolutionX());
            module.curves.add(curve);
            module.setWavePane(curve);
            stage.close();

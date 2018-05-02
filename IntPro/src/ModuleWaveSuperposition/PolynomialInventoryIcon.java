@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 public class PolynomialInventoryIcon extends InventoryIcon{
     WaveSuperpositionModule module;
     public PolynomialInventoryIcon(Core creator, WaveSuperpositionModule module) {
-        super("sine wave",creator);
-        display.setImage(new Image(new File("src/Assets/SawWaveInventoryIcon.png").toURI().toString()));
+        super("polynomial function",creator);
+        display.setImage(new Image(new File("src/Assets/PolynomialFuncInventoryIcon.png").toURI().toString()));
         this.module = module;
     }
     @Override
@@ -35,7 +35,7 @@ public class PolynomialInventoryIcon extends InventoryIcon{
     }
     public Stage generatePolynomialCurveWindow() {
         Stage stage = new Stage();
-        BorderPane bordWindow = new BorderPane();
+        
         VBox WindowLayout = new VBox(20);
         
         HBox buttons = new HBox(8);
@@ -44,6 +44,44 @@ public class PolynomialInventoryIcon extends InventoryIcon{
             Button Cancel = new Button("Cancel");
             buttons.getChildren().addAll(Cancel, Create);
             
+        TextField fieldForDegree = new TextField("0");
+        fieldForDegree.setPrefColumnCount(2);
+        fieldForDegree.textProperty().addListener(cl-> {
+            String text = fieldForDegree.getText();
+            if (text.equals("")) {
+                text = "0";
+                fieldForDegree.setText(text);
+            }
+            if (!module.checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldForDegree.setText(text);
+            }
+            if (text.contains(".")) {
+                text = text.replace(".", "");
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+            }
+            
+        });
+        
+        Label labelforDegree = new Label("Enter an integer for the degree of the function", fieldForDegree);
+        labelforDegree.setContentDisplay(ContentDisplay.LEFT);
+        
+        WindowLayout.getChildren().addAll(labelforDegree,buttons);
+        Create.setOnAction(eh -> {
+           
+           int degreeValue = Integer.parseInt(fieldForDegree.getText());
+           
+           
+           Curve curve = new Curve(new PolynomialFunction(degreeValue), module.getResolutionX());
+           module.curves.add(curve);
+           module.setWavePane(curve);
+           stage.close();
+            });
+        Cancel.setOnAction(eh-> {
+              stage.close();
+            });
             stage.setScene(new Scene(WindowLayout));
         return stage;
     }

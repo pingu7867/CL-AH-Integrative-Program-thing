@@ -7,7 +7,7 @@ package ModuleWaveSuperposition;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class TriangleWaveFunction extends PeriodicFunction {
     public TriangleWaveFunction() {
@@ -16,9 +16,11 @@ public class TriangleWaveFunction extends PeriodicFunction {
     public TriangleWaveFunction(double amp, double fre, double wavl,double velocity) {
         super(amp,fre,wavl,velocity);
     }
+    public TriangleWaveFunction(double amp, double fre, double wavl,double velocity,double phS) {
+        super(amp,fre,wavl,velocity,phS);
+    }
     @Override
     public double evaluateAt(double x, double posY) {
-        System.out.println(posY - (2 * amplitude/wavelength) * (Math.abs(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)- wavelength/2) - wavelength/4));
         return posY - (2 * amplitude/wavelength) * (Math.abs(((wavelength + (x + phaseShift + motionOffsetX) ) % wavelength)- wavelength/2) - wavelength/4);
     }
 }
