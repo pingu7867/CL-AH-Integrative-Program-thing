@@ -138,10 +138,10 @@ public class ParallelPlateCapacitor extends Element {
         
         topPlate.sprite.setOnMouseDragged(eh-> {
             if (canMove) {
-            topPlate.sprite.setX(eh.getSceneX());
-            topPlate.sprite.setY(eh.getSceneY());
-            posX = eh.getSceneX();
-            posY = eh.getSceneY();
+            topPlate.sprite.setX(eh.getX());
+            topPlate.sprite.setY(eh.getY());
+            posX = eh.getX();
+            posY = eh.getY();
             
             botPlate.sprite.setX(topPlate.sprite.getX() + (distance + topPlate.sprite.getImage().getHeight())* Math.sin(Math.toRadians(orientation)));
             botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight()) * Math.cos(Math.toRadians(orientation)));
@@ -156,8 +156,8 @@ public class ParallelPlateCapacitor extends Element {
         });
         botPlate.sprite.setOnMouseDragged(eh-> {
             if (canMove) {
-            botPlate.sprite.setX(eh.getSceneX());
-            botPlate.sprite.setY(eh.getSceneY());     
+            botPlate.sprite.setX(eh.getX());
+            botPlate.sprite.setY(eh.getY());     
             
             topPlate.sprite.setX(botPlate.sprite.getX() - (distance + topPlate.sprite.getImage().getHeight())*Math.sin(Math.toRadians(orientation)));
             topPlate.sprite.setY(botPlate.sprite.getY() -(distance + topPlate.sprite.getImage().getHeight())*Math.cos(Math.toRadians(orientation)));

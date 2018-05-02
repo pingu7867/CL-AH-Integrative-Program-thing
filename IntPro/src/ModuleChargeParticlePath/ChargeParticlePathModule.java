@@ -5,8 +5,10 @@
  */
 package ModuleChargeParticlePath;
 
+import ModuleProjectileMotion.ProjectileMotionModule;
 import intpro.Module;
 import intpro.*;
+import java.io.IOException;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -23,10 +25,12 @@ import javafx.scene.control.ContentDisplay;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class ChargeParticlePathModule extends Module {
     ArrayList<ParallelPlateCapacitor> listOfCapacitors = new ArrayList<>();
@@ -64,7 +68,15 @@ public class ChargeParticlePathModule extends Module {
     }
     @Override
     public void popOut() {
+        viewport.setTitle("Charge Particle Path Module");
         viewport.show();
+        this.viewport.setOnCloseRequest(e -> {
+            try {
+                dataSource.flushModule(moduleNumber);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjectileMotionModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     public Stage generateParallelPlateCapacitorWindow() {
         Stage stage = new Stage();
