@@ -20,6 +20,7 @@ public class PauseButtonMomentum extends PauseButton{
     public void action() {
         for (PhysicalBody body: module.listOfPhysicalBodies){
                 body.pause();
+                body.unlockPosition();
             }
     }
     

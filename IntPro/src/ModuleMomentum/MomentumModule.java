@@ -5,8 +5,10 @@
  */
 package ModuleMomentum;
 
+import ModuleProjectileMotion.ProjectileMotionModule;
 import intpro.Module;
 import intpro.*;
+import java.io.IOException;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -23,14 +25,17 @@ import javafx.scene.control.ContentDisplay;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
- * @author Cédric
+ * @author Amine
  */
 public class MomentumModule extends Module {
     ArrayList<PhysicalBody> listOfPhysicalBodies = new ArrayList<>();
     String typeOfCollision = "elastic";
-    Label labelTypeOfCollision = new Label("Type of Collision" + typeOfCollision);
+    Label labelTypeOfCollision = new Label("Type of Collision: " + typeOfCollision);
+    
     public MomentumModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
         BorderPane bord = new BorderPane();
@@ -55,21 +60,34 @@ public class MomentumModule extends Module {
         ResetButtonMomentum resetbutton = new ResetButtonMomentum(creator,this);
         DeleteButton delete = new DeleteButton(creator,this);
         
-        buttons.getChildren().addAll(pbIcon.display, ebutton.display,inebutton.display,pinebutton.display,labelTypeOfCollision,
-                runSimulation.display,pausebutton.display,resetbutton.display, delete.display);
+        buttons.getChildren().addAll(pbIcon.display, ebutton.display,inebutton.display,pinebutton.display,
+                runSimulation.display,pausebutton.display,resetbutton.display, delete.display,labelTypeOfCollision);
         viewport = new Stage();
         
         scene = new Scene(bord,this.getResolutionX(), this.getResolutionY());
         viewport.setScene(scene);
         
+        Inventory inventory = new Inventory(getModuleName(), creator);
     }
     @Override
     public void popOut() {
+        viewport.setTitle("Momentum Module");
         viewport.show();
+        this.viewport.setOnCloseRequest(e -> {
+            try {
+                dataSource.flushModule(moduleNumber);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjectileMotionModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+        
     }
     @Override
     public String getModuleName(){
         return "momentum";
+    }
+    public void setTypeOfCollision(String type) {
+        this.typeOfCollision = type;
     }
  }
     

@@ -19,21 +19,30 @@ public class PhysicalBody extends SpritedElement{
     private double mass = 1;
     private double momentumX = 0;
     private double momentumY = 0;
+    double angle = 0;
     double velocity = 0;
     private Timeline animation;
     String typeOfCollision = "elastic";
     ArrayList<PhysicalBody> list = new ArrayList<>();
-    ArrayList<ImageView> listOfSprite = new ArrayList<>();
-    
+    ArrayList<Boolean> connectedtoList = new ArrayList<>();
+    int index;
     public PhysicalBody() {
         super(new ImageView());
         this.momentumX = mass * velX;
         this.momentumY = mass * velY;
         sprite.setImage(new Image(new File("src/Assets/PhysicalBody.png").toURI().toString()));
         sprite.setX(0); sprite.setY(0);
-        listOfSprite.add(sprite);
+       
+        sprite.setFitHeight(50); sprite.setFitWidth(50);
         posX = sprite.getX() + sprite.getFitWidth(); posY = 800 - (sprite.getY()+sprite.getFitHeight());
         angle = 0;
+        sprite.setOnMouseDragged(eh-> {
+            if (canMove) {
+            sprite.setX(eh.getX()); sprite.setY(eh.getY());
+            posX = sprite.getX() + sprite.getFitWidth();
+            posY = 800 - (sprite.getY()+sprite.getFitHeight());
+            }
+        });
         
     }
     public PhysicalBody(double mass, double velX, double velY) {
@@ -43,31 +52,6 @@ public class PhysicalBody extends SpritedElement{
         this.mass = mass;
         this.momentumX = mass * velX;
         this.momentumY = mass * velY;
-        
-    }
-    public PhysicalBody(ArrayList<ImageView> lsprite1, ArrayList<ImageView> lsprite2, double mass, double momentumX,
-            double momentumY, double angle1, double angle2) {
-        listOfSprite.addAll(lsprite1);
-        listOfSprite.addAll(lsprite2);
-        this.mass = mass;
-        this.momentumX = momentumX;
-        this.momentumY = momentumY;
-        this.velX = momentumX/mass; this.velY = momentumY/mass;
-        
-        this.velocity = Math.sqrt(velX*velX+velY*velY);
-        if (this.velX >= 0 && this.velY >= 0) {
-            this.angle = Math.acos(velX/velocity);
-        }
-        else if (this.velX <= 0 && this.velY >= 0) {
-            this.angle = Math.acos(velX/velocity);
-        }
-        else if (this.velX <= 0 && this.velY <= 0) {
-            this.angle = 2*Math.PI - Math.acos(velX/velocity);
-        }
-        else if (this.velX >= 0 && this.velY <= 0) {
-            this.angle = 2*Math.PI + Math.asin(velY/velocity);
-        }
-        
         
     }
     public double getMass() {
@@ -107,8 +91,15 @@ public class PhysicalBody extends SpritedElement{
         
         
     }
-    public void setUp(String typeOfCollision, ArrayList<PhysicalBody> list) {
+    public void setTypeOfCollision(String type) {
+        this.typeOfCollision = type;
+    }
+    public void setUp(String typeOfCollision, ArrayList<PhysicalBody> list, int index) {
+        this.index = index;
         this.list = list;
+        for (int i = 0; i < list.size(); i++) {
+            connectedtoList.add(false);
+        }
         animation = new Timeline(new KeyFrame(Duration.millis(1000/30), e-> bodyMotionAnimation()
         ));
         animation.setCycleCount(Timeline.INDEFINITE);
@@ -128,21 +119,27 @@ public class PhysicalBody extends SpritedElement{
     }
     @Override
     public void setAngle(double angle) {
-        this.angle = angle;
+        if (angle < 0) {
+            this.angle = 2*Math.PI + angle;
+        }
+        else if (angle >= 2 * Math.PI) {
+            this.angle = angle % (2 * Math.PI);
+        }
+        
         setVelX(velocity * Math.cos(angle));
         setVelY(velocity * Math.sin(angle));
     }
     public void bodyMotionAnimation() {
-        if (sprite.getX() == 0 || sprite.getX() + sprite.getFitWidth() == 1200) {
+        if (sprite.getX() <= 0 || sprite.getX() + sprite.getFitWidth() >= 1200) {
             setVelX(getVelX() * -1);
         }
-        if (sprite.getY() == 0 || sprite.getY() + sprite.getFitHeight() == 800) {
+        if (sprite.getY() <= 0 || sprite.getY() + sprite.getFitHeight() >= 800) {
             setVelY(getVelY() * -1);
         }
-        for (int i= 0; i <list.size(); i++) {
+        for (int i = index + 1; i < list.size(); i++) {
             
-            if (sprite.intersects(list.get(i).sprite.getX(), list.get(i).sprite.getY(),
-                    list.get(i).sprite.getFitWidth(), list.get(i).sprite.getFitHeight()))   {
+            if (this.sprite.intersects(list.get(i).sprite.getBoundsInLocal())){
+                if (!connectedtoList.get(i)) {
                 double radiusAngle;
                 double tempAngle1;
                 double tempAngle2;
@@ -151,7 +148,7 @@ public class PhysicalBody extends SpritedElement{
                 
                 if (list.get(i).posX > posX) {
                     
-                    if (list.get(i).posY > posY) {
+                    if (list.get(i).posY > posY) { //This checks the resultant angle for each of the bodies
                         radiusAngle = Math.PI/4;
                         tempAngle1 = (list.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
@@ -160,8 +157,9 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                     }
-                    else if (list.get(i).posY == posY) {
+                    else if (list.get(i).posY + 15 <= posY && list.get(i).posY - 15 >= posY) {
                         radiusAngle = 0;
                         tempAngle1 = (list.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
@@ -169,6 +167,7 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                         
                     }
                     else if (list.get(i).posY < posY) {
@@ -181,10 +180,10 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
-                        
+                        CollisionHandler(list.get(i));
                     }
                 }
-                else if (list.get(i).posX == posX) {
+                else if (list.get(i).posX + 15 <= posX && list.get(i).posX - 15 >= posX) {
                         if (list.get(i).posY > posY) {
                         radiusAngle = Math.PI/2;
                         tempAngle1 = (list.get(i).getAngle() - Math.PI - radiusAngle) * -1;
@@ -195,6 +194,7 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                         }
                         else if (list.get(i).posY < posY) {
                         radiusAngle = Math.PI/-2;
@@ -206,6 +206,7 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                         }
                     }
                 
@@ -219,8 +220,9 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                     }
-                    else if (list.get(i).posY == posY) {
+                    else if (list.get(i).posY + 15 <= posY && list.get(i).posY - 15 >= posY) {
                         radiusAngle = Math.PI;
                         tempAngle1 = (list.get(i).getAngle() - Math.PI - radiusAngle) * -1;
                         tempAngle2 = tempAngle1 + radiusAngle;
@@ -228,6 +230,7 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
+                        CollisionHandler(list.get(i));
                     }
                     else if (list.get(i).posY < posY) {
                         radiusAngle = (3*Math.PI)/-4;
@@ -238,12 +241,15 @@ public class PhysicalBody extends SpritedElement{
                         tempAngle3 = (angle - Math.PI - radiusAngle) * -1;
                         tempAngle4 = tempAngle3 + radiusAngle;
                             setAngle(tempAngle4);
-                        
+                        CollisionHandler(list.get(i));
                     }    
                 }
             }
                          
         }
+        }
+        posX += velX/30; posY += velY/30;
+        sprite.setX(sprite.getX() + velX/30); sprite.setY(sprite.getY() - velY/30);
     }
     public void CollisionHandler(PhysicalBody body) {
         
@@ -262,8 +268,31 @@ public class PhysicalBody extends SpritedElement{
             double mass = body.getMass() + this.getMass();
             double momentumX = body.getMomentumX()+ this.getMomentumX();
             double momentumY = body.getMomentumY()+ this.getMomentumY();
-            list.add(new PhysicalBody(this.listOfSprite,body.listOfSprite,mass,momentumX,momentumY, this.getAngle(), body.getAngle()));
-            list.remove(body); list.remove(this);
+            
+            this.setMass(mass); body.setMass(mass);
+            this.setVelX(momentumX/mass); body.setVelX(momentumX/mass);
+            this.setVelY(momentumY/mass); body.setVelY(momentumY/mass);
+            this.setAngleAndVelocityPECollision(this.getVelX(), this.getVelY());
+            body.setAngleAndVelocityPECollision(body.getVelX(), body.getVelY());
+            this.connectedtoList.set(body.index, true);
+            body.connectedtoList.set(this.index, true);
+            
+        }
+    }
+    public void setAngleAndVelocityPECollision(double velX, double velY) {
+        this.velocity = Math.sqrt(velX * velX + velY * velY);
+        
+        if (this.velX >= 0 && this.velY >= 0) {
+            this.angle = Math.acos(velX/velocity);
+        }
+        else if (this.velX <= 0 && this.velY >= 0) {
+            this.angle = Math.acos(velX/velocity);
+        }
+        else if (this.velX <= 0 && this.velY <= 0) {
+            this.angle = 2*Math.PI - Math.acos(velX/velocity);
+        }
+        else if (this.velX >= 0 && this.velY <= 0) {
+            this.angle = 2*Math.PI + Math.asin(velY/velocity);
         }
     }
     

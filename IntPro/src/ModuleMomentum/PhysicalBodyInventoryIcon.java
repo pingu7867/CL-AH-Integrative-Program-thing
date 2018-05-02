@@ -25,6 +25,7 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
     public PhysicalBodyInventoryIcon(Core creator, MomentumModule module) {
         super("physical body", creator);
         this.simpleGraphicSetUp("display", "PhysicalBodyInventoryIcon");
+        this.module = module;
     }
     @Override 
     public void action() {
@@ -49,9 +50,8 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
         fieldforVelocity .setPrefColumnCount(3);
         fieldforVelocity .textProperty().addListener(ov-> {
             String text = fieldforVelocity.getText();
-            if (!module.checkDecimal(text) && text.contains("-")) {
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
-               text.replace("-", "");
                fieldforVelocity .setText(text);
             }
         });
@@ -60,11 +60,11 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
         fieldforAngle.setPrefColumnCount(3);
         fieldforAngle.textProperty().addListener(ov-> {
             String text = fieldforAngle.getText();
-            if (!module.checkDecimal(text) && text.contains("-")) {
-               text.replace("-", "");
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldforAngle.setText(text);
             }
+            
         });
 
         Label labelforMass = new Label("Mass (kg)", fieldforMass);
@@ -73,7 +73,7 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
         Label labelforVelocity = new Label("Velocity(cm/s)", fieldforVelocity);
         labelforVelocity.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforAngle = new Label("Angle (degrees)", fieldforAngle);
+        Label labelforAngle = new Label("Path Orientation(degrees)", fieldforAngle);
         labelforAngle.setContentDisplay(ContentDisplay.RIGHT);
         
         
@@ -89,11 +89,12 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
         Create.setOnAction(eh -> {
            double massValue = Double.parseDouble(fieldforMass.getText());
            double velocityValue = Double.parseDouble(fieldforVelocity.getText());
-           double angleValue = Double.parseDouble(fieldforAngle.getText());
+           double angleValue = Double.parseDouble(fieldforAngle.getText()) * (Math.PI/180);
            PhysicalBody body = (PhysicalBody)deploy();
            body.setMass(massValue); body.setVelocity(velocityValue); body.setAngle(angleValue);
            
            module.listOfPhysicalBodies.add(body);
+           module.pane.getChildren().add(body.sprite);
            stage.close();
         });
         

@@ -14,16 +14,17 @@ public class InelasticButton extends ImageButton {
     
     public InelasticButton(Core creator, MomentumModule mod) {
         super(creator);
+        this.doubleClickDuration = 0;
         this.simpleGraphicSetUp("idle", "Inelastic");
         this.simpleGraphicSetUp("press", "InelasticActivated");
         module = mod;
     }
     @Override
     public void action() {
-        module.typeOfCollision = "inelastic";
+        module.setTypeOfCollision("inelastic");
         module.labelTypeOfCollision.setText("Type Of Collision: Inelastic");
         for (PhysicalBody body: module.listOfPhysicalBodies) {
-            body.typeOfCollision = "inelastic";
+            body.setTypeOfCollision("inelastic");
         }
     }
 }

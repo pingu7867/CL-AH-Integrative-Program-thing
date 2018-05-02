@@ -14,16 +14,17 @@ public class ElasticButton extends ImageButton {
     
     public ElasticButton(Core creator, MomentumModule mod) {
         super(creator);
+        this.doubleClickDuration = 0;
         this.simpleGraphicSetUp("idle", "Elastic");
         this.simpleGraphicSetUp("press", "ElasticActivated");
         module = mod;
     }
     @Override
     public void action() {
-        module.typeOfCollision = "elastic";
+        module.setTypeOfCollision("elastic");
         module.labelTypeOfCollision.setText("Type Of Collision: Elastic");
         for (PhysicalBody body: module.listOfPhysicalBodies) {
-            body.typeOfCollision = "elastic";
+            body.setTypeOfCollision("elastic");
         }
     }
 }
