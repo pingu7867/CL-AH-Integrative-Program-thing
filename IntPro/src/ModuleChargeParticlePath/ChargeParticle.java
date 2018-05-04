@@ -40,15 +40,17 @@ public class ChargeParticle extends SpritedElement{
         super();
         animation = new Timeline(new KeyFrame(Duration.millis(1000/30),eh-> particleMotion()));
         animation.setCycleCount(Timeline.INDEFINITE);
+        this.sprite.setX(75); this.sprite.setY(0);
         this.sprite.setFitWidth(15); this.sprite.setFitHeight(15);
-        posX = this.sprite.getFitWidth()/2; posY = this.sprite.getFitHeight()/2;
+        posX = this.sprite.getX() + this.sprite.getFitWidth()/2; 
+        posY = 1200 + this.sprite.getFitHeight()/2 - this.sprite.getY();
         
     }
     
     public ChargeParticle(double charge, double mass) {
         this();
         
-        this.charge = charge;
+        this.charge = charge/10;
     }
     
     public ChargeParticle(double charge,double mass,double velX, double velY) {
@@ -58,7 +60,7 @@ public class ChargeParticle extends SpritedElement{
         this.velY = velY;
         this.posX = 0;
         this.posY = 0;
-        this.charge = charge;
+        this.charge = charge/10; // deciCoulomb to Coulomb
     }
     
     public ChargeParticle(double charge,double mass,double velX, double velY, double posX, double posY) {
@@ -68,7 +70,7 @@ public class ChargeParticle extends SpritedElement{
         this.velY = velY;
         this.posX = posX;
         this.posY = posY;
-        this.charge = charge;
+        this.charge = charge/10;
     }
     
     public double getCharge(){
@@ -110,26 +112,24 @@ public class ChargeParticle extends SpritedElement{
            this.sprite.setImage(new Image(new File("src/Assets/NeutralCharge.png").toURI().toString()));
         }
         
-        
-        this.sprite.setX(posX - this.sprite.getFitWidth()/2); this.sprite.setY(posY - this.sprite.getFitHeight()/2);
-        
-        
         this.sprite.setOnMouseDragged(md -> {
-            if (canMove){
-            posX = md.getX(); posY = md.getY();
+            if (canMove && md.getX() >= 0 && md.getX() + sprite.getFitWidth() <= 1200  
+                    && md.getY() >= 0 && md.getY() + sprite.getFitHeight() <= 750){
             
             this.sprite.setX(md.getX() - this.sprite.getImage().getWidth()/2);
             this.sprite.setY(md.getY() - this.sprite.getImage().getHeight()/2);
+            System.out.println("Charge Particle: ehX = "+ md.getX() + " ehY = " + md.getY() + " particle X = " + this.sprite.getX() 
+            + " particleY = " + this.sprite.getY());
+            
+            posX = this.sprite.getX() + this.sprite.getFitWidth()/2; 
+            posY = 1200 + this.sprite.getFitHeight()/2 - this.sprite.getY();
             }
-            if(md.isShiftDown()) {
-                Stage window = generateWindowCustomizeCapacitor();
-                window.show();
-            }
+            
             });
         
-      
+        
     }
-    public void setUp(ArrayList<ParallelPlateCapacitor> listOfCapacitors){
+    public void setUpList(ArrayList<ParallelPlateCapacitor> listOfCapacitors){
         this.listOfCapacitors = listOfCapacitors;
         
     }
@@ -142,18 +142,19 @@ public class ChargeParticle extends SpritedElement{
     }
     
     public void particleMotion() {
+        
         for(ParallelPlateCapacitor capa: listOfCapacitors){
-            if (posX >= capa.getBotPlate().sprite.getX() 
-                && posX <= capa.getBotPlate().sprite.getX() + capa.getBotPlate().sprite.getFitWidth()
-                && posY >= capa.getTopPlate().sprite.getY() + capa.getTopPlate().sprite.getFitHeight()
-                && posY <= capa.getBotPlate().sprite.getY()){
+            /*if (this.sprite.getX() + this.sprite.getFitWidth() >= capa.getBotPlate().sprite.getX() 
+                && this.sprite.getX() <= capa.getBotPlate().sprite.getX() + capa.getBotPlate().sprite.getFitWidth()
+                && this.sprite.getY() >= capa.getTopPlate().sprite.getY() + capa.getTopPlate().sprite.getFitHeight()
+                && this.sprite.getY() + this.sprite.getFitHeight() <= capa.getBotPlate().sprite.getY()) */
+            if (capa.checkIfParticleIsInsidePlates(this)) {
+                velX = 0; velY=0; animation.stop();
+            }
+            else if (this.sprite.intersects(capa.space.parentToLocal(capa.space.getBoundsInLocal()))){
+                
                 this.electricForceX = charge * capa.getElectricFieldX();
                 this.electricForceY = charge * capa.getElectricFieldY();
-            }
-            
-            else if (this.sprite.intersects(capa.getBotPlate().sprite.getX(),capa.getBotPlate().sprite.getY(),capa.getBotPlate().sprite.getFitWidth(),capa.getBotPlate().sprite.getFitHeight()) 
-                    || this.sprite.intersects(capa.getTopPlate().sprite.getX(),capa.getTopPlate().sprite.getY(),capa.getTopPlate().sprite.getFitWidth(),capa.getTopPlate().sprite.getFitHeight())) {
-                velX = 0; velY=0; animation.stop();
             }
             else {
                 this.electricForceX = 0; this.electricForceY = 0;
@@ -161,7 +162,7 @@ public class ChargeParticle extends SpritedElement{
         }
         velX += (this.electricForceX/mass)/30;
         velY -= (this.electricForceY/mass)/30;
-        posX += velX/30; posY -= velY/30;
+        posX += velX/30; posY += velY/30;
         this.sprite.setX(sprite.getX() + velX/30); this.sprite.setY(sprite.getY() - velY/30);
         System.out.println("VelX is" + velX + " VelY is " + velY);
         

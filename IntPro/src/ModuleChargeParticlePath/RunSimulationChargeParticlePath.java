@@ -23,7 +23,7 @@ public class RunSimulationChargeParticlePath extends RunSimulationButton{
             }
             for (ChargeParticle e:module.listOfParticles) {
                 e.lockPosition();
-                e.setUp(module.listOfCapacitors);
+                e.setUpList(module.listOfCapacitors);
                 e.play();
             }
     }

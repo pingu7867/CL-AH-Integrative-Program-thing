@@ -48,7 +48,8 @@ public class ElectricPlate extends SpritedElement {
         else if (sign.equals("+") && dir.equals("up")){
             sprite.setImage(posPlateUp);
         }
-        
+        sprite.setFitWidth(sprite.getImage().getWidth());
+        sprite.setFitHeight(sprite.getImage().getHeight());
         
     }
     public void changeSign() {
