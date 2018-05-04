@@ -18,7 +18,6 @@ public class InventoryToggleButton extends ImageButton {
         simpleGraphicSetUp("idle", "InventoryIcon");
         setPosX(40);
         setPosY(200);
-        
     }
     
     @Override

@@ -78,16 +78,6 @@ public class Inventory extends Popout implements SoundPlay {
         
         module = core.module[moduleNumber - 1];
         
-        icons.add(new InventoryIcon("sine wave", core));
-        icons.add(new InventoryIcon("square wave", core));
-        icons.add(new InventoryIcon("triangle wave", core));
-        icons.add(new InventoryIcon("saw wave", core));
-        icons.add(new InventoryIcon("linear function", core));
-        icons.add(new InventoryIcon("quadratic function", core));
-        icons.add(new InventoryIcon("cubic function", core));
-        icons.add(new InventoryIcon("polynomial function", core));
-        icons.add(new InventoryIcon("composite function", core));
-        
     }
     
     
@@ -178,6 +168,6 @@ public class Inventory extends Popout implements SoundPlay {
             default: sound = new javafx.scene.media.MediaPlayer(new Media(new File("src/Assets/click.mp3").toURI().toString())); break;
         }
         sound.setVolume(module.volume);
-        sound.play();
+        new Thread(() -> {sound.play();}).start();
     }
 }

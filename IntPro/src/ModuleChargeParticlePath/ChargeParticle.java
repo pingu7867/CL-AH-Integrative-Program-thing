@@ -177,7 +177,7 @@ public class ChargeParticle extends SpritedElement{
         fieldForVelocityX.setPrefColumnCount(3);
         fieldForVelocityX.textProperty().addListener(ov-> {
             String text = fieldForVelocityX.getText();
-            if (!checkDecimal(text)) {
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldForVelocityX.setText(text);
             }
@@ -187,7 +187,7 @@ public class ChargeParticle extends SpritedElement{
         fieldForVelocityY.setPrefColumnCount(3);
         fieldForVelocityY.textProperty().addListener(ov-> {
             String text = fieldForVelocityY.getText();
-            if (!checkDecimal(text)) {
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldForVelocityY.setText(text);
             }
@@ -197,7 +197,7 @@ public class ChargeParticle extends SpritedElement{
         fieldForCharge.setPrefColumnCount(3);
         fieldForCharge.textProperty().addListener(ov-> {
             String text = fieldForCharge.getText();
-            if (!checkDecimal(text)) {
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldForCharge.setText(text);
             }
@@ -207,7 +207,7 @@ public class ChargeParticle extends SpritedElement{
         fieldForMass.setPrefColumnCount(3);
         fieldForMass.textProperty().addListener(ov-> {
             String text = fieldForMass.getText();
-            if (!checkDecimal(text) && text.contains("-") && text.charAt(0) == '0') {
+            if (!module.checkDecimal(text) && text.contains("-") && text.charAt(0) == '0') {
                text = text.substring(0, text.length() - 1);
                fieldForMass.setText(text);
             }

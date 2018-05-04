@@ -70,14 +70,14 @@ public class InventoryIcon extends ImageButton {
         switch(this.type.toLowerCase()) {
             case "cannon": return new Cannon();
             case "vehicle": return new MountVehicle();
-            case "lens": return new Lens();
+            //case "lens": return new Lens();
             case "spring": return new Spring();
             case "weight": return new Weight();
             case "physical body": return new PhysicalBody();
             case "charged particle": return new ChargeParticle();
             case "capacitor": return new ParallelPlateCapacitor();
             case "branch": return new Branch();
-            //case "sine wave": return new Curve(new SinWaveFunction());
+            case "sine wave": return new Curve(new SineWaveFunction());
             case "square wave": return new Curve(new SquareWaveFunction());
             case "triangle wave": return new Curve(new TriangleWaveFunction());
             case "saw wave": return new Curve(new SawWaveFunction());
@@ -102,7 +102,7 @@ public class InventoryIcon extends ImageButton {
             long frame = 0;
             int overflows = 0;
             double keyframeProportion = 0;
-
+            
             while ((frame < 100) || (display.getOpacity() != 1)) {
                 
                 nanoTime = System.nanoTime();

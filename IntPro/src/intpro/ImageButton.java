@@ -180,7 +180,7 @@ public class ImageButton extends GeneralFunctionalitiesStackedInheritanceTower i
     @Override
     public void playSound(String mode) {
         sound.setVolume(core.volume);
-        sound.play();
+        new Thread(() -> {sound.play();}).start();
     }
     
 }

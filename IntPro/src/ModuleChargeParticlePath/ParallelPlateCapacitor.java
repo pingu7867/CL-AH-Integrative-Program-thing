@@ -195,7 +195,7 @@ public class ParallelPlateCapacitor extends Element {
         FieldforSheetChargeDensity.setPrefColumnCount(3);
         FieldforSheetChargeDensity.textProperty().addListener(ov-> {
             String text = FieldforSheetChargeDensity.getText();
-            if (!checkDecimal(text)) {
+            if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                FieldforSheetChargeDensity.setText(text);
             }
@@ -205,7 +205,7 @@ public class ParallelPlateCapacitor extends Element {
         FieldforSeparationDistance.setPrefColumnCount(3);
         FieldforSeparationDistance.textProperty().addListener(ov-> {
             String text = FieldforSeparationDistance.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
+            if (!module.checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
                FieldforSeparationDistance.setText(text);
             }
@@ -215,7 +215,7 @@ public class ParallelPlateCapacitor extends Element {
         FieldforOrientation.setPrefColumnCount(3);
         FieldforOrientation.textProperty().addListener(ov-> {
             String text = FieldforOrientation.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
+            if (!module.checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
                FieldforOrientation.setText(text);
             }

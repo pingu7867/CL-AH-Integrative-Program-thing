@@ -24,13 +24,5 @@ public class SpritedElement extends Element {
     public SpritedElement(ImageView image) {
         sprite = image;
     }
-    public void displaceElements(SpritedElement node) {
-        while (this.sprite.intersects(node.sprite.getX(), node.sprite.getY(), node.sprite.getFitWidth(), node.sprite.getFitHeight())) {
-            if (this.sprite.getX() + this.sprite.getFitWidth() >= node.sprite.getX()) {
-                this.sprite.setX(node.sprite.getX() - this.sprite.getFitWidth() );
-            }
-            
-        }
-    }
     
 }

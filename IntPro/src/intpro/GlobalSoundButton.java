@@ -26,9 +26,9 @@ public class GlobalSoundButton extends SoundButton {
             volField.setLayoutY(this.getPosY());
             instruction.setLayoutX(this.getPosX() + 150);
             instruction.setLayoutY(this.getPosY() + 10);
-            
             core.intro.addToPane(instruction);
             core.intro.addToPane(volField);
+            
             
             volField.setOnAction(e -> {
                 String number = volField.getText().toLowerCase();
@@ -39,25 +39,23 @@ public class GlobalSoundButton extends SoundButton {
                     }
                 }
                 core.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
-                core.intro.pane.getChildren().remove(volField);
-                core.intro.pane.getChildren().remove(instruction);
-                
+                core.intro.content.getChildren().remove(volField);
+                core.intro.content.getChildren().remove(instruction);
                 volField.clear();
-            });
-            
-            volField.setOnMouseDragged(e -> {
-                core.intro.pane.getChildren().remove(volField); core.intro.pane.getChildren().remove(instruction); volField.clear();
             });
             
         }
         if (display.getImage() == activatedGraphic) {
             if (targetModule == null) {
                 core.setVolume(0);
+                core.intro.content.getChildren().remove(volField);
+                core.intro.content.getChildren().remove(instruction);
             }
             else {
                 targetModule.setVolume(0);
             }
         }
+        
     }
     
 }

@@ -15,11 +15,16 @@ import java.util.Iterator;
  */
 
 public class RenderSet {
-    public HashSet<javafx.scene.Node> elements;
+    public ArrayList<javafx.scene.Node> elements;
     public Module module;
     
     public RenderSet() {
-        elements = new HashSet();
+       elements = new ArrayList();
+    }
+    
+    public RenderSet(Module module) {
+        elements = new ArrayList();
+        injectModuleRef(module);
     }
     
     public void add(javafx.scene.Node newItem) {
@@ -65,7 +70,12 @@ public class RenderSet {
         Iterator it = elements.iterator();
         while (it.hasNext()) {
             javafx.scene.Node element = (javafx.scene.Node)it.next();
-            
+            element.setScaleX(module.getScaling());
+            element.setScaleY(module.getScaling());
         }
+    }
+    
+    public void injectModuleRef(Module module) {
+        this.module = module;
     }
 }

@@ -34,21 +34,22 @@ public class UIWindow {
     
     public Scene scene;
     public Stage viewport = new Stage();
+    public BackgroundFill transparent = new BackgroundFill(new Color(0.0, 0.0, 0.0, 0.0), CornerRadii.EMPTY, Insets.EMPTY);
+    public BackgroundFill transparent2 = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
     
     char type;
     
     public UIWindow(char chartype) {
         type = chartype;
-        BackgroundFill transparent = new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY);
         
         switch(chartype) {
             case 'i':
                 pane = new Pane();
                 scroll = new ScrollPane();
                 content = new Pane();
-                pane.setBackground(new Background(transparent));
-                scroll.setBackground(new Background(transparent));
-                content.setBackground(new Background(transparent));
+                pane.setBackground(new Background(transparent2));
+                scroll.setBackground(new Background(transparent2));
+                content.setBackground(new Background(transparent2));
                 
             case 's':
                 pane = new Pane();
@@ -56,13 +57,13 @@ public class UIWindow {
                 content = new Pane();
                 scroll.setContent(content);
                 pane.getChildren().add(scroll);
-                scroll.setBackground(new Background(transparent));
-                content.setBackground(new Background(transparent));
-                pane.setBackground(new Background(transparent));
+                scroll.setBackground(new Background(transparent2));
+                content.setBackground(new Background(transparent2));
+                pane.setBackground(new Background(transparent2));
                 
             case 'p':
                 pane = new Pane();
-                pane.setBackground(new Background(transparent));
+                pane.setBackground(new Background(transparent2));
                 
         }
         

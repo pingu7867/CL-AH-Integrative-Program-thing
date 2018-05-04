@@ -14,14 +14,14 @@ import java.util.logging.Logger;
  */
 public class Oscillator {
     
-    double frequency;
-    double amplitude;
+    public double frequency;
+    public double amplitude;
     
-    int threadStepDelay = 16;
+    public int threadStepDelay = 16;
     
-    double value;
+    public double value;
     
-    StepThread oscThread;
+    public StepThread oscThread;
     
     public Oscillator() {
         frequency = 1;
@@ -29,8 +29,14 @@ public class Oscillator {
         oscThread = new StepThread();
     }
     
+    public Oscillator(double freq, double amp) {
+        frequency = freq;
+        amplitude = amp;
+        oscThread = new StepThread();
+    }
+    
     public void startOsc() {
-        oscThread.run();
+        new Thread (oscThread).start();
     }
     
     public void stopOsc() {
@@ -47,7 +53,7 @@ public class Oscillator {
             while(running) {
                 startTimeM = System.currentTimeMillis();
                 startTimeN = System.nanoTime();
-                while ((System.nanoTime() - startTimeN) / 1000 <= (1/frequency)) {
+                while (((System.nanoTime() - startTimeN) / 1000000) <= (threadStepDelay)) {
                 }
                 time = System.currentTimeMillis();
                 value = amplitude * Math.sin(frequency * (time - startTimeM));

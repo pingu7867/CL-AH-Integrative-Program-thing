@@ -77,10 +77,10 @@ public class SoundButton extends ImageButton {
                     targetModule.setVolume(Math.min(new BigInteger(buildNum).intValue(), 100));
                     targetModule.pane.getChildren().remove(volField);
                     targetModule.pane.getChildren().remove(instruction);
-
+                    
                     volField.clear();
                 });
-
+                
                 volField.setOnMouseDragged(e -> {
                     targetModule.pane.getChildren().remove(volField); targetModule.pane.getChildren().remove(instruction); volField.clear();
                 });

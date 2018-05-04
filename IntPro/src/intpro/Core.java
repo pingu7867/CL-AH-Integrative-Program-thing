@@ -17,6 +17,7 @@ import ModuleChargeParticlePath.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javafx.animation.Animation;
 
 /**
  *
@@ -27,6 +28,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
 import javafx.scene.media.Media;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -43,7 +45,7 @@ public class Core extends Application {
     public int res2y = 800;
     
     public int framerate = 60;
-    public double volume = 100 / 400;
+    public double volume = 100.0 / 400.0;
     
     public boolean showHints = true;
     public boolean showContextHints = true;
@@ -53,7 +55,6 @@ public class Core extends Application {
     public Module[] module = new Module[modules];
     
     javafx.scene.media.MediaPlayer music = new javafx.scene.media.MediaPlayer(new Media(new File("src/Assets/RelaxDaily.mp3").toURI().toString()));
-    
     
     public static void main(String[] args) {
         Application.launch(args);
@@ -73,7 +74,6 @@ public class Core extends Application {
             System.exit(0);
         });
         
-        intro.viewport.requestFocus();
         intro.display();
         
         for (int n = 1; n <= modules; n++) {
@@ -87,12 +87,12 @@ public class Core extends Application {
         
         music.setVolume(volume);
         music.play();
-        
-        
-    }
-    
-    public void testMethod() {
-        
+        music.setOnEndOfMedia(() -> {
+            music = new javafx.scene.media.MediaPlayer(new Media(new File("src/Assets/RelaxDaily_LoopingPart.mp3").toURI().toString()));
+            music.setCycleCount(Animation.INDEFINITE);
+            music.setVolume(volume);
+            music.play();
+        });
     }
     
     public void injectModuleRef(int num, Module mod) {
@@ -145,8 +145,8 @@ public class Core extends Application {
     }
     
     public void setVolume(int vol) {
-        volume = vol;
-        music.setVolume((double)vol / 400);
+        volume = ((double)vol / 400);
+        music.setVolume(volume);
     }
     
 }
