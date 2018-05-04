@@ -19,7 +19,7 @@ public class RunSimulationMomentum extends RunSimulationButton{
     @Override
     public void action() {
         for (int i = 0; i < module.listOfPhysicalBodies.size(); i++) {
-            module.listOfPhysicalBodies.get(i).setUp(module.typeOfCollision, module.listOfPhysicalBodies,i);
+            module.listOfPhysicalBodies.get(i).setUpCheck(module.typeOfCollision, module.listOfPhysicalBodies,i); //needing the index of the physical body
         }
         for (PhysicalBody body: module.listOfPhysicalBodies){
                 

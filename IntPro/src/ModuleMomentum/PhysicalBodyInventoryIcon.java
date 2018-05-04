@@ -44,6 +44,10 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
                text = text.substring(0, text.length() - 1);
                fieldforMass.setText(text);
             }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforMass.setText(text);
+            }
         });
         
         TextField fieldforVelocity = new TextField("1");
@@ -53,6 +57,10 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
             if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldforVelocity .setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforVelocity.setText(text);
             }
         });
         
@@ -64,16 +72,20 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
                text = text.substring(0, text.length() - 1);
                fieldforAngle.setText(text);
             }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforAngle.setText(text);
+            }
             
         });
 
-        Label labelforMass = new Label("Mass (kg)", fieldforMass);
+        Label labelforMass = new Label("Mass (kg)\nMax: 100 Only positive decimals \nany value higher than the max will be converted to 100", fieldforMass);
         labelforMass.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforVelocity = new Label("Velocity(cm/s)", fieldforVelocity);
+        Label labelforVelocity = new Label("Velocity(cm/s) \nMax: 700 Only positive decimals \nany value higher than the max will be converted to 700", fieldforVelocity);
         labelforVelocity.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforAngle = new Label("Path Orientation(degrees)", fieldforAngle);
+        Label labelforAngle = new Label("Path Orientation(degrees) \nMax: 360 Only positive decimals \nany value higher than the max will be converted to 360", fieldforAngle);
         labelforAngle.setContentDisplay(ContentDisplay.RIGHT);
         
         
@@ -95,6 +107,21 @@ public class PhysicalBodyInventoryIcon  extends InventoryIcon{
            
            module.listOfPhysicalBodies.add(body);
            module.pane.getChildren().add(body.sprite);
+           
+           for (int i = 0; i < module.listOfPhysicalBodies.size(); i++) {
+            module.listOfPhysicalBodies.get(i).setUpCheck(module.typeOfCollision, module.listOfPhysicalBodies,i); //needing the index of the physical body
+           }
+           
+           body.sprite.setOnMouseClicked(eg-> {
+           if (module.deleteModeActivated) {
+                   module.elements.remove(body);
+                   module.listOfPhysicalBodies.remove(body);
+                   module.pane.getChildren().remove(body.sprite);
+                   for (int i = 0; i < module.listOfPhysicalBodies.size(); i++) {
+                      module.listOfPhysicalBodies.get(i).setUpCheck(module.typeOfCollision, module.listOfPhysicalBodies,i); //needing the index of the physical body
+                      }
+               }
+           });
            stage.close();
         });
         

@@ -40,11 +40,11 @@ public class MomentumModule extends Module {
         super(creator, moduleNumber);
         BorderPane bord = new BorderPane();
         pane = new Pane();
-        ExitButton exit = new ExitButton(creator, this);
+        //ExitButton exit = new ExitButton(creator, this);
         HBox buttons = new HBox(10);
         HBox bottombutton = new HBox(10);
         
-        bottombutton.getChildren().add(exit.display);
+        //bottombutton.getChildren().add(exit.display);
         bottombutton.setAlignment(Pos.CENTER_LEFT);
         
         bord.setCenter(pane);
