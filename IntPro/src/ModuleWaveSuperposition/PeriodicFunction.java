@@ -32,7 +32,12 @@ public class PeriodicFunction extends Function {
         this.amplitude = a;
         this.wavelength = w;
         this.velocity = vel;
+        if (phS <= -1*wavelength){
+            phS = -1*wavelength;
+        }
+        else {
         this.phaseShift = phS;
+        }
     }
     
     public void setFrequency(double f) {

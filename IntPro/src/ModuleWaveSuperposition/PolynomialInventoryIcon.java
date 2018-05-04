@@ -58,26 +58,35 @@ public class PolynomialInventoryIcon extends InventoryIcon{
             }
             if (text.contains(".")) {
                 text = text.replace(".", "");
+                fieldForDegree.setText(text);
             }
             if (text.contains("-")) {
                 text = text.replace("-", "");
+                fieldForDegree.setText(text);
             }
             
         });
         
-        Label labelforDegree = new Label("Enter an integer for the degree of the function", fieldForDegree);
+        Label labelforDegree = new Label("Enter a natural number for the degree of the function", fieldForDegree);
         labelforDegree.setContentDisplay(ContentDisplay.LEFT);
         
         WindowLayout.getChildren().addAll(labelforDegree,buttons);
         Create.setOnAction(eh -> {
            
            int degreeValue = Integer.parseInt(fieldForDegree.getText());
-           
-           
            Curve curve = new Curve(new PolynomialFunction(degreeValue), module.getResolutionX());
-           module.curves.add(curve);
+           module.listOfCurves.add(curve);
            module.setWavePane(curve);
            stage.close();
+           curve.curve.setOnMouseClicked(eg-> {
+           if (module.deleteModeActivated) {
+                   module.elements.remove(curve);
+                   module.listOfCurves.remove(curve);
+                   module.listOfWavePanes.remove(curve.getPane());
+                   module.box.getChildren().remove(curve.getPane());
+               }
+           });
+           
             });
         Cancel.setOnAction(eh-> {
               stage.close();

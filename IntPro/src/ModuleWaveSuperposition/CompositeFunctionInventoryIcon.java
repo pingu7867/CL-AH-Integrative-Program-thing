@@ -57,7 +57,7 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
                 fieldForCurves.setText(text);
             }
         });
-        Label labelforCurvesIndex = new Label("Enter the index of the curves (use / to separate the index)", fieldForCurves);
+        Label labelforCurvesIndex = new Label("Enter the index of the curves (use / to separate the index) \n index of non-existant curves qill be ignored", fieldForCurves);
         labelforCurvesIndex.setContentDisplay(ContentDisplay.RIGHT);
         
         Create.setOnAction(eh -> {
@@ -65,18 +65,32 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
            String[] indexes = text.split("/");
            ArrayList<Function> listOfFunctions = new ArrayList<>();
            for (int i =0; i < indexes.length; i++) {
-               if (module.curves.get(Integer.parseInt(indexes[i])).function instanceof CompositeFunction) {
-                   CompositeFunction tempFunc = (CompositeFunction)module.curves.get(Integer.parseInt(indexes[i])).function;
+               if (Integer.parseInt(indexes[i]) >= module.listOfCurves.size()) {
+                   
+                   continue;
+               }
+               if (module.listOfCurves.get(Integer.parseInt(indexes[i])).function instanceof CompositeFunction) {
+                   CompositeFunction tempFunc = (CompositeFunction)module.listOfCurves.get(Integer.parseInt(indexes[i])).function;
                    
                    listOfFunctions.addAll(tempFunc.functions);
                }
                else {
-               listOfFunctions.add(module.curves.get(Integer.parseInt(indexes[i])).function);
+               listOfFunctions.add(module.listOfCurves.get(Integer.parseInt(indexes[i])).function);
                }
            }
            Curve curve = new Curve(new CompositeFunction(listOfFunctions), module.getResolutionX());
-           module.curves.add(curve);
+           module.listOfCurves.add(curve);
            module.setWavePane(curve);
+           
+           curve.curve.setOnMouseClicked(eg-> {
+           if (module.deleteModeActivated) {
+                   module.elements.remove(curve);
+                   module.listOfCurves.remove(curve);
+                   
+                   module.listOfWavePanes.remove(curve.getPane());
+                   module.box.getChildren().remove(curve.getPane());
+               }
+           });
            
            stage.close();
             });

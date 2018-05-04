@@ -90,8 +90,17 @@ public class LinearFunctionInventoryIcon extends InventoryIcon{
            
            
            Curve curve = new Curve(new LinearFunction(slopeValue,yInterceptValue), module.getResolutionX());
-           module.curves.add(curve);
+           module.listOfCurves.add(curve);
            module.setWavePane(curve);
+           curve.curve.setOnMouseClicked(eg-> {
+           if (module.deleteModeActivated) {
+                   module.elements.remove(curve);
+                   module.listOfCurves.remove(curve);
+                   module.listOfWavePanes.remove(curve.getPane());
+                   module.box.getChildren().remove(curve.getPane());
+               }
+           });
+           
            stage.close();
             });
         Cancel.setOnAction(eh-> {

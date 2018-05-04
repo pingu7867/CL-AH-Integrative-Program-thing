@@ -38,10 +38,10 @@ import javafx.scene.control.ScrollPane;
  * @author Amine
  */
 public class WaveSuperpositionModule extends Module {
-    static int numberOfCurves = 0;
-    ArrayList<Curve> curves = new ArrayList<>();
-    ArrayList<BorderPane> wavePanes = new ArrayList<>();
-    VBox box = new VBox(20);
+    int numberOfCurves = 0;
+    ArrayList<Curve> listOfCurves = new ArrayList<>();
+    ArrayList<BorderPane> listOfWavePanes = new ArrayList<>();
+    VBox box = new VBox(100);
     
       public WaveSuperpositionModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
@@ -98,21 +98,26 @@ public class WaveSuperpositionModule extends Module {
         HBox putLabel = new HBox();
         putLabel.setAlignment(Pos.CENTER);
         Pane wpane = new Pane();
-        BorderPane bord = new BorderPane();
+        BorderPane bordWPane = new BorderPane();
         
         wpane.getChildren().addAll(curve.xAxis,curve.curve);
         Label index = new Label("" + numberOfCurves);
         numberOfCurves++;
         putLabel.getChildren().add(index);
         
-        bord.setTop(putLabel);
-        bord.setCenter(wpane);
-        wavePanes.add(bord);
-        box.getChildren().add(bord);
+        bordWPane.setTop(putLabel);
+        bordWPane.setCenter(wpane);
+        listOfWavePanes.add(bordWPane);
+        box.getChildren().add(bordWPane);
+        curve.setPane(bordWPane);
     }
       
     @Override
     public String getModuleName(){
         return "wave superposition";
     }
+    public void resetNumberOfCurves(){
+        this.numberOfCurves = 0;
+    }
+    
 }

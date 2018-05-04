@@ -52,6 +52,10 @@ public class SawWaveInventoryIcon extends InventoryIcon{
                text = text.substring(0, text.length() - 1);
                fieldForAmplitude.setText(text);
             }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForAmplitude.setText(text);
+            }
         });
         
         
@@ -73,13 +77,17 @@ public class SawWaveInventoryIcon extends InventoryIcon{
         fieldForFrequency.setPrefColumnCount(3);
         fieldForFrequency.textProperty().addListener(ov-> {
             String text = fieldForFrequency.getText();
-             if (text.equals("")) {
+            if (text.equals("")) {
                 text = "0";
                 fieldForFrequency.setText("0");
             }
             if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldForFrequency.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForFrequency.setText(text);
             }
             double velocity = Double.parseDouble(fieldForVelocity.getText());
             if (velocity < 0) {
@@ -100,6 +108,10 @@ public class SawWaveInventoryIcon extends InventoryIcon{
             if (!module.checkDecimal(text)) {
                text = text.substring(0, text.length() - 1);
                fieldForWavelength.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForWavelength.setText(text);
             }
             double velocity = Double.parseDouble(fieldForVelocity.getText());
             if (velocity < 0) {
@@ -124,19 +136,19 @@ public class SawWaveInventoryIcon extends InventoryIcon{
             
         });
         
-        Label labelForAmplitude = new Label("Amplitude (cm)", fieldForAmplitude);
+        Label labelForAmplitude = new Label("Amplitude (cm) \nMax: 200 Only positive decimals \nany value higher than the max will be converted to 200", fieldForAmplitude);
         labelForAmplitude.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelForWavelength = new Label("Wavelength (cm)", fieldForWavelength);
+        Label labelForWavelength = new Label("Wavelength (cm) \nOnly positice decimals", fieldForWavelength);
         labelForWavelength.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelForFrequency = new Label("Frequency (Hz)", fieldForFrequency);
+        Label labelForFrequency = new Label("Frequency (Hz) \nMax: 100 Only positive decimals \nany value higher than the max will be converted to 100", fieldForFrequency);
         labelForFrequency.setContentDisplay(ContentDisplay.RIGHT);
         
         Label labelForVelocity = new Label("Velocity (cm/s)", fieldForVelocity);
         labelForVelocity.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelForPhaseShift = new Label("Phase Shift (cm)", fieldForPhaseShift);
+        Label labelForPhaseShift = new Label("Phase Shift (cm) \nMin: the negative of wavelength \nany value lower than the min will be converted to the negative of wavelength", fieldForPhaseShift);
         labelForPhaseShift.setContentDisplay(ContentDisplay.RIGHT);
 
         WindowLayout.getChildren().addAll(labelForAmplitude,labelForWavelength, labelForFrequency, labelForVelocity, labelForPhaseShift, buttons);
@@ -150,8 +162,16 @@ public class SawWaveInventoryIcon extends InventoryIcon{
            double phaseShiftValue = Double.parseDouble(fieldForPhaseShift.getText());
            
            Curve curve = new Curve(new SawWaveFunction(amplitudeValue,frequencyValue,wavelengthValue,velocityValue,phaseShiftValue), module.getResolutionX());
-           module.curves.add(curve);
+           module.listOfCurves.add(curve);
            module.setWavePane(curve);
+           curve.curve.setOnMouseClicked(eg-> {
+           if (module.deleteModeActivated) {
+                   module.elements.remove(curve);
+                   module.listOfCurves.remove(curve);
+                   module.listOfWavePanes.remove(curve.getPane());
+                   module.box.getChildren().remove(curve.getPane());
+               }
+           });
            stage.close();
             });
         Cancel.setOnAction(eh-> {

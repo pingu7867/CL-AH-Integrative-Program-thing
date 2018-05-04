@@ -21,8 +21,9 @@ public class ResetButtonWaveSuperposition extends ResetButton{
         
         module.pane.getChildren().clear();
         module.box.getChildren().clear();
-        module.curves.clear();
+        module.listOfCurves.clear();
         module.elements.clear();
+        module.resetNumberOfCurves();
     }
     
 }
