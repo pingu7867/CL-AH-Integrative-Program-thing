@@ -75,18 +75,26 @@ public class CircularMotionModule extends Module {
         fieldforRadius.setPrefColumnCount(3);
         fieldforRadius.textProperty().addListener(ov-> {
             String text = fieldforRadius.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text = text.substring(0, text.length() - 1).replace("-", "");
-               fieldforRadius .setText(text);
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforRadius.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforRadius.setText(text);
             }
         });
         
         fieldforFreq.setPrefColumnCount(3);
         fieldforFreq.textProperty().addListener(ov-> {
             String text = fieldforFreq.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text = text.substring(0, text.length() - 1).replace("-", "");
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
                fieldforFreq.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforFreq.setText(text);
             }
         });
 
@@ -94,21 +102,48 @@ public class CircularMotionModule extends Module {
         fieldforPosX .setPrefColumnCount(3);
         fieldforPosX .textProperty().addListener(ov-> {
             String text = fieldforPosX.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text = text.substring(0, text.length() - 1).replace("-", "");
-               fieldforRadius .setText(text);
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforPosX.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforPosX.setText(text);
             }
         });
 
         fieldforPosY.setPrefColumnCount(3);
         fieldforPosY.textProperty().addListener(ov-> {
             String text = fieldforPosY.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text = text.substring(0, text.length() - 1).replace("-", "");
-               fieldforFreq.setText(text);
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforPosY.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforPosY.setText(text);
             }
         });
-
+        
+        fieldforMass.setPrefColumnCount(3);
+        fieldforMass.textProperty().addListener(ov-> {
+            String text = fieldforMass.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforMass.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldforMass.setText(text);
+            }
+        });
+        fieldforShuttleType.textProperty().addListener(ov-> {
+            String text = fieldforShuttleType.getText();
+            if (!checkPositiveInt(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforShuttleType.setText(text);
+            }
+        });
 
         HBox buttons = new HBox(8);
         buttons.setAlignment(Pos.BOTTOM_RIGHT);
@@ -146,7 +181,17 @@ public class CircularMotionModule extends Module {
         stage.requestFocus();
         return stage;
     }
-    
+    public boolean checkPositiveInt(String value) {
+        
+        for (int i = 0; i < value.length();i++) {
+            if(((value.charAt(i) <= '9') && (value.charAt(i) >= '0'))) {
+            }
+            else {
+                return false;
+            }
+        }
+        return true;
+    }
     
     @Override
     public void popOut() {
