@@ -23,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import java.net.JarURLConnection;
 
 public class Container extends SpritedElement{
     ArrayList<GasParticle> particles = new ArrayList<>();
@@ -48,20 +49,23 @@ public class Container extends SpritedElement{
     double averageKineticEnergy = 0;
     final double GAS_CONSTANT = 8.3144598;
     final double BOLTZMANN_CONSTANT = 1.38064852 * Math.pow(10, -23); //in eV/K
-    Rectangle hitbox;
-    Rectangle underHitBox;
+    Rectangle bounds;
+    ImageView tankFill;
     IdealGasModule module;
     
     public Container() {
         super(new ImageView());
         sprite.setImage(new Image(new File("src/Assets/GasTank.png").toURI().toString()));
         sprite.setX(0); sprite.setY(0);
-        hitbox = new Rectangle(92, 222, 420, 723); // max X = 512 max Y = 1008
-        hitbox.setFill(Color.WHITE);
-        hitbox.setStroke(Color.BLACK);
-        underHitBox = new Rectangle(92, 285, 420, 723);
-        underHitBox.setFill(Color.ALICEBLUE);
-        underHitBox.setStroke(Color.BLACK);
+        
+        tankFill = new ImageView(); tankFill.setImage(new Image(new File("src/Assets/GasTankFill.png").toURI().toString())); //jarURLConnection()
+        tankFill.setX(92); tankFill.setY(265);        
+        
+        bounds = new Rectangle(1, 1, 1, 1); // max X = 512 max Y = 1008
+        bounds.setFill(Color.WHITE);
+        bounds.setStroke(Color.BLACK);
+        tankFill.setFitWidth(421); tankFill.setFitHeight(725);
+        
         
         sprite.setOnMouseClicked(eh -> {
             Stage window = generateContainerWindow();
@@ -75,9 +79,10 @@ public class Container extends SpritedElement{
         
         averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
         this.module = module;
-        this.setGasParticle();
+        this.setAvailableSpace();
         
-
+        this.setGasParticle();  
+       
     }
     public double getMoles() {
         return amountOfMole;
@@ -95,14 +100,20 @@ public class Container extends SpritedElement{
     public void setMoles(double aom) {
         double ratioVN = volume/amountOfMole;
         double ratioPN = pressure/amountOfMole;
-                
-        amountOfMole = aom;
+        if (aom > 50) {
+            amountOfMole = 50;
+        }
+        else {
+           amountOfMole = aom; 
+        }
+        
         
         if (unlockPreAOM) {
          pressure = ratioPN * aom;
         }
         else if (unlockVolAOM) {
          volume = ratioVN * aom;
+         setAvailableSpace();
         }
         setGasParticle();
     }
@@ -110,53 +121,69 @@ public class Container extends SpritedElement{
         double kVP = volume * pressure;
         double ratioVT = volume/temperature;
         double ratioVN = volume/amountOfMole;
-        
+        if (vol >= 21) {
+            volume = 21;
+        }
+        else {
         volume = vol;
+        }
         if (unlockPreVol) {
             pressure = kVP/vol;
         }
         else if (unlockTempVol) {
             temperature = vol/ratioVT;
             averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
+            setGasParticleAVke();
         }
         else if (unlockAOMVol) {
             amountOfMole = vol/ratioVN;
         }
+        setAvailableSpace();
         
     }
     public void setPressure(double pre) {
         double kVP = volume * pressure;
         double ratioPN = pressure/amountOfMole;
         double ratioPT = pressure/temperature;
-        
+        if (pre >= 205) {
+            pressure = 205;
+        }
+        else {
         pressure = pre;
-        
+        }
         if (unlockTempPre) {
             temperature = pre/ratioPT;
             averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
+            setGasParticleAVke();
         }
         else if (unlockAOMPre) {
             amountOfMole = pre/ratioPN;
         }
         else if (unlockVolPre) {
             volume = kVP/pre;
+            setAvailableSpace();
         }
     }
     public void setTemperature(double temp) {
         double ratioVT = volume/temperature;
         double ratioPT = pressure/temperature;
-        
+        if (temp >= 2000) {
+            temp = 2000;
+        }
+        else {
         temperature = temp;
-        
+        }
         if (unlockVolTemp) {
             volume = ratioVT * temp;
+            setAvailableSpace();
         }
         else if (unlockPreTemp) {
             pressure = ratioPT * temp;
         }
         averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
-        setGasParticle();
+        setGasParticleAVke();
     }
+    
     public void setGasParticle() {
         for (int i = 0; i < particles.size(); i++) {
         module.pane.getChildren().remove(particles.get(i).sprite);
@@ -166,8 +193,8 @@ public class Container extends SpritedElement{
         
         double aom = 0;
         while (aom < this.amountOfMole) {
-            particles.add(new GasParticle(hitbox,averageKineticEnergy));
-            aom += 1.2;
+            particles.add(new GasParticle(bounds,averageKineticEnergy));
+            aom++;
         }    
         
         for (int i = 0; i < particles.size(); i++) {
@@ -180,6 +207,41 @@ public class Container extends SpritedElement{
             particles.get(i).animation.play();
         }
     }
+    public void setGasParticleAVke() {
+        for (int i = 0; i < particles.size(); i++) {
+            particles.get(i).setVelocityKineticEnergy(averageKineticEnergy);
+        }
+    }
+    public void setAvailableSpace() {
+        double boundX = 302; double boundY = 627;  // Max Vol: X = 92 Y: 265 boundWidth: 420 boundHeight: 723
+        double boundWidth = 0; double boundHeight = 0; // Min Vol: X = 302 Y:597 boundWidth: 0 boundHeight: 0
+        
+        if (volume*10 >= 210) {
+            boundX = 92;
+            boundWidth = 420;
+        }
+        else {
+            boundX -= volume*10;
+            boundWidth = volume * 20;
+        }
+        if (volume * 17.26 >= 361) {
+            boundY = 265;
+            boundHeight = 723;
+        }
+        else {
+            boundY -= volume*17.26;
+            boundHeight = volume*34.52;
+        }
+        
+        bounds.setX(boundX); bounds.setY(boundY);
+        bounds.setWidth(boundWidth); bounds.setHeight(boundHeight);
+        
+        for (int i = 0; i < particles.size(); i++) {
+            particles.get(i).setBounds(bounds);
+        }
+        
+    }
+    
     public void setAnimation() {
         for (int i = 0; i < particles.size(); i++) {
             particles.get(i).setAnimation(particles,i);
@@ -188,11 +250,10 @@ public class Container extends SpritedElement{
     public Stage generateContainerWindow() {
         Stage stage = new Stage();
         VBox WindowLayout = new VBox(20);
-        VBox radioButtonLayout = new VBox(20);
+        VBox radioButtonLayout = new VBox(60);
         HBox sceneLayout = new HBox(20);
         sceneLayout.getChildren().addAll(WindowLayout, radioButtonLayout);
-        
-        
+           
         TextField fieldForMoles = new TextField("" + this.getMoles());
         fieldForMoles.setPrefColumnCount(3);
         fieldForMoles.textProperty().addListener(ov-> {
@@ -200,6 +261,10 @@ public class Container extends SpritedElement{
             if (!module.checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
                fieldForMoles.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForMoles.setText(text);
             }
         });
         
@@ -210,8 +275,11 @@ public class Container extends SpritedElement{
             String text = fieldForVolume.getText();
             if (!module.checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
-               text.replace("-", "");
                fieldForVolume.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForVolume.setText(text);
             }
         });
         
@@ -220,9 +288,13 @@ public class Container extends SpritedElement{
         fieldForPressure.textProperty().addListener(ov-> {
             String text = fieldForPressure.getText();
             if (!module.checkDecimal(text) && text.contains("-")) {
-               text.replace("-", "");
+               
                text = text.substring(0, text.length() - 1);
                fieldForPressure.setText(text);
+            }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForPressure.setText(text);
             }
         });
         TextField fieldForTemperature = new TextField("" + this.getTemperature());
@@ -230,22 +302,25 @@ public class Container extends SpritedElement{
         fieldForTemperature.textProperty().addListener(ov-> {
             String text = fieldForTemperature.getText();
             if (!module.checkDecimal(text) && text.contains("-")) {
-               text.replace("-", "");
                text = text.substring(0, text.length() - 1);
                fieldForTemperature.setText(text);
             }
+            if (text.contains("-")) {
+                text = text.replace("-", "");
+                fieldForTemperature.setText(text);
+            }
         });
 
-        Label labelforMoles = new Label("Amount of moles (mol)", fieldForMoles);
+        Label labelforMoles = new Label("Amount of moles (mol) \nMax: 50 Only positive decimals \nany value higher than the max will be converted to 50", fieldForMoles);
         labelforMoles.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforVolume = new Label("Volume (L)", fieldForVolume);
+        Label labelforVolume = new Label("Volume (L) \nMax: 21 Only positive decimals \nany value higher than the max will be converted to 21", fieldForVolume);
         labelforVolume.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforPressure = new Label("Pressure (kPa)", fieldForPressure);
+        Label labelforPressure = new Label("Pressure (kPa) \nMax: 205 Only positive decimals \nany value higher than the max will be converted to 205", fieldForPressure);
         labelforPressure.setContentDisplay(ContentDisplay.RIGHT);
         
-        Label labelforTemperature = new Label("Temperature (Kelvin)", fieldForTemperature);
+        Label labelforTemperature = new Label("Temperature (Kelvin) \nMax: 2000 Only positive decimals \nany value higher than the max will be converted to 2000", fieldForTemperature);
         labelforTemperature.setContentDisplay(ContentDisplay.RIGHT);
         
         HBox buttons = new HBox(8);
@@ -257,12 +332,15 @@ public class Container extends SpritedElement{
         
         HBox radioButtonAom = new HBox(10);
         
-        RadioButton rbUnlockVolAOM = new RadioButton("Unlock volume for amountOfmoles");
-        RadioButton rbUnlockPreAOM = new RadioButton("Unlock pressure for amountOfmoles");
-        radioButtonAom.getChildren().addAll(rbUnlockVolAOM, rbUnlockPreAOM);
+        RadioButton rbUnlockVolAOM = new RadioButton("Unlock volume for amount of moles");
+        RadioButton rbUnlockPreAOM = new RadioButton("Unlock pressure for amount of moles");
+        RadioButton rbUnlockNoneAOM = new RadioButton("Unlock none");
+        radioButtonAom.getChildren().addAll(rbUnlockVolAOM, rbUnlockPreAOM, rbUnlockNoneAOM);
+        
         ToggleGroup groupAOM = new ToggleGroup();
         rbUnlockVolAOM.setToggleGroup(groupAOM);
         rbUnlockPreAOM.setToggleGroup(groupAOM);
+        rbUnlockNoneAOM.setToggleGroup(groupAOM);
         
         rbUnlockVolAOM.setOnAction(eh-> {
             if (rbUnlockVolAOM.isSelected()) {
@@ -278,18 +356,26 @@ public class Container extends SpritedElement{
             }
             
         });
+        rbUnlockNoneAOM.setOnAction(eh-> {
+            if (rbUnlockNoneAOM.isSelected()) {
+                this.unlockAOMPre = false;
+                this.unlockAOMVol = false;
+            }
+        });
     
         HBox radioButtonVol = new HBox(10);
         
         RadioButton rbUnlockPreVol = new RadioButton("Unlock pressure for volume");
         RadioButton rbUnlockAOMVol = new RadioButton("Unlock amount of moles for volume");
         RadioButton rbUnlockTempVol = new RadioButton("Unlock temperature for volume");
+        RadioButton rbUnlockNoneVol = new RadioButton("Unlock none");
         
-        radioButtonVol.getChildren().addAll(rbUnlockPreVol, rbUnlockAOMVol,rbUnlockTempVol);
+        radioButtonVol.getChildren().addAll(rbUnlockPreVol, rbUnlockAOMVol,rbUnlockTempVol,rbUnlockNoneVol);
         ToggleGroup groupVol = new ToggleGroup();
         rbUnlockPreVol.setToggleGroup(groupVol);
         rbUnlockAOMVol.setToggleGroup(groupVol);
         rbUnlockTempVol.setToggleGroup(groupVol);
+        rbUnlockNoneVol.setToggleGroup(groupVol);
         
         rbUnlockPreVol.setOnAction(eh-> {
             if (rbUnlockPreVol.isSelected()) {
@@ -315,18 +401,27 @@ public class Container extends SpritedElement{
             }
             
         });
+        rbUnlockNoneVol.setOnAction(eh->{
+            if (rbUnlockNoneVol.isSelected()) {
+                this.unlockVolPre = false;
+                this.unlockVolAOM = false;
+                this.unlockVolTemp = false;
+            }
+        });
         
         HBox radioButtonPre = new HBox(10);
         
         RadioButton rbUnlockVolPre = new RadioButton("Unlock volume for pressure");
         RadioButton rbUnlockAOMPre = new RadioButton("Unlock amount of moles for pressure");
         RadioButton rbUnlockTempPre = new RadioButton("Unlock temperature for pressure");
+        RadioButton rbUnlockNonePre = new RadioButton("Unlock none");
         
-        radioButtonPre.getChildren().addAll(rbUnlockVolPre, rbUnlockAOMPre,rbUnlockTempPre);
+        radioButtonPre.getChildren().addAll(rbUnlockVolPre, rbUnlockAOMPre,rbUnlockTempPre, rbUnlockNonePre);
         ToggleGroup groupPre = new ToggleGroup();
         rbUnlockVolPre.setToggleGroup(groupPre);
         rbUnlockAOMPre.setToggleGroup(groupPre);
         rbUnlockTempPre.setToggleGroup(groupPre);
+        rbUnlockNonePre.setToggleGroup(groupPre);
         
         rbUnlockVolPre.setOnAction(eh-> {
             if (rbUnlockVolPre.isSelected()) {
@@ -352,15 +447,25 @@ public class Container extends SpritedElement{
             }
             
         });
-        
+        rbUnlockNonePre.setOnAction(eh->{
+            if (rbUnlockNonePre.isSelected()) {
+                this.unlockPreVol = false;
+                this.unlockPreAOM = false;
+                this.unlockPreTemp = false;
+            }
+        });
         HBox radioButtonTemp = new HBox(10);
         
         RadioButton rbUnlockVolTemp = new RadioButton("Unlock volume for temperature");
         RadioButton rbUnlockPreTemp = new RadioButton("Unlock pressure for temperature");
-        radioButtonTemp.getChildren().addAll(rbUnlockVolTemp, rbUnlockPreTemp);
+        RadioButton rbUnlockNoneTemp = new RadioButton("Unlock none");
+        
+        radioButtonTemp.getChildren().addAll(rbUnlockVolTemp, rbUnlockPreTemp, rbUnlockNoneTemp);
+                
         ToggleGroup groupTemp = new ToggleGroup();
         rbUnlockVolTemp.setToggleGroup(groupTemp);
         rbUnlockPreTemp.setToggleGroup(groupTemp);
+        rbUnlockNoneTemp.setToggleGroup(groupTemp);
         
         rbUnlockVolTemp.setOnAction(eh-> {
             if (rbUnlockVolTemp.isSelected()) {
@@ -376,7 +481,12 @@ public class Container extends SpritedElement{
             }
             
         });
-        
+        rbUnlockNoneTemp.setOnAction(eh-> {
+            if (rbUnlockNoneTemp.isSelected()) {
+                this.unlockTempVol = false;
+                this.unlockTempPre = false;
+            }
+        });
         
         Cancel.setOnAction(eh-> {
             stage.close();

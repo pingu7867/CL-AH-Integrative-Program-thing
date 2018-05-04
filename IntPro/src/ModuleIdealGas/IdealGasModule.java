@@ -33,6 +33,7 @@ import javafx.scene.shape.Rectangle;
  */
 public class IdealGasModule extends Module {
     ArrayList<Container> listOfContainer = new ArrayList<>();
+    Container container;
     public IdealGasModule(Core creator, int moduleNumber) {
         super(creator, moduleNumber);
         pane = new Pane();
@@ -43,9 +44,11 @@ public class IdealGasModule extends Module {
         //bottombutton.getChildren().add(exit.display);
         bottombutton.setAlignment(Pos.CENTER_LEFT);
         
-        Container cont = new Container(1,1,101.3,273,this);
-        pane.getChildren().add(cont.sprite);
+        this.container = new Container(1,1,101.3,273,this);
         
+        pane.getChildren().add(container.sprite);
+        pane.getChildren().add(container.tankFill);
+        pane.getChildren().add(container.bounds);
         bord.setCenter(pane);
         bord.setBottom(bottombutton);
         scene = new Scene(bord);
@@ -53,7 +56,6 @@ public class IdealGasModule extends Module {
     }
     @Override
     public void popOut() {
-        
         
         viewport = new Stage();
         viewport.setTitle("Ideal Gas Module");
