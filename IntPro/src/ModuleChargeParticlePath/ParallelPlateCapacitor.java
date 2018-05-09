@@ -217,9 +217,6 @@ public class ParallelPlateCapacitor extends Element {
         botPlate.sprite.setY(topPlate.sprite.getY() + (distance + topPlate.sprite.getImage().getHeight())
                 *Math.cos(Math.toRadians(orientation)));
     }
-    public boolean checkIfItIntersectsACapacitor() {
-        return false;
-    }
     public boolean checkIfParticleIsBetweenPlates(ChargeParticle particle) {
         
         /*if (particle.sprite.getX() > topPlate.sprite.getX() + (topPlate.sprite.getImage().getHeight() * Math.sin(Math.toRadians(orientation)))
@@ -238,8 +235,8 @@ public class ParallelPlateCapacitor extends Element {
         }
     }
     public boolean checkIfParticleIsInsidePlates(ChargeParticle particle) {
-        if (particle.sprite.intersects(botPlate.sprite.parentToLocal(botPlate.sprite.getBoundsInLocal()))
-            || particle.sprite.intersects(topPlate.sprite.parentToLocal(topPlate.sprite.getBoundsInLocal()))) {
+        if (particle.sprite.intersects(botPlate.sprite.localToParent(botPlate.sprite.getBoundsInLocal()))
+            || particle.sprite.intersects(topPlate.sprite.localToParent(topPlate.sprite.getBoundsInLocal()))) {
             return true;
         }
         else {

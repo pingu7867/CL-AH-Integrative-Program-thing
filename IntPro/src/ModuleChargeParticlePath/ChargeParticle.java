@@ -151,7 +151,7 @@ public class ChargeParticle extends SpritedElement{
             if (capa.checkIfParticleIsInsidePlates(this)) {
                 velX = 0; velY=0; animation.stop();
             }
-            else if (this.sprite.intersects(capa.space.parentToLocal(capa.space.getBoundsInLocal()))){
+            else if (this.sprite.intersects(capa.space.localToParent(capa.space.getBoundsInLocal()))){
                 
                 this.electricForceX = charge * capa.getElectricFieldX();
                 this.electricForceY = charge * capa.getElectricFieldY();
