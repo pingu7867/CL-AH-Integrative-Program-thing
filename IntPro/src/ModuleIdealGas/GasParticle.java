@@ -44,7 +44,6 @@ public class GasParticle extends SpritedElement{
         velX = velocity * Math.cos(angle);
         velY = velocity * Math.sin(angle);
 
-        System.out.println("VelX = " + velX + " VelY = " + velY);
         
     }
     public double getVelocity() {

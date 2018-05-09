@@ -38,10 +38,10 @@ public class IdealGasModule extends Module {
         super(creator, moduleNumber);
         pane = new Pane();
         BorderPane bord = new BorderPane();
-        //ExitButton exit = new ExitButton(creator, this);
+        ExitButton exit = new ExitButton(creator, this);
         
         HBox bottombutton = new HBox(10);
-        //bottombutton.getChildren().add(exit.display);
+        bottombutton.getChildren().add(exit.display);
         bottombutton.setAlignment(Pos.CENTER_LEFT);
         
         this.container = new Container(1,1,101.3,273,this);

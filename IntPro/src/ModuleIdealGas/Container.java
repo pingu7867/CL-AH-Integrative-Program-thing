@@ -108,11 +108,13 @@ public class Container extends SpritedElement{
         }
         
         
-        if (unlockPreAOM) {
+        if (unlockAOMPre) {
          pressure = ratioPN * aom;
+         unlockAOMPre = false;
         }
-        else if (unlockVolAOM) {
+        else if (unlockAOMVol) {
          volume = ratioVN * aom;
+         unlockAOMVol = false;
          setAvailableSpace();
         }
         setGasParticle();
@@ -127,16 +129,19 @@ public class Container extends SpritedElement{
         else {
         volume = vol;
         }
-        if (unlockPreVol) {
+        if (unlockVolPre) {
             pressure = kVP/vol;
+            unlockVolPre = false;
         }
-        else if (unlockTempVol) {
+        else if (unlockVolTemp) {
             temperature = vol/ratioVT;
             averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
+            unlockVolTemp = false;
             setGasParticleAVke();
         }
-        else if (unlockAOMVol) {
+        else if (unlockVolAOM) {
             amountOfMole = vol/ratioVN;
+            unlockVolAOM = false;
         }
         setAvailableSpace();
         
@@ -151,16 +156,19 @@ public class Container extends SpritedElement{
         else {
         pressure = pre;
         }
-        if (unlockTempPre) {
+        if (unlockPreTemp) {
             temperature = pre/ratioPT;
             averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
+            unlockPreTemp = false;
             setGasParticleAVke();
         }
-        else if (unlockAOMPre) {
+        else if (unlockPreAOM) {
             amountOfMole = pre/ratioPN;
+            unlockPreAOM = false;
         }
-        else if (unlockVolPre) {
+        else if (unlockPreVol) {
             volume = kVP/pre;
+            unlockPreVol= false;
             setAvailableSpace();
         }
     }
@@ -173,12 +181,14 @@ public class Container extends SpritedElement{
         else {
         temperature = temp;
         }
-        if (unlockVolTemp) {
+        if (unlockTempVol) {
             volume = ratioVT * temp;
+            unlockTempVol = false;
             setAvailableSpace();
         }
-        else if (unlockPreTemp) {
+        else if (unlockTempPre) {
             pressure = ratioPT * temp;
+            unlockTempPre = false;
         }
         averageKineticEnergy = (3/2) * BOLTZMANN_CONSTANT * temperature;
         setGasParticleAVke();
