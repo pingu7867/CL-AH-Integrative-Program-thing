@@ -5,8 +5,6 @@
  */
 package intpro;
 
-import javafx.application.Platform;
-
 /**
  *
  * @author Cédric
@@ -20,23 +18,28 @@ public class GameTickTimer {
     public double milliDelay;
     public boolean running;
     
-    public TimeKeeper clock;
+    public TimeKeeper clock = new TimeKeeper();
     public Thread clockThread;
     
     public GameTickTimer(double fps) {
-        this.fps = fps;
-        milliDelay = 1000 / fps;
-        running = true;
+        setFPS(fps);
+        clock = new TimeKeeper();
     }
-
+    
+    public GameTickTimer(Module mod, double fps) {
+        host = mod;
+        setFPS(fps);
+        clock = new TimeKeeper();
+    }
+    
     public GameTickTimer() {
         this(60);
     }
     
     public void declareHost(GameTickActor host) {
         this.host = host;
-        clock = new TimeKeeper();
-        clockThread = new Thread(clock);
+        if (clockThread == null) {clockThread = new Thread(clock);}
+        
     }
     
     public void setFPS(double newfps) {
@@ -78,6 +81,7 @@ public class GameTickTimer {
     }
     
     public void startThread() {
+        this.running = true;
         clockThread.start();
     }
     
@@ -95,20 +99,18 @@ public class GameTickTimer {
         
         @Override
         public void run() {
+            System.out.println("start thread timkepp");
+            System.out.println("send " + (send == null));
+            
             long startTimeN = 0;
             tick = 0;
             while (running) {
                 startTimeN = System.nanoTime();
-                
-                while ((System.nanoTime() - startTimeN) <= milliDelay * 1000000) {
-                    
-                }
-                
-                tick++;
-                
+                while ((System.nanoTime() - startTimeN) <= milliDelay * 1000000) {}
                 send.tickProcess();
+                tick++;
+                //System.out.println(tick);
             }
         }
-        
     }
 }

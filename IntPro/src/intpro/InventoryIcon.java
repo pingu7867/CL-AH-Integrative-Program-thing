@@ -93,6 +93,7 @@ public class InventoryIcon extends ImageButton {
     public void expandDown() {
         transitionThread.start();
     }
+    
     public void primeExpandThread(double fallLength) {
         
         transitionThread = new Thread(() -> {

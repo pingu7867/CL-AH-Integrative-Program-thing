@@ -47,11 +47,11 @@ public class Module implements GameTickActor {
     
     public Module(Core creator, int moduleNumber) {
         this.moduleNumber = moduleNumber;
-        this.dataSource = creator;
+        dataSource = creator;
         renderSet = new RenderSet();
         elements = new ArrayList<Element>();
-        this.ticker = new GameTickTimer(framerate);
-        this.ticker.declareHost(this);
+        //ticker = new GameTickTimer(framerate);
+        //ticker.declareHost(this);
     }
     
     public int getResolutionX() {

@@ -36,15 +36,16 @@ public class CircularMotionModule extends Module {
         pane = new Pane();
         inventory = new Inventory(getModuleName(), this.dataSource);
         pane.getChildren().add(inventory.deployIcon.display);
-        GameTickTimer timer = new GameTickTimer(60); timer.declareHost(this);
-        timer.setFPS(60);
+        
+        ticker = new GameTickTimer(this, 60);
+        ticker.declareHost(this);
+        ticker.startThread();
         
         /*Branch defaultBranch = new Branch();
         defaultBranch.injectModRef(this);
         defaultBranch.setFields(300, 0.3, 300);
         elements.add(defaultBranch);
         defaultBranch.setShuttleImage(1);*/
-        timer.startThread();
         
         inventory.icons.get(0).display.setOnMouseClicked(e -> {
             newestCreatedElement = inventory.icons.get(0).deploy();
@@ -204,6 +205,8 @@ public class CircularMotionModule extends Module {
         
         this.viewport.setOnCloseRequest(e -> {
             try {
+                ticker.stopTimer();
+                ticker.clockThread.interrupt();
                 dataSource.flushModule(moduleNumber);
             } catch (IOException ex) {
                 Logger.getLogger(ProjectileMotionModule.class.getName()).log(Level.SEVERE, null, ex);

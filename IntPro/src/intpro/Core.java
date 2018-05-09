@@ -45,7 +45,7 @@ public class Core extends Application {
     public int res2y = 800;
     
     public int framerate = 60;
-    public double volume = 100.0 / 400.0;
+    public double volume = 0.0 / 400.0;
     
     public boolean showHints = true;
     public boolean showContextHints = true;
@@ -102,6 +102,9 @@ public class Core extends Application {
     public void flushModule(int moduleNumber) throws IOException {
         System.out.println("closing module " + moduleNumber);
         module[moduleNumber - 1].viewport.close();
+        
+        if (module[moduleNumber - 1].ticker.clockThread != null) {module[moduleNumber - 1].ticker.clockThread.stop();} 
+        
         module[moduleNumber - 1] = null;
     }
     

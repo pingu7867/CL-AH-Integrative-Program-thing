@@ -22,6 +22,7 @@ public class Oscillator {
     public double value;
     
     public StepThread oscThread;
+    public Spring owner;
     
     public Oscillator() {
         frequency = 1;
@@ -37,14 +38,20 @@ public class Oscillator {
     
     public void startOsc() {
         new Thread (oscThread).start();
+        System.out.println("started thread for oscillator");
     }
     
     public void stopOsc() {
         oscThread.running = false;
     }
+
+    void declareOwnership(Spring owner) {
+        this.owner = owner;
+    }
     
-    public class StepThread implements Runnable {
+    public class StepThread extends Thread implements Runnable {
         boolean running = true;
+        
         long time;
         @Override
         public void run() {
@@ -53,10 +60,11 @@ public class Oscillator {
             while(running) {
                 startTimeM = System.currentTimeMillis();
                 startTimeN = System.nanoTime();
-                while (((System.nanoTime() - startTimeN) / 1000000) <= (threadStepDelay)) {
+                while (((System.nanoTime() - startTimeN) / 1000000) < (threadStepDelay)) {
                 }
-                time = System.currentTimeMillis();
-                value = amplitude * Math.sin(frequency * (time - startTimeM));
+                time = System.nanoTime();
+                value = amplitude * Math.sin(frequency * (threadStepDelay * (time / 1000000000.0)));
+                //if (owner != null) {owner.draw();}
             }
         }
     }

@@ -5,12 +5,15 @@
  */
 package ModuleSpringSimpleHarmonicMotion;
 
+
 import intpro.Module;
 import intpro.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +23,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -30,22 +36,27 @@ import javafx.stage.Stage;
 public class SpringSimpleHarmonicMotionModule extends Module {
     ArrayList<Spring> listOfSprings = new ArrayList<>();
     
+    
+    
     public SpringSimpleHarmonicMotionModule(Core core, int moduleNumber) {
         super(core, moduleNumber);
+        elements = new ArrayList();
         pane = new Pane();
         inventory = new Inventory(getModuleName(), dataSource);
         pane.getChildren().add(inventory.deployIcon.display);
         
+        ticker = new GameTickTimer(this, 60); 
+        ticker.declareHost(this);
+        ticker.startThread();
+        
         inventory.icons.get(0).display.setOnMouseClicked(e -> {
-            newestCreatedElement = inventory.icons.get(1).deploy();
-            elements.add(newestCreatedElement);
             generateSpringWindow().show();
         });
+        
         inventory.icons.get(1).display.setOnMouseClicked(e -> {
-            newestCreatedElement = inventory.icons.get(0).deploy();
-            elements.add(newestCreatedElement);
-            generateSpringWindow().show();
+            generateWeightWindow().show();
         });
+        
     }
     
     public Stage generateSpringWindow() {
@@ -54,6 +65,7 @@ public class SpringSimpleHarmonicMotionModule extends Module {
         
         Text textforMass = new Text("weight's mass in kg");
         Text textforLength = new Text("spring's length in cm");
+        Text textforXPosition = new Text("spring's horizontal position in cm");
         Text textforKConstant = new Text("spring's hardness in N/m");
         
         TextField fieldforMass = new TextField("1");
@@ -77,7 +89,17 @@ public class SpringSimpleHarmonicMotionModule extends Module {
             }
         });
         
-        TextField fieldforKConstant = new TextField("0");
+        TextField fieldforXPosition = new TextField("400");
+        fieldforXPosition.setPrefColumnCount(3);
+        fieldforXPosition.textProperty().addListener(ov-> {
+            String text = fieldforMass.getText();
+            if (!checkDecimal(text)) {
+               text = text.substring(0, text.length() - 1);
+               fieldforMass.setText(text);
+            }
+        });
+        
+        TextField fieldforKConstant = new TextField("1");
         fieldforKConstant.setPrefColumnCount(3);
         fieldforKConstant.textProperty().addListener(ov-> {
             String text = fieldforKConstant.getText();
@@ -101,30 +123,37 @@ public class SpringSimpleHarmonicMotionModule extends Module {
         Create.setOnAction(eh -> {
            double massValue = Double.parseDouble(fieldforMass.getText());
            double lengthValue = Double.parseDouble(fieldforLength.getText());
+           double xPositionValue = Double.parseDouble(fieldforXPosition.getText());
            double kconstantValue = Double.parseDouble(fieldforKConstant.getText());
            
-           Spring spring = (Spring)inventory.icons.get(0).deploy();
+           Spring spring = (Spring)(inventory.icons.get(0).deploy());
+           
            spring.injectModRef(this);
            spring.setFields(lengthValue, kconstantValue, new Oscillator(), new Weight(massValue));
            
+           spring.xPosition = xPositionValue;
+           
            listOfSprings.add(spring);
            spring.oscillator.startOsc();
+           
            
            stage.close();
            
         });
         
-        WindowLayout.getChildren().addAll(fieldforMass, textforMass, fieldforLength, textforLength, fieldforKConstant, textforKConstant, buttons);
+        WindowLayout.getChildren().addAll(fieldforMass, textforMass, fieldforLength, textforLength, fieldforXPosition, textforXPosition, fieldforKConstant, textforKConstant, buttons);
         
         stage.setScene(new Scene(WindowLayout));
         stage.requestFocus();
         return stage;
-    }   
+    }
     
     public Stage generateWeightWindow() {
         Stage stage = new Stage();
         VBox WindowLayout = new VBox(20);
         
+        Text textforMass = new Text("New weight's mass in kg");
+        Text textforNum = new Text("which spring to snap new weight to");
         
         TextField fieldforMass = new TextField("1");
         fieldforMass.setPrefColumnCount(3);
@@ -136,37 +165,16 @@ public class SpringSimpleHarmonicMotionModule extends Module {
             }
         });
         
-        TextField fieldforLength = new TextField("100");
-        fieldforLength.setPrefColumnCount(3);
-        fieldforLength.textProperty().addListener(ov-> {
-            String text = fieldforLength.getText();
+        TextField fieldforNum = new TextField("1");
+        fieldforNum.setPrefColumnCount(3);
+        fieldforNum.textProperty().addListener(ov-> {
+            String text = fieldforNum.getText();
             if (!checkDecimal(text) && text.contains("-")) {
                text = text.substring(0, text.length() - 1);
                text.replace("-", "");
-               fieldforLength .setText(text);
+               fieldforNum .setText(text);
             }
         });
-        
-        TextField fieldforKConstant = new TextField("0");
-        fieldforKConstant.setPrefColumnCount(3);
-        fieldforKConstant.textProperty().addListener(ov-> {
-            String text = fieldforKConstant.getText();
-            if (!checkDecimal(text) && text.contains("-")) {
-               text.replace("-", "");
-               text = text.substring(0, text.length() - 1);
-               fieldforKConstant.setText(text);
-            }
-        });
-
-        Label labelforMass = new Label("Sheet Charge Density (C/m^2)", fieldforMass);
-        labelforMass.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelforLength = new Label("Separation Distance of the 2 plates (m)", fieldforLength);
-        labelforLength.setContentDisplay(ContentDisplay.RIGHT);
-        
-        Label labelforKConstant = new Label("Orientation (degrees)", fieldforKConstant);
-        labelforKConstant.setContentDisplay(ContentDisplay.RIGHT);
-        
         
         HBox buttons = new HBox(8);
         buttons.setAlignment(Pos.BOTTOM_RIGHT);
@@ -179,20 +187,16 @@ public class SpringSimpleHarmonicMotionModule extends Module {
         });
         
         Create.setOnAction(eh -> {
-           double massValue = Double.parseDouble(fieldforMass.getText());
-           double lengthValue = Double.parseDouble(fieldforLength.getText());
-           double kconstantValue = Double.parseDouble(fieldforKConstant.getText());
-           Spring spring = (Spring)inventory.icons.get(0).deploy();
-           listOfSprings.add(spring);
-           
-           stage.close();
-           
+            double massValue = Double.parseDouble(fieldforMass.getText());
+            int numValue = Math.min(Integer.parseInt(fieldforNum.getText()), listOfSprings.size() - 1);
+            
+            System.out.println("NUM " + numValue);
+            ((Spring)(listOfSprings.get(numValue))).addWeight(massValue);
+            stage.close();
         });
         
-        WindowLayout.getChildren().addAll(labelforMass, labelforLength, labelforKConstant, buttons);
-        if (!viewport.isShowing()) {
-            stage.close();
-        }
+        WindowLayout.getChildren().addAll(fieldforMass, textforMass, fieldforNum, textforNum, buttons);
+        
         stage.setScene(new Scene(WindowLayout));
         stage.requestFocus();
         return stage;
@@ -208,6 +212,8 @@ public class SpringSimpleHarmonicMotionModule extends Module {
         
         this.viewport.setOnCloseRequest(e -> {
             try {
+                ticker.stopTimer();
+                ticker.clockThread.interrupt();
                 dataSource.flushModule(moduleNumber);
             } catch (IOException ex) {
                 Logger.getLogger(SpringSimpleHarmonicMotionModule.class.getName()).log(Level.SEVERE, null, ex);
@@ -217,8 +223,11 @@ public class SpringSimpleHarmonicMotionModule extends Module {
     
     @Override
     public void tickProcess() {
-        for (int i = 0; i < elements.size(); i++) {
-            elements.get(i).draw();
+        for (Iterator i = listOfSprings.iterator(); i.hasNext();) {
+            Element e = (Element)(i.next());
+            Platform.runLater(() -> {
+                e.draw(); ((Spring)e).refreshDisplay();
+            });
         }
     }
     

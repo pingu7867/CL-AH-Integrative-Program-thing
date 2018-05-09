@@ -8,7 +8,9 @@ package ModuleSpringSimpleHarmonicMotion;
 import intpro.Element;
 import java.io.File;
 import java.util.ArrayList;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Line;
 
 /**
@@ -36,7 +38,6 @@ public class Spring extends Element {
         this.displacement = length;
         this.kconstant = kconstant;
         this.oscillator = oscill;
-        
         if (weight != null) {weights.add(weight); weight.sprite.setImage(new Image(new File("src/Assets/SpringWeight.png").toURI().toString()));}
         
     }
@@ -46,30 +47,35 @@ public class Spring extends Element {
         this.lines = new ArrayList<Line>();
         this.kconstant = kconstant;
         this.oscillator = oscill;
-        this.oscillator.amplitude = getWeightSum() / this.kconstant;
-        this.oscillator.frequency = Math.sqrt(kconstant / (getWeightSum() * 9.8));
         
         if (weight == null) {weights.add(new Weight(0));}
-        else {weights.add(weight); weight.sprite.setImage(new Image(new File("src/Assets/SpringWeight.png").toURI().toString()));}
+        else {addWeight(weight); weight.sprite.setImage(new Image(new File("src/Assets/SpringWeight.png").toURI().toString()));}
         this.displacement = length + (getWeightSum() * kconstant);
         
-        setLength();
+        this.oscillator.amplitude = getWeightSum() / this.kconstant;
+        
+        this.length = this.oscillator.amplitude + this.length;
+        this.oscillator.frequency = Math.sqrt(kconstant / (getWeightSum() * 9.8));
+        declareOscillatorOwnership();
+        
         for (int i = 0; i < ((int)Math.log10(kconstant + 10)) * 10; i++) {
             Line l = new Line(0, 0, 0, 0);
-            l.setStrokeWidth(3 * Math.log(kconstant));
+            l.setStrokeWidth(3 * Math.log(kconstant + 10));
             lines.add(l);
-            setLine(i);
-            module.pane.getChildren().add(l);
         }
         
-        System.out.println(this.length);
-        System.out.println(this.displacement);
-        System.out.println(lines.size());
-        System.out.println(this.kconstant);
-        System.out.println(getWeightSum());
+        {
+            Line l = new Line(0, 0, 0, 0);
+            l.setStrokeWidth(3 * Math.log(kconstant + 10));
+            lines.add(l);
+        }
         
-        System.out.println("weight" + getWeightSum());
-        System.out.println("item size " + lines.size());
+        for (int num = 0; num < lines.size(); num++) {
+            setLine(num);
+        }
+        
+        initializeLines();
+        
     }
     
     public void checkAndFixParameters() {
@@ -77,6 +83,7 @@ public class Spring extends Element {
             oscillator.amplitude = getWeightSum() / this.kconstant;
             oscillator.frequency = Math.sqrt(kconstant / (getWeightSum() * 9.8));
         }
+        this.displacement = length + (getWeightSum() * kconstant);
     }
     
     public void initializeLines() {
@@ -86,7 +93,18 @@ public class Spring extends Element {
     }
     
     public void addWeight(double mass) {
-        weights.add(new Weight(mass));
+        Weight w = new Weight(mass);
+        w.sprite.setImage(new Image(new File("src/Assets/SpringWeight.png").toURI().toString()));
+        weights.add(w);
+        module.pane.getChildren().add(w.sprite);
+        checkAndFixParameters();
+    }
+    
+    public void addWeight(Weight w) {
+        weights.add(w);
+        w.sprite.setImage(new Image(new File("src/Assets/SpringWeight.png").toURI().toString()));
+        module.pane.getChildren().add(w.sprite);
+        checkAndFixParameters();
     }
     
     public double getWeightSum() {
@@ -101,28 +119,47 @@ public class Spring extends Element {
     }
     
     public void setLength() {
+        //System.out.println("GUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUFFFFFIIN " + (oscillator == null));
         double v = oscillator.value;
         displacement = length + v;
+    }
+    
+    public void declareOscillatorOwnership() {
+        oscillator.declareOwnership(this);
+    }
+    
+    public void refreshDisplay() {
+        for (int n = 0; n < lines.size(); n++) {
+            module.pane.getChildren().remove(lines.get(n));
+            module.pane.getChildren().add(lines.get(n));
+        }
+        
+        for (int m = weights.size() - 1; m >= 0; m--) {
+            module.pane.getChildren().remove(weights.get(m).sprite);
+            module.pane.getChildren().add(weights.get(m).sprite);
+        }
         
     }
     
     @Override
     public void draw() {
         setLength();
-        
-        for (int level = 0; level < (int)kconstant * 20; level++) {
-            setLine(2*level);
-            setLine(2*level + 1);
-        }
-        
-        for (int m = 0; m < weights.size(); m++) {
-            weights.get(m).sprite.setScaleX(0.5);
-            weights.get(m).sprite.setScaleY(0.5);
-            weights.get(m).sprite.setX(xPosition);
-            weights.get(m).sprite.setY(displacement + ((m + 0.3) * 100));
+        for (int n = 0; n < lines.size(); n++) {
+            
+            setLine(n);
             
         }
-        
+        for (int m = weights.size() - 1; m >= 0; m--) {
+            ImageView iv = weights.get(m).sprite;
+            iv.setScaleX(0.5);
+            iv.setScaleY(0.5);
+            iv.setX(xPosition);
+            iv.setY(displacement + ((m - 0.8) * 70));
+            Platform.runLater(() -> {
+                iv.toFront();
+            });
+            
+        }
     }
     
     public double getPoint(int num, char axis) {
@@ -131,11 +168,11 @@ public class Spring extends Element {
         double value;
         if (axis == 'x') {
             value = width * (num % 2);
+            
             return value;
         }
         if (axis == 'y') {
             value = Math.floor(num / 2.0) * (displacement / ((size-1) / 2));
-            
             return value;
         }
         
@@ -144,11 +181,10 @@ public class Spring extends Element {
     }
     
     public void setLine(int num) {
-        System.out.println("num " + num);
-        lines.get(num).setStartX(xPosition + getPoint(num, 'x')); System.out.print("x " + getPoint(num, 'x'));
-        lines.get(num).setStartY(getPoint(num, 'y')); System.out.println(", y " + getPoint(num, 'y'));
-        lines.get(num).setEndX(xPosition + getPoint(num + 1, 'x')); System.out.print("x " + getPoint(num + 1, 'x'));
-        lines.get(num).setEndY(getPoint(num + 1, 'y')); System.out.println(", y " + getPoint(num + 1, 'y'));
+        lines.get(num).setStartX(xPosition + getPoint(num, 'x'));
+        lines.get(num).setStartY(getPoint(num, 'y'));
+        lines.get(num).setEndX(xPosition + getPoint(num + 1, 'x'));
+        lines.get(num).setEndY(getPoint(num + 1, 'y'));
         
     }
     

@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
  *
  * @author Cédric
  */
+
 public class Branch extends Element {
     double angleRad = 0;
     double radius = 300;
@@ -149,7 +150,7 @@ public class Branch extends Element {
         shuttle.setX(-100 + centerX - (velX * radius));
         shuttle.setY(-100 + centerY - (velY * radius));
         
-        infoDump.setText("radius: " + radius + " m\rvelocity: " + velocity + " m/s\rround time: " + period + " s\rcentripetal force: " + centriForce + " N\rmass: " + mass + " kg\rx position: " + (int)shuttle.getX() + " px\ry position: " + (800 - (int)shuttle.getY()) + " px");
+        infoDump.setText("radius: " + radius/100 + " m\rvelocity: " + velocity/100 + " m/s\rround time: " + period + " s\rcentripetal force: " + centriForce/100 + " N\rmass: " + mass + " kg\rx position: " + (int)shuttle.getX() + " px\ry position: " + (800 - (int)shuttle.getY()) + " px");
         
     }
     
