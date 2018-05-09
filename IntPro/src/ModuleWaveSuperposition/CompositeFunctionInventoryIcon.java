@@ -57,7 +57,7 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
                 fieldForCurves.setText(text);
             }
         });
-        Label labelforCurvesIndex = new Label("Enter the index of the curves (use / to separate the index) \n index of non-existant curves qill be ignored", fieldForCurves);
+        Label labelforCurvesIndex = new Label("Enter the index of the curves (use / to separate the index) \n index of non-existant curves will be ignored", fieldForCurves);
         labelforCurvesIndex.setContentDisplay(ContentDisplay.RIGHT);
         
         Create.setOnAction(eh -> {
@@ -65,7 +65,7 @@ public class CompositeFunctionInventoryIcon extends InventoryIcon{
            String[] indexes = text.split("/");
            ArrayList<Function> listOfFunctions = new ArrayList<>();
            for (int i =0; i < indexes.length; i++) {
-               if (Integer.parseInt(indexes[i]) >= module.listOfCurves.size()) {
+               if (Integer.parseInt(indexes[i]) >= module.listOfCurves.size() || indexes[i].equals("")) {
                    
                    continue;
                }
