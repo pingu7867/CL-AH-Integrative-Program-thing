@@ -183,9 +183,9 @@ public class PhysicalBody extends SpritedElement{
                 double tempMomentum3; double tempMomentum4;
                 
                 
-                if (list.get(i).posX > posX) { //This checks the resultant angle for each of the particles
+                if (list.get(i).posX > posX + 5) { //This checks the resultant angle for each of the particles
                     
-                    if (list.get(i).posY > posY) {
+                    if (list.get(i).posY > posY + 5) {
                         radiusAngle1 = Math.asin((list.get(i).posY - posY)/(2*maxRadius)); //this
                         if (angle > 2*Math.PI + (radiusAngle1 - Math.PI/2)) {      
                             radiusAngle2 = radiusAngle1 - Math.PI/2;
@@ -229,7 +229,7 @@ public class PhysicalBody extends SpritedElement{
                                 tempMomentum1 * Math.sin(radiusAngle1) + tempMomentum3 * Math.sin(radiusAngle4));
                         
                     }
-                    else if (list.get(i).posY == posY) {
+                    else if (list.get(i).posY <= posY + 5 && list.get(i).posY >= posY - 5) {
                         radiusAngle1 = 0;
                         if (angle > radiusAngle1 && angle <= Math.PI/2) {      
                             radiusAngle2 = radiusAngle1 + Math.PI/2;
@@ -269,7 +269,7 @@ public class PhysicalBody extends SpritedElement{
                                 tempMomentum1 * Math.sin(radiusAngle1) + tempMomentum3 * Math.sin(radiusAngle4));
                     }
                     
-                    else if (list.get(i).posY < posY) {
+                    else if (list.get(i).posY < posY - 5) {
                         radiusAngle1 = 2*Math.PI - Math.asin((posY - list.get(i).posY )/(2*maxRadius));
                         if (angle > radiusAngle1 && angle <= 2 * Math.PI) {      
                             radiusAngle2 = (radiusAngle1 + Math.PI/2) % (2 * Math.PI);
@@ -314,7 +314,7 @@ public class PhysicalBody extends SpritedElement{
                         
                     }
                 }
-                else if (list.get(i).posX == posX) {
+                else if (list.get(i).posX <= posX + 5 && list.get(i).posX >= posX - 5  ) {
                      if (list.get(i).posY > posY) {
                         radiusAngle1 = Math.PI/2;
                         if (angle > radiusAngle1) {      
@@ -396,8 +396,8 @@ public class PhysicalBody extends SpritedElement{
                         }
                     }
                 
-                else if (list.get(i).posX < posX) {
-                    if (list.get(i).posY > posY) {
+                else if (list.get(i).posX < posX - 5) {
+                    if (list.get(i).posY > posY + 5) {
                         radiusAngle1 = Math.PI - Math.asin((list.get(i).posY - posY)/(2*maxRadius));
                         if (angle < radiusAngle1) {
                             radiusAngle2 = radiusAngle1 - Math.PI/2;
@@ -439,7 +439,7 @@ public class PhysicalBody extends SpritedElement{
                                 tempMomentum1 * Math.cos(radiusAngle1) + tempMomentum3 * Math.cos(radiusAngle4),
                                 tempMomentum1 * Math.sin(radiusAngle1) + tempMomentum3 * Math.sin(radiusAngle4));
                     }
-                    else if (list.get(i).posY == posY) {
+                    else if (list.get(i).posY <= posY + 5 && list.get(i).posY >= posY - 5) {
                         radiusAngle1 = Math.PI;
                         if (angle < radiusAngle1) {
                             radiusAngle2 = radiusAngle1 - Math.PI/2;
@@ -477,7 +477,7 @@ public class PhysicalBody extends SpritedElement{
                                 tempMomentum1 * Math.cos(radiusAngle1) + tempMomentum3 * Math.cos(radiusAngle4),
                                 tempMomentum1 * Math.sin(radiusAngle1) + tempMomentum3 * Math.sin(radiusAngle4));
                     }
-                    else if (list.get(i).posY < posY) {
+                    else if (list.get(i).posY < posY - 5) {
                         
                         radiusAngle1 = Math.asin((posY - list.get(i).posY)/(2*maxRadius)) + Math.PI;
                         if (angle < radiusAngle1) {
